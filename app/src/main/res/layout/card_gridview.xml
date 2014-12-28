@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:drawable/picture_frame">
+
+    <LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="8dp"
+    android:orientation="vertical"
+        android:background="@color/green">
+
+        <ImageView
+            android:id="@+id/card_image"
+
+            android:src="@drawable/ic_launcher"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+        </ImageView>
+
+        <TextView
+            android:id="@+id/card_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@+id/label"
+            android:layout_marginTop="5dp"
+            android:textSize="15sp"
+            android:textAlignment="center"
+            android:textColor="@color/black_overlay"
+            android:layout_gravity="center">
+        </TextView>
+
+
+
+    </LinearLayout>
+</FrameLayout>
