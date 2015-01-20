@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jjoseba.pecsmobile.R;
@@ -26,34 +27,32 @@ public class CardGridAdapter extends ArrayAdapter<CardPECS> {
         this._ctx = context;
     }
 
+    protected class CardViewHolder{
+        TextView label;
+        ImageView image;
+    }
+
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        LayoutInflater inflater = (LayoutInflater) _ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+        CardViewHolder holder;
         View gridView;
         CardPECS card = cards.get(position);
 
         if (convertView == null) {
+            convertView = LayoutInflater.from(_ctx).inflate(R.layout.card_gridview, null);
 
-            gridView = new View(_ctx);
+            // Set up the ViewHolder
+            holder = new CardViewHolder();
+            holder.label = (TextView) convertView.findViewById(R.id.card_label);
+            holder.image = (ImageView) convertView.findViewById(R.id.card_image);
 
-            // get layout from mobile.xml
-            gridView = inflater.inflate(R.layout.card_gridview, null);
-
-            // set value into textview
-            TextView textView = (TextView) gridView
-                    .findViewById(R.id.card_label);
-            textView.setText(card.getLabel());
-
-            // set image based on selected text
-            //ImageView imageView = (ImageView) gridView
-            //        .findViewById(R.id.grid_item_image);
-
+            convertView.setTag(holder);
         } else {
-            gridView = (View) convertView;
+            holder = (CardViewHolder) convertView.getTag();
         }
-
-        return gridView;
+        holder.label.setText(card.getLabel());
+        holder.image.setImageResource(R.drawable.ic_launcher);
+        return convertView;
     }
 
     @Override
