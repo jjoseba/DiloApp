@@ -7,5 +7,6 @@
     <color name="white">#FFFFFF</color>
     <color name="topbar">#f2f3f4</color>
     <color name="whitetransp">#77eeeeee</color>
+    <color name="mainbg">#A2A282</color>
 
 </resources>

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.model.CardPECS;
+import com.jjoseba.pecsmobile.ui.ButtonCard;
 
 import java.util.List;
 
@@ -30,12 +31,13 @@ public class CardGridAdapter extends ArrayAdapter<CardPECS> {
     protected class CardViewHolder{
         TextView label;
         ImageView image;
+        View cardFrame;
+        View addButton;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
 
         CardViewHolder holder;
-        View gridView;
         CardPECS card = cards.get(position);
 
         if (convertView == null) {
@@ -45,19 +47,31 @@ public class CardGridAdapter extends ArrayAdapter<CardPECS> {
             holder = new CardViewHolder();
             holder.label = (TextView) convertView.findViewById(R.id.card_label);
             holder.image = (ImageView) convertView.findViewById(R.id.card_image);
+            holder.cardFrame = convertView.findViewById(R.id.card_frame);
+            holder.addButton = convertView.findViewById(R.id.addButton);
 
             convertView.setTag(holder);
         } else {
             holder = (CardViewHolder) convertView.getTag();
         }
-        holder.label.setText(card.getLabel());
-        holder.image.setImageResource(R.drawable.ic_launcher);
+        if (card instanceof ButtonCard){
+            holder.cardFrame.setVisibility(View.INVISIBLE);
+            holder.addButton.setVisibility(View.VISIBLE);
+        }
+        else{
+            holder.cardFrame.setBackgroundColor(card.getCardColor());
+            holder.label.setText(card.getLabel());
+            holder.image.setImageResource(R.drawable.ic_launcher);
+            holder.cardFrame.setVisibility(View.VISIBLE);
+            holder.addButton.setVisibility(View.GONE);
+        }
         return convertView;
+
     }
 
     @Override
     public int getCount() {
-        return cards.size();
+        return cards.size() ;
     }
 
     @Override

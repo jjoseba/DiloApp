@@ -9,10 +9,12 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/cards_gridview"
-            android:numColumns="2"
+            android:numColumns="@integer/grid_columns"
             android:horizontalSpacing="10dp"
             android:verticalSpacing="10dp"
             android:layout_margin="0dp"
         android:layout_marginBottom="10dp"
-        android:background="@color/whitetransp" />
+        android:background="@color/whitetransp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp" />
     </LinearLayout>

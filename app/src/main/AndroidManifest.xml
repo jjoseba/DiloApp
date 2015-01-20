@@ -10,7 +10,7 @@
         android:name="com.jjoseba.pecsmobile.app.PECSMobile">
         <activity
             android:name=".activity.CardsActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:configChanges="keyboardHidden"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" >
             <intent-filter>

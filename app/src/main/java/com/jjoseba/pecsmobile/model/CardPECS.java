@@ -1,14 +1,19 @@
 package com.jjoseba.pecsmobile.model;
 
+import android.graphics.Color;
+
 /**
  * Created by Joseba on 28/12/2014.
  */
 public class CardPECS {
 
+    public static int DEFAULT_COLOR = 0xFF555555;
+
     private String label;
     private String imagePath;
     private String name;
     private boolean isCategory;
+    private String cardColor;
 
     public String getLabel() {
         return label;
@@ -41,4 +46,10 @@ public class CardPECS {
     public void setAsCategory(boolean category) {
         this.isCategory = category;
     }
+
+    public String getHexCardColor() { return cardColor; }
+
+    public void setCardColor(String cardColor) { this.cardColor = cardColor; }
+
+    public int getCardColor(){ return ( cardColor!=null? Color.parseColor(cardColor) : DEFAULT_COLOR); }
 }

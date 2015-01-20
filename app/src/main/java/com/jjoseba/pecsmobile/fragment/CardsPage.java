@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.adapter.CardGridAdapter;
 import com.jjoseba.pecsmobile.model.CardPECS;
+import com.jjoseba.pecsmobile.ui.ButtonCard;
 import com.jjoseba.pecsmobile.ui.GridItemClickedListener;
 
 import java.util.ArrayList;
@@ -45,36 +46,45 @@ public class CardsPage extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.screen_slide, container, false);
 
-        rootView.setBackgroundColor(getResources().getColor(numPage>0?(numPage>1? R.color.blue:R.color.green):R.color.red));
+        rootView.setBackgroundColor(getResources().getColor(numPage>0?(numPage>1? R.color.blue:R.color.green):R.color.mainbg));
 
         GridView gridView = (GridView) rootView.findViewById(R.id.cards_gridview);
 
         ArrayList<CardPECS> pecs = new ArrayList<CardPECS>();
         CardPECS pec1 = new CardPECS();
-        pec1.setLabel("AAAAA");
+        pec1.setLabel("Prueba");
+        pec1.setCardColor("#00BCD4");
         pecs.add(pec1);
 
         CardPECS pec2 = new CardPECS();
-        pec2.setLabel("AAAAA111");
+        pec2.setLabel("Prueba");
+        pec2.setCardColor("#F44336");
         pecs.add(pec2);
 
         CardPECS pec3 = new CardPECS();
-        pec3.setLabel("AAAAA333");
+        pec3.setLabel("Prueba");
+        pec3.setCardColor("#FF5722");
         pecs.add(pec3);
 
         CardPECS pec4 = new CardPECS();
-        pec4.setLabel("AAAAA222");
+        pec4.setLabel("Prueba");
+        pec4.setCardColor("#4CAF50");
         pecs.add(pec4);
 
         CardPECS pec5 = new CardPECS();
-        pec5.setLabel("AAAAA3533");
+        pec5.setLabel("Prueba");
+        pec5.setCardColor("#FFC107");
+        CardPECS pec6 = new CardPECS();
+        pec6.setLabel("Prueba");
+        pec6.setCardColor("#9C27B0");
+        pecs.add(pec6);
+        pecs.add(pec5);
+        pecs.add(pec3);
+        pecs.add(pec1);
         pecs.add(pec5);
         pecs.add(pec5);
         pecs.add(pec5);
-        pecs.add(pec5);
-        pecs.add(pec5);
-        pecs.add(pec5);
-        pecs.add(pec5);
+        pecs.add(new ButtonCard());
 
         gridView.setAdapter(new CardGridAdapter(this.getActivity(), R.layout.card_gridview, pecs));
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
