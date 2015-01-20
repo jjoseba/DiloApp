@@ -1,12 +1,12 @@
 package com.jjoseba.pecsmobile.activity;
 
-import com.jjoseba.pecsmobile.CardsPage;
+import com.jjoseba.pecsmobile.fragment.CardsPage;
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.ui.EnableableViewPager;
 import com.jjoseba.pecsmobile.ui.GridItemClickedListener;
 import com.jjoseba.pecsmobile.ui.ZoomOutPageTransformer;
-import com.jjoseba.pecsmobile.util.SystemUiHider;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -15,9 +15,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.GridView;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class CardsActivity extends FragmentActivity implements GridItemClickedListener, ViewPager.OnPageChangeListener {
 
@@ -27,6 +26,11 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
     private PagerAdapter mPagerAdapter;
     private ZoomOutPageTransformer mPageTransformer;
     private int mLastPage;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,18 +43,11 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
         mPageTransformer = new ZoomOutPageTransformer();
 
         mPager.setAdapter(mPagerAdapter);
-        mPager.setPageTransformer(false, mPageTransformer);
+        //mPager.setPageTransformer(false, mPageTransformer);
         mPager.setPagingEnabled(false);
         mPager.setOnPageChangeListener(this);
         mLastPage = 0;
 
-        Button dummy = (Button) findViewById(R.id.dummy_button);
-        dummy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
     @Override

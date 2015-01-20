@@ -1,4 +1,4 @@
-package com.jjoseba.pecsmobile;
+package com.jjoseba.pecsmobile.fragment;
 
 
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.adapter.CardGridAdapter;
 import com.jjoseba.pecsmobile.model.CardPECS;
 import com.jjoseba.pecsmobile.ui.GridItemClickedListener;
@@ -43,8 +44,7 @@ public class CardsPage extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.screen_slide, container, false);
-        TextView tv = (TextView) rootView.findViewById(R.id.fullscreen_content);
-        tv.setText("" + numPage);
+
         rootView.setBackgroundColor(getResources().getColor(numPage>0?(numPage>1? R.color.blue:R.color.green):R.color.red));
 
         GridView gridView = (GridView) rootView.findViewById(R.id.cards_gridview);
