@@ -8,5 +8,10 @@
     <color name="topbar">#f2f3f4</color>
     <color name="whitetransp">#77eeeeee</color>
     <color name="mainbg">#A2A282</color>
+    <color name="transparent">#00000000</color>
+    <color name="button_focus">#03A9F4</color>
+    <color name="secondary_bar">#ffa4a4a4</color>
+    <color name="gray">#d3d3d3</color>
+    <color name="default_card">#FF555555</color>
 
 </resources>

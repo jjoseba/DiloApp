@@ -3,20 +3,30 @@
     package="com.jjoseba.pecsmobile" >
 
     <application
+        android:name="com.jjoseba.pecsmobile.app.PECSMobile"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:name="com.jjoseba.pecsmobile.app.PECSMobile">
+        android:theme="@style/AppTheme" >
         <activity
-            android:name=".activity.CardsActivity"
+            android:name="com.jjoseba.pecsmobile.activity.CardsActivity"
             android:configChanges="keyboardHidden"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.jjoseba.pecsmobile.activity.NewCardActivity"
+            android:label="@string/new_card_title"
+            android:parentActivityName="com.jjoseba.pecsmobile.activity.CardsActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jjoseba.pecsmobile.activity.CardsActivity" />
+
         </activity>
     </application>
 
