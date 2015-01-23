@@ -12,5 +12,7 @@
     <string name="label_category">Es categoria?</string>
     <string name="label_image">imagen</string>
     <string name="color_label">Color de la tarjeta</string>
+    <string name="action_accept">Aceptar</string>
+    <string name="change_color">Elegir color</string>
 
 </resources>

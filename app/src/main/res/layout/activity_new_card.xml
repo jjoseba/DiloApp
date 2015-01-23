@@ -73,7 +73,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:padding="15sp"
-                    android:background="@color/default_card">
+                    android:background="@color/default_card"
+                    android:id="@+id/card_frame">
 
                     <com.jjoseba.pecsmobile.ui.SquareImageView
                         android:id="@+id/card_image"
@@ -94,7 +95,6 @@
                 android:layout_gravity="center_horizontal"
                 android:hint="@string/placeholder_label"
                 android:textSize="34sp"
-                android:textColor="@color/white"
                 android:layout_marginBottom="5dp"
                 android:paddingTop="10dp" />
 
@@ -127,7 +127,7 @@
                 <ImageButton
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:id="@+id/imageButton2"
+                    android:id="@+id/pickColorButton"
                     android:src="@drawable/ic_action_edit"
                     android:scaleType="fitCenter" />
 
@@ -136,7 +136,8 @@
                     android:layout_height="40dp"
                     android:background="@color/red"
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp">
+                    android:layout_marginBottom="5dp"
+                    android:id="@+id/colorBucket">
 
                 </FrameLayout>
 
@@ -147,9 +148,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#222"
+            android:background="@color/default_card"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:id="@+id/pickerContainer">
 
             <com.larswerkman.holocolorpicker.ColorPicker
                 android:id="@+id/picker"
@@ -157,40 +159,38 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"/>
 
-            <com.larswerkman.holocolorpicker.SVBar
-                android:id="@+id/svbar"
-                android:layout_width="322dp"
+            <com.larswerkman.holocolorpicker.SaturationBar
+                android:id="@+id/saturationbar"
+                android:layout_width="fill_parent"
                 android:layout_height="112dp"
                 android:layout_gravity="center"
                 android:layout_margin="8dip"/>
 
-            <com.larswerkman.holocolorpicker.OpacityBar
-                android:id="@+id/opacitybar"
-                android:layout_width="322dp"
+            <com.larswerkman.holocolorpicker.ValueBar
+                android:id="@+id/valuebar"
+                android:layout_width="fill_parent"
                 android:layout_height="112dp"
                 android:layout_gravity="center"
                 android:layout_margin="8dip"/>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2" >
+                android:weightSum="2"
+                android:layout_gravity="center"
+                android:gravity="center">
 
                 <Button
-                    android:id="@+id/button1"
+                    android:id="@+id/select_color_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Change Color"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/textView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Text Color"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp"
-                    android:layout_weight="1" />
+                    android:text="@string/change_color"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:textSize="28sp"
+                    android:visibility="visible"
+                    android:textColor="@color/white" />
 
             </LinearLayout>
         </LinearLayout>

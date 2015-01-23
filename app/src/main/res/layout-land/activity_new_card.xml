@@ -51,122 +51,126 @@
 
     </LinearLayout>
 
-    <TableLayout
+    <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:measureWithLargestChild="false"
-        android:baselineAligned="false">
+        android:visibility="visible">
 
-        <TableRow
+        <TableLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_height="fill_parent"
+            android:measureWithLargestChild="false"
+            android:baselineAligned="false">
 
-            <FrameLayout
+            <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20sp"
-                android:layout_marginRight="10sp"
-                android:background="@drawable/card"
-                android:layout_weight="1"
-                android:layout_span="3"
-                android:layout_gravity="center">
+                android:layout_weight="1">
 
                 <FrameLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:padding="15sp"
-                    android:background="@color/default_card">
-
-                    <com.jjoseba.pecsmobile.ui.SquareImageView
-                        android:id="@+id/card_image"
-
-                        android:src="@drawable/ic_action_new_picture"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/gray"
-                        android:scaleType="center">
-                    </com.jjoseba.pecsmobile.ui.SquareImageView>
-                </FrameLayout>
-            </FrameLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="30dp"
-                android:layout_weight="1"
-                android:layout_span="1"
-                android:layout_gravity="center_vertical">
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/editText"
-                    android:layout_gravity="center_horizontal"
-                    android:hint="@string/placeholder_label"
-                    android:textSize="34sp"
-                    android:layout_marginBottom="5dp"
-                    android:paddingTop="10dp" />
-
-                <Switch
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/label_category"
-                    android:id="@+id/switch1"
-                    android:textSize="28sp"
-                    android:hint="@string/placeholder_label"
-                    android:textStyle="normal"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp" />
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/color_label"
-                        android:id="@+id/textView"
-                        android:textSize="25sp"
-                        android:layout_weight="1"
-                        android:layout_gravity="center"
-                        android:gravity="center_vertical|left" />
-
-                    <ImageButton
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:id="@+id/imageButton2"
-                        android:src="@drawable/ic_action_edit"
-                        android:scaleType="fitCenter" />
+                    android:layout_marginLeft="20sp"
+                    android:layout_marginRight="10sp"
+                    android:background="@drawable/card"
+                    android:layout_weight="1"
+                    android:layout_span="3"
+                    android:layout_gravity="center">
 
                     <FrameLayout
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@color/red"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp">
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="15sp"
+                        android:id="@+id/card_frame"
+                        android:background="@color/default_card">
 
+                        <com.jjoseba.pecsmobile.ui.SquareImageView
+                            android:id="@+id/card_image"
+
+                            android:src="@drawable/ic_action_new_picture"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/gray"
+                            android:scaleType="center">
+                        </com.jjoseba.pecsmobile.ui.SquareImageView>
                     </FrameLayout>
+                </FrameLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="30dp"
+                    android:layout_weight="1"
+                    android:layout_span="1"
+                    android:layout_gravity="center_vertical">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/editText"
+                        android:layout_gravity="center_horizontal"
+                        android:hint="@string/placeholder_label"
+                        android:textSize="34sp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingTop="10dp" />
+
+                    <Switch
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_category"
+                        android:id="@+id/switch1"
+                        android:textSize="28sp"
+                        android:hint="@string/placeholder_label"
+                        android:textStyle="normal"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/color_label"
+                            android:id="@+id/textView"
+                            android:textSize="25sp"
+                            android:layout_weight="1"
+                            android:layout_gravity="center"
+                            android:gravity="center_vertical|left" />
+
+                        <ImageButton
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:id="@+id/pickColorButton"
+                            android:src="@drawable/ic_action_edit"
+                            android:scaleType="fitCenter" />
+
+                        <FrameLayout
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:id="@+id/colorBucket"
+                            android:background="@color/red"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp">
+
+                        </FrameLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
-
-            </LinearLayout>
-        </TableRow>
-    </TableLayout>
-
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+            </TableRow>
+        </TableLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#222"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:id="@+id/pickerContainer">
 
             <com.larswerkman.holocolorpicker.ColorPicker
                 android:id="@+id/picker"
@@ -174,42 +178,36 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"/>
 
-            <com.larswerkman.holocolorpicker.SVBar
-                android:id="@+id/svbar"
-                android:layout_width="322dp"
-                android:layout_height="112dp"
-                android:layout_gravity="center"
-                android:layout_margin="8dip"/>
-
-            <com.larswerkman.holocolorpicker.OpacityBar
-                android:id="@+id/opacitybar"
-                android:layout_width="322dp"
-                android:layout_height="112dp"
-                android:layout_gravity="center"
-                android:layout_margin="8dip"/>
-
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2" >
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="20dp">
+
+                <com.larswerkman.holocolorpicker.SaturationBar
+                    android:id="@+id/saturationbar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="112dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dip"/>
+
+                <com.larswerkman.holocolorpicker.ValueBar
+                    android:id="@+id/valuebar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="112dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dip"/>
 
                 <Button
-                    android:id="@+id/button1"
+                    android:id="@+id/select_color_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Change Color"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/textView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Text Color"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp"
-                    android:layout_weight="1" />
-
+                    android:text="@string/change_color"
+                    android:textSize="28sp" />
             </LinearLayout>
+
         </LinearLayout>
 
     </FrameLayout>
