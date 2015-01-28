@@ -32,6 +32,7 @@ public class NewCardActivity extends Activity{
 
     private static float EXTRA_TRANSLATION = 300f;
     private static long ANIM_DURATION = 800;
+    private static String PREVIOUS_COLOR = "previousColor";
 
     private ColorPicker picker;
     private View colorPickerContainer;
@@ -93,6 +94,25 @@ public class NewCardActivity extends Activity{
                 showColorPicker();
             }
         });
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        cardFrame.setBackgroundColor(previousColor);
+        colorBucket.setBackgroundColor(previousColor);
+    }
+
+    @Override
+    protected void onSaveInstanceState (Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putInt(PREVIOUS_COLOR, previousColor);
+    }
+
+    @Override
+    protected void onRestoreInstanceState (Bundle savedState){
+        super.onRestoreInstanceState(savedState);
+        previousColor = savedState.getInt(PREVIOUS_COLOR);
     }
 
     @Override

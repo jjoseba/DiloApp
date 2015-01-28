@@ -113,7 +113,9 @@
                         android:hint="@string/placeholder_label"
                         android:textSize="34sp"
                         android:layout_marginBottom="5dp"
-                        android:paddingTop="10dp" />
+                        android:paddingTop="10dp"
+                        android:inputType="text"
+                        android:imeOptions="actionDone"/>
 
                     <Switch
                         android:layout_width="fill_parent"
