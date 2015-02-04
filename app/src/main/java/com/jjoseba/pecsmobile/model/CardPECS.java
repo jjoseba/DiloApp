@@ -2,10 +2,12 @@ package com.jjoseba.pecsmobile.model;
 
 import android.graphics.Color;
 
+import java.io.Serializable;
+
 /**
  * Created by Joseba on 28/12/2014.
  */
-public class CardPECS {
+public class CardPECS implements Serializable{
 
     public static int DEFAULT_COLOR = 0xFF555555;
 
