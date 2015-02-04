@@ -63,6 +63,7 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
 
     }
 
+
     @Override
     public void onBackPressed() {
         if (mPager.getCurrentItem() == 0) {
@@ -75,6 +76,8 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
             mPager.setCurrentItem(mPager.getCurrentItem() - 1);
         }
     }
+
+
 
     @Override
     public void onClick(CardPECS clicked, boolean addChildCard) {
@@ -125,7 +128,6 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
     }
 
 
-
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
 
         private final FragmentManager mFragmentManager;
@@ -142,7 +144,6 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
             CardsPage page = cardPages.get(card);
             if (page == null){
                 page = CardsPage.newInstance(card);
-                page.setOnClickListener(CardsActivity.this);
                 cardPages.put(card, page);
             }
             return page;

@@ -1,6 +1,7 @@
 package com.jjoseba.pecsmobile.fragment;
 
 
+import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -27,13 +28,10 @@ public class CardsPage extends Fragment {
 
     public static String PARENT_CATEGORY = "parentCategory";
 
-    public CardPECS parentCategory;
-    ArrayList<CardPECS> pecs = new ArrayList<CardPECS>();
-
+    private CardPECS parentCategory;
+    private ArrayList<CardPECS> pecs = new ArrayList<CardPECS>();
     private GridItemClickedListener clickListener;
-    public void setOnClickListener(GridItemClickedListener listener){
-        this.clickListener = listener;
-    }
+
 
     public static CardsPage newInstance(CardPECS parentCategory) {
         CardsPage f = new CardsPage();
@@ -90,6 +88,22 @@ public class CardsPage extends Fragment {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            this.clickListener = (GridItemClickedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement GridItemClickedListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        this.clickListener = null;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.screen_slide, container, false);
@@ -102,6 +116,7 @@ public class CardsPage extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Log.d("Grid-clicked", "pos:" + position);
+
                 if (clickListener != null){
                     CardPECS clicked = pecs.get(position);
                     if (clicked instanceof ButtonCard){
