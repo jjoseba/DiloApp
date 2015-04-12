@@ -77,6 +77,13 @@ public class CardsPage extends Fragment {
         CardPECS pec6 = new CardPECS();
         pec6.setLabel("Prueba6");
         pec6.setCardColor("#9C27B0");
+
+        pec1.setAsCategory(true);
+        pec2.setAsCategory(true);
+        pec3.setAsCategory(true);
+        pec4.setAsCategory(true);
+        pec5.setAsCategory(true);
+
         pecs.add(pec6);
         pecs.add(pec5);
         pecs.add(pec3);

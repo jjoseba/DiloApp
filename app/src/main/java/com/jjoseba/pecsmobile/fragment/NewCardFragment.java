@@ -1,34 +1,31 @@
-package com.jjoseba.pecsmobile.activity;
+package com.jjoseba.pecsmobile.fragment;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.app.ActionBar;
-import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.model.CardPECS;
 import com.larswerkman.holocolorpicker.ColorPicker;
-import com.larswerkman.holocolorpicker.OpacityBar;
-import com.larswerkman.holocolorpicker.SVBar;
-import com.larswerkman.holocolorpicker.ColorPicker.OnColorSelectedListener;
 import com.larswerkman.holocolorpicker.SaturationBar;
 import com.larswerkman.holocolorpicker.ValueBar;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class NewCardActivity extends Activity{
+public class NewCardFragment extends Fragment {
 
     private static float EXTRA_TRANSLATION = 300f;
     private static long ANIM_DURATION = 800;
@@ -43,30 +40,20 @@ public class NewCardActivity extends Activity{
     private boolean disableOkButton = false;
 
     @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_card);
+        View view = inflater.inflate(R.layout.activity_new_card, container, false);
 
-        Bundle extras = getIntent().getExtras();
-        int cardColor = extras.getInt("cardColor");
-        previousColor = cardColor;
-
-        ActionBar bar = getActionBar();
+        /*ActionBar bar = getActionBar();
         if (bar != null) {
             bar.setBackgroundDrawable(new ColorDrawable(cardColor));
-        }
+        }*/
 
-        cardFrame = findViewById(R.id.card_frame);
-        cardFrame.setBackgroundColor(cardColor);
-        colorBucket = findViewById(R.id.colorBucket);
-        colorBucket.setBackgroundColor(cardColor);
+        cardFrame = view.findViewById(R.id.card_frame);
+        colorBucket = view.findViewById(R.id.colorBucket);
 
-        colorPickerContainer = findViewById(R.id.pickerContainer);
+        colorPickerContainer = view.findViewById(R.id.pickerContainer);
         colorPickerContainer.setOnTouchListener(new View.OnTouchListener() {
             //Cancelamos la propagación del pulsado cuando colorPickerContainer es visible
             @Override
@@ -90,77 +77,31 @@ public class NewCardActivity extends Activity{
             }
         });
 
-        ImageButton pickColor = (ImageButton) findViewById(R.id.pickColorButton);
+        ImageButton pickColor = (ImageButton) view.findViewById(R.id.pickColorButton);
         pickColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showColorPicker();
             }
         });
+
+        return view;
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        cardFrame.setBackgroundColor(previousColor);
-        colorBucket.setBackgroundColor(previousColor);
-    }
-
-    @Override
-    protected void onSaveInstanceState (Bundle outState){
-        super.onSaveInstanceState(outState);
-        outState.putInt(PREVIOUS_COLOR, previousColor);
-    }
-
-    @Override
-    protected void onRestoreInstanceState (Bundle savedState){
-        super.onRestoreInstanceState(savedState);
-        previousColor = savedState.getInt(PREVIOUS_COLOR);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_new_card, menu);
-
-        return true;
-    }
-
-    public boolean onPrepareOptionsMenu(Menu menu){
-        menu.getItem(0).setEnabled(!disableOkButton);
-        return true;
-    }
-
-    private void showColorPicker(){
+    public void showColorPicker(){
+        Log.d("MAIN", "showPicker ");
         toggleColorPicker(true);
         disableOkButton = true;
-        invalidateOptionsMenu();
     }
 
-    private void hideColorPicker(){
+    public void hideColorPicker(){
+        Log.d("MAIN", "hidePicker ");
         toggleColorPicker(false);
         disableOkButton = false;
-        invalidateOptionsMenu();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_done) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (colorPickerContainer.getVisibility() != View.VISIBLE){
-            super.onBackPressed();
-        }
-        else{
-            hideColorPicker();
-        }
+    public boolean isColorPickerVisible(){
+        return colorPickerContainer.getVisibility() == View.VISIBLE;
     }
 
     protected void changeColor(int colorTo){
@@ -195,6 +136,11 @@ public class NewCardActivity extends Activity{
         if (show) { colorPickerContainer.setVisibility(View.VISIBLE); }
         colorPickerContainer.startAnimation(anim);
         if (!show) { colorPickerContainer.setVisibility(View.INVISIBLE); }
+
+    }
+
+    public void resetForm(CardPECS clicked) {
+        changeColor(clicked.getCardColor());
 
     }
 }

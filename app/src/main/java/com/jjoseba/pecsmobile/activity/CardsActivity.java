@@ -2,38 +2,43 @@ package com.jjoseba.pecsmobile.activity;
 
 import com.jjoseba.pecsmobile.fragment.CardsPage;
 import com.jjoseba.pecsmobile.R;
+import com.jjoseba.pecsmobile.fragment.NewCardFragment;
 import com.jjoseba.pecsmobile.model.CardPECS;
-import com.jjoseba.pecsmobile.ui.ButtonCard;
 import com.jjoseba.pecsmobile.ui.EnableableViewPager;
 import com.jjoseba.pecsmobile.ui.GridItemClickedListener;
 import com.jjoseba.pecsmobile.ui.ZoomOutPageTransformer;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class CardsActivity extends FragmentActivity implements GridItemClickedListener, ViewPager.OnPageChangeListener {
 
-    private static int NUM_PAGES = 2;
+    private static final boolean FADE_IN = true;
+    private static final boolean FADE_OUT = false;
 
     private EnableableViewPager mPager;
     private ScreenSlidePagerAdapter mPagerAdapter;
     private ZoomOutPageTransformer mPageTransformer;
+    private HashMap<CardPECS, CardsPage> cardPages = new HashMap<CardPECS, CardsPage>();
     private int mLastPage;
+    private NewCardFragment newCardFragment;
+    private View newCardContainer;
+    private boolean newCardIsHiding = false;
 
     protected ArrayList<CardPECS> navigationCards = new ArrayList<CardPECS>();
 
@@ -56,16 +61,26 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
         mPageTransformer = new ZoomOutPageTransformer();
 
         mPager.setAdapter(mPagerAdapter);
-        //mPager.setPageTransformer(false, mPageTransformer);
+        mPager.setPageTransformer(false, mPageTransformer);
         mPager.setPagingEnabled(false);
         mPager.setOnPageChangeListener(this);
         mLastPage = 0;
 
+        newCardContainer = findViewById(R.id.newCardContainer);
+        newCardFragment = (NewCardFragment) getSupportFragmentManager().findFragmentById(R.id.new_card_fragment);
     }
-
 
     @Override
     public void onBackPressed() {
+        if (newCardContainer.getVisibility() == View.VISIBLE){
+            if (newCardFragment.isColorPickerVisible()){
+             newCardFragment.hideColorPicker();
+            }
+            else if (!newCardIsHiding){
+                animateCardContainer(FADE_OUT);
+            }
+            return;
+        }
         if (mPager.getCurrentItem() == 0) {
             // If the user is currently looking at the first step, allow the system to handle the
             // Back button. This calls finish() on this activity and pops the back stack.
@@ -77,6 +92,26 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("cards", navigationCards);
+        //outState.putSerializable("fragments", cardPages);
+        outState.putInt("currentPage", mLastPage);
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+
+        mLastPage = savedInstanceState.getInt("currentPage", mLastPage);
+        ArrayList<CardPECS> cards = (ArrayList<CardPECS>) savedInstanceState.getSerializable("cards");
+        if (cards != null && cards.size() > 0){
+            navigationCards = cards;
+        }
+    }
+
 
 
     @Override
@@ -84,17 +119,51 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
 
         //mPageTransformer.setAnimateFromRight((position % 2 != 0));
         if (addChildCard){
-            Intent i = new Intent(this, NewCardActivity.class);
+            animateCardContainer(FADE_IN);
+            newCardFragment.resetForm(clicked);
+            /*Intent i = new Intent(this, NewCardActivity.class);
             i.putExtra("cardColor", clicked.getCardColor());
-            startActivity(i);
+            startActivity(i);*/
         }
         else{
-            int target = mPager.getCurrentItem() + 1;
-            navigationCards.add(clicked);
-            mPagerAdapter.notifyDataSetChanged();
-            mPager.setCurrentItem(target, true);
-            mPager.setPagingEnabled(true);
+            if (clicked.isCategory()){
+                int target = mPager.getCurrentItem() + 1;
+                navigationCards.add(clicked);
+                mPagerAdapter.notifyDataSetChanged();
+                mPager.setCurrentItem(target, true);
+                mPager.setPagingEnabled(true);
+            }
+            else{
+
+            }
+
         }
+    }
+
+    private void animateCardContainer(final boolean show) {
+        Log.d("MAIN", "showContainer " + show);
+        newCardContainer.setVisibility(View.VISIBLE);
+        Animation fadeAnimation = new AlphaAnimation(show?0:1, show?1:0);
+        fadeAnimation.setInterpolator(new DecelerateInterpolator()); //add this
+        fadeAnimation.setDuration(700);
+        fadeAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (!show){
+                    newCardContainer.setVisibility(View.GONE);
+                    newCardIsHiding = false;
+                }
+
+            }
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+        if (!show) newCardIsHiding = true;
+        newCardContainer.startAnimation(fadeAnimation);
+
     }
 
     @Override
@@ -131,7 +200,6 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
 
         private final FragmentManager mFragmentManager;
-        private HashMap<CardPECS, CardsPage> cardPages = new HashMap<CardPECS, CardsPage>();
 
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
