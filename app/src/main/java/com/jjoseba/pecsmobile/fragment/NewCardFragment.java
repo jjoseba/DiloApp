@@ -23,8 +23,6 @@ import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.SaturationBar;
 import com.larswerkman.holocolorpicker.ValueBar;
 
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
-
 public class NewCardFragment extends Fragment {
 
     private static float EXTRA_TRANSLATION = 300f;
@@ -73,7 +71,7 @@ public class NewCardFragment extends Fragment {
                 int selectedColor = picker.getColor();
                 picker.setOldCenterColor(selectedColor);
                 hideColorPicker();
-                changeColor(selectedColor);
+                changeColor(selectedColor, true);
             }
         });
 
@@ -89,13 +87,11 @@ public class NewCardFragment extends Fragment {
     }
 
     public void showColorPicker(){
-        Log.d("MAIN", "showPicker ");
         toggleColorPicker(true);
         disableOkButton = true;
     }
 
     public void hideColorPicker(){
-        Log.d("MAIN", "hidePicker ");
         toggleColorPicker(false);
         disableOkButton = false;
     }
@@ -104,18 +100,25 @@ public class NewCardFragment extends Fragment {
         return colorPickerContainer.getVisibility() == View.VISIBLE;
     }
 
-    protected void changeColor(int colorTo){
+    protected void changeColor(int colorTo, boolean animate){
         int colorFrom = previousColor;
-        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        if (animate){
+            ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-                cardFrame.setBackgroundColor((Integer)animator.getAnimatedValue());
-                colorBucket.setBackgroundColor((Integer)animator.getAnimatedValue());
-            }
-        });
-        colorAnimation.setDuration(ANIM_DURATION).start();
+                @Override
+                public void onAnimationUpdate(ValueAnimator animator) {
+                    cardFrame.setBackgroundColor((Integer)animator.getAnimatedValue());
+                    colorBucket.setBackgroundColor((Integer)animator.getAnimatedValue());
+                }
+            });
+            colorAnimation.setDuration(ANIM_DURATION).start();
+        }
+        else{
+            cardFrame.setBackgroundColor(colorTo);
+            colorBucket.setBackgroundColor(colorTo);
+        }
+
 
         previousColor = colorTo;
     }
@@ -140,7 +143,7 @@ public class NewCardFragment extends Fragment {
     }
 
     public void resetForm(CardPECS clicked) {
-        changeColor(clicked.getCardColor());
-
+        changeColor(clicked.getCardColor(), false);
+        picker.setColor(clicked.getCardColor());
     }
 }

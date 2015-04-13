@@ -1,5 +1,6 @@
 package com.jjoseba.pecsmobile.activity;
 
+import com.jjoseba.pecsmobile.adapter.SelectedCardsAdapter;
 import com.jjoseba.pecsmobile.fragment.CardsPage;
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.fragment.NewCardFragment;
@@ -20,6 +21,9 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageButton;
+
+import org.lucasr.twowayview.TwoWayView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,6 +45,9 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
     private boolean newCardIsHiding = false;
 
     protected ArrayList<CardPECS> navigationCards = new ArrayList<CardPECS>();
+    protected ArrayList<CardPECS> selectedCards = new ArrayList<CardPECS>();
+    private TwoWayView selectedCardsList;
+    private SelectedCardsAdapter selectedCardsAdapter;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -68,6 +75,21 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
 
         newCardContainer = findViewById(R.id.newCardContainer);
         newCardFragment = (NewCardFragment) getSupportFragmentManager().findFragmentById(R.id.new_card_fragment);
+
+        selectedCardsAdapter = new SelectedCardsAdapter(this, selectedCards);
+        selectedCardsList = (TwoWayView) findViewById(R.id.selected_cards_list);
+        selectedCardsList.setAdapter(selectedCardsAdapter);
+
+        ImageButton removeCardBtn = (ImageButton) findViewById(R.id.removeLastCard);
+        removeCardBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (selectedCards.size() > 0){
+                    selectedCards.remove(selectedCards.size()-1);
+                    selectedCardsAdapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 
     @Override
@@ -134,18 +156,18 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
                 mPager.setPagingEnabled(true);
             }
             else{
-
+                selectedCards.add(clicked);
+                selectedCardsAdapter.notifyDataSetChanged();
             }
 
         }
     }
 
     private void animateCardContainer(final boolean show) {
-        Log.d("MAIN", "showContainer " + show);
         newCardContainer.setVisibility(View.VISIBLE);
         Animation fadeAnimation = new AlphaAnimation(show?0:1, show?1:0);
         fadeAnimation.setInterpolator(new DecelerateInterpolator()); //add this
-        fadeAnimation.setDuration(700);
+        fadeAnimation.setDuration(600);
         fadeAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {

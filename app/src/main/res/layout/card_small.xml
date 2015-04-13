@@ -10,7 +10,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:id="@+id/card_frame"
-    android:padding="8dp"
+    android:padding="3dp"
     android:orientation="vertical"
     android:background="@color/green">
 
@@ -42,12 +42,4 @@
 
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/addButton"
-        android:background="@color/black_overlay"
-        android:src="@drawable/newcard"
-        android:scaleType="fitCenter"
-        android:visibility="gone" />
 </FrameLayout>
