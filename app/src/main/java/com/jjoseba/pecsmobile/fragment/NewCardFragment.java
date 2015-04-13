@@ -16,12 +16,16 @@ import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Switch;
+import android.widget.TextView;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.model.CardPECS;
 import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.SaturationBar;
 import com.larswerkman.holocolorpicker.ValueBar;
+
+import org.w3c.dom.Text;
 
 public class NewCardFragment extends Fragment {
 
@@ -34,6 +38,9 @@ public class NewCardFragment extends Fragment {
     private View cardFrame;
     private View colorBucket;
     private int previousColor = CardPECS.DEFAULT_COLOR;
+
+    private TextView cardTitleTextView;
+    private Switch switchCategory;
 
     private boolean disableOkButton = false;
 
@@ -50,6 +57,8 @@ public class NewCardFragment extends Fragment {
 
         cardFrame = view.findViewById(R.id.card_frame);
         colorBucket = view.findViewById(R.id.colorBucket);
+        cardTitleTextView = (TextView) view.findViewById(R.id.et_title);
+        switchCategory = (Switch) view.findViewById(R.id.sw_category);
 
         colorPickerContainer = view.findViewById(R.id.pickerContainer);
         colorPickerContainer.setOnTouchListener(new View.OnTouchListener() {
@@ -145,5 +154,7 @@ public class NewCardFragment extends Fragment {
     public void resetForm(CardPECS clicked) {
         changeColor(clicked.getCardColor(), false);
         picker.setColor(clicked.getCardColor());
+        cardTitleTextView.setText("");
+        switchCategory.setChecked(false);
     }
 }
