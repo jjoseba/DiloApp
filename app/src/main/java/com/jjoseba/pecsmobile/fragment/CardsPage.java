@@ -30,6 +30,7 @@ public class CardsPage extends Fragment {
 
     private CardPECS parentCategory;
     private ArrayList<CardPECS> pecs = new ArrayList<CardPECS>();
+    private CardGridAdapter cardsAdapter;
     private GridItemClickedListener clickListener;
 
 
@@ -118,8 +119,8 @@ public class CardsPage extends Fragment {
         rootView.setBackgroundColor(parentCategory.getCardColor());
 
         GridView gridView = (GridView) rootView.findViewById(R.id.cards_gridview);
-
-        gridView.setAdapter(new CardGridAdapter(this.getActivity(), R.layout.card_gridview, pecs));
+        cardsAdapter = new CardGridAdapter(this.getActivity(), R.layout.card_gridview, pecs);
+        gridView.setAdapter(cardsAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Log.d("Grid-clicked", "pos:" + position);
@@ -139,4 +140,8 @@ public class CardsPage extends Fragment {
     }
 
 
+    public void addCard(CardPECS card) {
+        pecs.add(pecs.size()-1, card);
+        cardsAdapter.notifyDataSetChanged();
+    }
 }

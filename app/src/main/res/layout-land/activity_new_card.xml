@@ -13,7 +13,7 @@
         android:background="@color/secondary_bar"
         android:weightSum="2"
         android:padding="3dp"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <Button
             android:layout_width="wrap_content"
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@android:string/ok"
-            android:id="@+id/button2"
+            android:id="@+id/saveButton"
             android:drawableLeft="@drawable/ic_action_done"
             android:layout_weight="1"
             android:background="@drawable/bar_button"
@@ -47,7 +47,7 @@
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:textSize="30sp"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
     </LinearLayout>
 

@@ -17,6 +17,9 @@ public class CardPECS implements Serializable{
     private boolean isCategory;
     private String cardColor;
 
+    //only for UI purposes
+    public boolean animateOnAppear;
+
     public String getLabel() {
         return label;
     }
@@ -54,4 +57,5 @@ public class CardPECS implements Serializable{
     public void setCardColor(String cardColor) { this.cardColor = cardColor; }
 
     public int getCardColor(){ return ( cardColor!=null? Color.parseColor(cardColor) : DEFAULT_COLOR); }
+
 }

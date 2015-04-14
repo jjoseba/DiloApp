@@ -4,6 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,7 +41,7 @@ public class CardGridAdapter extends ArrayAdapter<CardPECS> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         CardViewHolder holder;
-        CardPECS card = cards.get(position);
+        final CardPECS card = cards.get(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(_ctx).inflate(R.layout.card_gridview, null);
@@ -64,6 +67,25 @@ public class CardGridAdapter extends ArrayAdapter<CardPECS> {
             holder.image.setImageResource(R.drawable.ic_launcher);
             holder.cardFrame.setVisibility(View.VISIBLE);
             holder.addButton.setVisibility(View.GONE);
+            if (card.animateOnAppear){
+                Animation anim = AnimationUtils.loadAnimation(_ctx, R.anim.card_appear);
+                anim.setDuration(750);
+                anim.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        card.animateOnAppear = false;
+                    }
+                });
+                convertView.startAnimation(anim);
+            }
         }
         return convertView;
 

@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.model.CardPECS;
+import com.jjoseba.pecsmobile.ui.NewCardListener;
 import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.SaturationBar;
 import com.larswerkman.holocolorpicker.ValueBar;
@@ -41,8 +42,10 @@ public class NewCardFragment extends Fragment {
 
     private TextView cardTitleTextView;
     private Switch switchCategory;
+    private Button saveButton;
 
     private boolean disableOkButton = false;
+    private NewCardListener listener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,6 +62,18 @@ public class NewCardFragment extends Fragment {
         colorBucket = view.findViewById(R.id.colorBucket);
         cardTitleTextView = (TextView) view.findViewById(R.id.et_title);
         switchCategory = (Switch) view.findViewById(R.id.sw_category);
+        saveButton = (Button) view.findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CardPECS newCard = new CardPECS();
+                newCard.setCardColor(String.format("#%06X", (0xFFFFFF & previousColor)));
+                newCard.animateOnAppear = true;
+                newCard.setLabel((String) cardTitleTextView.getText());
+                newCard.setAsCategory(switchCategory.isChecked());
+                if (listener != null){ listener.onNewCard(newCard); }
+            }
+        });
 
         colorPickerContainer = view.findViewById(R.id.pickerContainer);
         colorPickerContainer.setOnTouchListener(new View.OnTouchListener() {
@@ -107,6 +122,10 @@ public class NewCardFragment extends Fragment {
 
     public boolean isColorPickerVisible(){
         return colorPickerContainer.getVisibility() == View.VISIBLE;
+    }
+
+    public void setNewCardListener(NewCardListener newCardListener){
+        listener = newCardListener;
     }
 
     protected void changeColor(int colorTo, boolean animate){

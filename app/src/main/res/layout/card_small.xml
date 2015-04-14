@@ -10,7 +10,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:id="@+id/card_frame"
-    android:padding="3dp"
+    android:padding="2dp"
     android:orientation="vertical"
     android:background="@color/green">
 

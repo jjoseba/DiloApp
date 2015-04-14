@@ -7,6 +7,7 @@ import com.jjoseba.pecsmobile.fragment.NewCardFragment;
 import com.jjoseba.pecsmobile.model.CardPECS;
 import com.jjoseba.pecsmobile.ui.EnableableViewPager;
 import com.jjoseba.pecsmobile.ui.GridItemClickedListener;
+import com.jjoseba.pecsmobile.ui.NewCardListener;
 import com.jjoseba.pecsmobile.ui.ZoomOutPageTransformer;
 
 import android.content.Context;
@@ -30,7 +31,7 @@ import java.util.HashMap;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class CardsActivity extends FragmentActivity implements GridItemClickedListener, ViewPager.OnPageChangeListener {
+public class CardsActivity extends FragmentActivity implements GridItemClickedListener, NewCardListener, ViewPager.OnPageChangeListener {
 
     private static final boolean FADE_IN = true;
     private static final boolean FADE_OUT = false;
@@ -75,6 +76,7 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
 
         newCardContainer = findViewById(R.id.newCardContainer);
         newCardFragment = (NewCardFragment) getSupportFragmentManager().findFragmentById(R.id.new_card_fragment);
+        newCardFragment.setNewCardListener(this);
 
         selectedCardsAdapter = new SelectedCardsAdapter(this, selectedCards);
         selectedCardsList = (TwoWayView) findViewById(R.id.selected_cards_list);
@@ -216,6 +218,13 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
     @Override
     public void onPageScrollStateChanged(int i) {
 
+    }
+
+    @Override
+    public void onNewCard(CardPECS card) {
+        animateCardContainer(FADE_OUT);
+        CardsPage currentPage = cardPages.get(navigationCards.get(mLastPage));
+        currentPage.addCard(card);
     }
 
 
