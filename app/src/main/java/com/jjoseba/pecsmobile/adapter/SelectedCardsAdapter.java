@@ -56,7 +56,6 @@ public class SelectedCardsAdapter  extends BaseAdapter {
 
             // Set up the ViewHolder
             holder = new CardViewHolder();
-            holder.label = (TextView) convertView.findViewById(R.id.card_label);
             holder.image = (ImageView) convertView.findViewById(R.id.card_image);
             holder.cardFrame = convertView.findViewById(R.id.card_frame);
 
@@ -69,7 +68,6 @@ public class SelectedCardsAdapter  extends BaseAdapter {
         }
         else{
             holder.cardFrame.setBackgroundColor(card.getCardColor());
-            holder.label.setText(card.getLabel());
             holder.image.setImageResource(R.drawable.ic_launcher);
             holder.cardFrame.setVisibility(View.VISIBLE);
         }

@@ -11,6 +11,7 @@ import com.jjoseba.pecsmobile.ui.NewCardListener;
 import com.jjoseba.pecsmobile.ui.ZoomOutPageTransformer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -22,6 +23,7 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 
 import org.lucasr.twowayview.TwoWayView;
@@ -81,6 +83,14 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
         selectedCardsAdapter = new SelectedCardsAdapter(this, selectedCards);
         selectedCardsList = (TwoWayView) findViewById(R.id.selected_cards_list);
         selectedCardsList.setAdapter(selectedCardsAdapter);
+        selectedCardsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(CardsActivity.this, ShowCardsActivity.class);
+                i.putExtra("result", selectedCards);
+                startActivity(i);
+            }
+        });
 
         ImageButton removeCardBtn = (ImageButton) findViewById(R.id.removeLastCard);
         removeCardBtn.setOnClickListener(new View.OnClickListener() {
