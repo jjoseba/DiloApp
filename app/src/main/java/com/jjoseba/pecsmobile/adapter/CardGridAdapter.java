@@ -24,9 +24,11 @@ public class CardGridAdapter extends ArrayAdapter<CardPECS> {
 
     private List<CardPECS> cards;
     private Context _ctx;
+    private int layout;
 
     public CardGridAdapter(Context context, int layout, List<CardPECS> cards) {
         super(context, layout, cards);
+        this.layout = layout;
         this.cards = cards;
         this._ctx = context;
     }
@@ -44,7 +46,7 @@ public class CardGridAdapter extends ArrayAdapter<CardPECS> {
         final CardPECS card = cards.get(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(_ctx).inflate(R.layout.card_gridview, null);
+            convertView = LayoutInflater.from(_ctx).inflate(layout, null);
 
             // Set up the ViewHolder
             holder = new CardViewHolder();

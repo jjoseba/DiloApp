@@ -69,7 +69,7 @@ public class NewCardFragment extends Fragment {
                 CardPECS newCard = new CardPECS();
                 newCard.setCardColor(String.format("#%06X", (0xFFFFFF & previousColor)));
                 newCard.animateOnAppear = true;
-                newCard.setLabel((String) cardTitleTextView.getText());
+                newCard.setLabel(cardTitleTextView.getText().toString());
                 newCard.setAsCategory(switchCategory.isChecked());
                 if (listener != null){ listener.onNewCard(newCard); }
             }

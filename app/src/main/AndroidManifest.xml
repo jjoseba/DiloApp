@@ -3,28 +3,37 @@
     package="com.jjoseba.pecsmobile" >
 
     <application
-        android:name="com.jjoseba.pecsmobile.app.PECSMobile"
+        android:name=".app.PECSMobile"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.jjoseba.pecsmobile.activity.CardsActivity"
+            android:name=".activity.CardsActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.jjoseba.pecsmobile.activity.NewCardActivity"
+            android:name=".activity.NewCardActivity"
             android:label="@string/new_card_title"
-            android:parentActivityName="com.jjoseba.pecsmobile.activity.CardsActivity" >
+            android:parentActivityName=".activity.CardsActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.jjoseba.pecsmobile.activity.CardsActivity" />
-
+        </activity>
+        <activity
+            android:name=".activity.ShowCardsActivity"
+            android:label="@string/title_activity_show_cards"
+            android:parentActivityName=".activity.CardsActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jjoseba.pecsmobile.activity.CardsActivity" />
         </activity>
     </application>
 
