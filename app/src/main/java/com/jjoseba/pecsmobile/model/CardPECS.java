@@ -13,7 +13,7 @@ public class CardPECS implements Serializable{
 
     private String label;
     private String imagePath;
-    private String name;
+    private int cardId;
     private boolean isCategory;
     private String cardColor;
 
@@ -36,12 +36,12 @@ public class CardPECS implements Serializable{
         this.imagePath = imagePath;
     }
 
-    public String getName() {
-        return name;
+    public int getCardId() {
+        return cardId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCardId(int cardId) {
+        this.cardId = cardId;
     }
 
     public boolean isCategory() {

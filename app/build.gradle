@@ -26,4 +26,5 @@ dependencies {
     compile 'uk.co.chrisjenx:calligraphy:2.0.0'
     compile 'com.larswerkman:HoloColorPicker:1.4'
     compile 'org.lucasr.twowayview:twowayview:0.1.4'
+    compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
 }
