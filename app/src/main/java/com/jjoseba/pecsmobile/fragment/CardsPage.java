@@ -2,7 +2,6 @@ package com.jjoseba.pecsmobile.fragment;
 
 
 import android.app.Activity;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -11,19 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.TextView;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.adapter.CardGridAdapter;
+import com.jjoseba.pecsmobile.app.DBHelper;
 import com.jjoseba.pecsmobile.model.CardPECS;
 import com.jjoseba.pecsmobile.ui.ButtonCard;
 import com.jjoseba.pecsmobile.ui.GridItemClickedListener;
 
 import java.util.ArrayList;
 
-/**
- * Created by Joseba on 26/12/2014.
- */
 public class CardsPage extends Fragment {
 
     public static String PARENT_CATEGORY = "parentCategory";
@@ -40,7 +36,6 @@ public class CardsPage extends Fragment {
         args.putSerializable(PARENT_CATEGORY, parentCategory);
         f.setArguments(args);
 
-        Log.d("parent", "" + parentCategory.getLabel());
         return f;
 
     }
@@ -52,7 +47,15 @@ public class CardsPage extends Fragment {
         Bundle args = getArguments();
         this.parentCategory = (CardPECS) args.get(PARENT_CATEGORY);
 
-        CardPECS pec1 = new CardPECS();
+        DBHelper db = new DBHelper(this.getActivity());
+        pecs = db.getCards(parentCategory == null? 0 : parentCategory.getCardId());
+        for (CardPECS card : pecs){
+            if (card.getHexCardColor() == null){
+                card.setCardColor(parentCategory.getHexCardColor());
+            }
+        }
+
+        /*CardPECS pec1 = new CardPECS();
         pec1.setLabel("Prueba1");
         pec1.setCardColor("#00BCD4");
         pecs.add(pec1);
@@ -91,7 +94,7 @@ public class CardsPage extends Fragment {
         pecs.add(pec1);
         pecs.add(pec5);
         pecs.add(pec5);
-        pecs.add(pec5);
+        pecs.add(pec5);*/
         pecs.add(new ButtonCard());
     }
 
