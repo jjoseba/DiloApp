@@ -8,43 +8,42 @@
     android:baselineAligned="false"
     android:background="@color/background">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/secondary_bar"
-        android:weightSum="2"
-        android:visibility="visible">
+        android:background="@color/secondary_bar">
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@android:string/cancel"
+            android:text="@string/new_card_title"
             android:id="@+id/button"
-            android:drawableLeft="@drawable/ic_action_cancel"
+            android:drawableLeft="@drawable/ic_action_back"
             android:layout_weight="1"
-            android:background="@drawable/bar_button"
+            android:background="@color/transparent"
             android:textColor="@color/white"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:textSize="30sp"
-            android:visibility="invisible" />
+            android:visibility="visible"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:elegantTextHeight="false" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@android:string/ok"
             android:id="@+id/saveButton"
             android:drawableLeft="@drawable/ic_action_done"
             android:layout_weight="1"
-            android:background="@drawable/bar_button"
+            android:background="@color/transparent"
             android:textColor="@color/white"
             android:paddingLeft="20dp"
-            android:paddingRight="20dp"
             android:textSize="30sp"
-            android:visibility="visible" />
-
-    </LinearLayout>
+            android:visibility="visible"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
 
     <FrameLayout
         android:layout_width="fill_parent"

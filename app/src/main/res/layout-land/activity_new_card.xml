@@ -4,7 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     tools:context="com.jjoseba.pecsmobile.activity.NewCardActivity"
-    android:baselineAligned="false">
+    android:baselineAligned="false"
+    android:background="@color/background">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -33,12 +34,11 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="@color/whitetransp"
-            android:visibility="gone"></View>
+            android:visibility="visible"></View>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@android:string/ok"
             android:id="@+id/saveButton"
             android:drawableLeft="@drawable/ic_action_done"
             android:layout_weight="1"

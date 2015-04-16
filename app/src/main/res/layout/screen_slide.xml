@@ -7,7 +7,7 @@
 
     <GridView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:id="@+id/cards_gridview"
             android:numColumns="@integer/grid_columns"
             android:horizontalSpacing="10dp"
