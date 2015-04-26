@@ -1,6 +1,7 @@
 package com.jjoseba.pecsmobile.activity;
 
 import com.jjoseba.pecsmobile.adapter.SelectedCardsAdapter;
+import com.jjoseba.pecsmobile.app.DBHelper;
 import com.jjoseba.pecsmobile.fragment.CardsPage;
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.fragment.NewCardFragment;
@@ -217,34 +218,30 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
                 mPager.setPagingEnabled(false);
             }
         }
-        Log.d("pager", "profund" + navigationCards.size());
         mLastPage = currentPage;
     }
 
+    @Override
+    public void onPageScrolled(int i, float v, int i2) {  }
 
     @Override
-    public void onPageScrolled(int i, float v, int i2) {
-
-    }
-
-
-    @Override
-    public void onPageScrollStateChanged(int i) {
-
-    }
+    public void onPageScrollStateChanged(int i) {  }
 
     @Override
     public void onNewCard(CardPECS card) {
         animateCardContainer(FADE_OUT);
-        CardsPage currentPage = cardPages.get(navigationCards.get(mLastPage));
+        CardPECS currentCard = navigationCards.get(mLastPage);
+        CardsPage currentPage = cardPages.get(currentCard);
         currentPage.addCard(card);
+
+        DBHelper db = new DBHelper(this);
+        db.addCard(currentCard.getCardId(), card);
     }
 
     @Override
     public void onCancel() {
         animateCardContainer(FADE_OUT);
     }
-
 
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
 

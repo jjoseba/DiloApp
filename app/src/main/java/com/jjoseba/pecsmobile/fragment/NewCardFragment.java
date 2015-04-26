@@ -71,6 +71,7 @@ public class NewCardFragment extends Fragment {
                         newCard.animateOnAppear = true;
                         newCard.setLabel(cardTitleTextView.getText().toString());
                         newCard.setAsCategory(switchCategory.isChecked());
+
                         if (listener != null) {
                             listener.onNewCard(newCard);
                         }
