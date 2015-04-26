@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <FrameLayout
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/gridcard"
+        android:clickable="false"
+        android:layout_gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:layout_centerHorizontal="true">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/card_frame"
+            android:padding="2dp"
+            android:orientation="vertical"
+            android:background="@color/green">
+
+            <com.jjoseba.pecsmobile.ui.SquareImageView
+                android:id="@+id/card_image"
+
+                android:src="@drawable/ic_launcher"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white">
+            </com.jjoseba.pecsmobile.ui.SquareImageView>
+
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/cardLabel"
+        android:textColor="@color/white"
+        android:gravity="center|fill_horizontal"
+        android:layout_gravity="left"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="0dp"
+        android:layout_alignParentTop="true">
+
+        <at.markushi.ui.CircleButton
+            android:layout_width="110dip"
+            android:layout_height="110dip"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_action_cancel"
+            app:cb_color="#FF5252"
+            app:cb_pressedRingWidth="15dip"
+            android:layout_gravity="center" />
+
+        <at.markushi.ui.CircleButton
+            android:layout_width="110dip"
+            android:layout_height="110dip"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_action_edit"
+            app:cb_color="#2196F3"
+            app:cb_pressedRingWidth="15dip"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+</RelativeLayout>

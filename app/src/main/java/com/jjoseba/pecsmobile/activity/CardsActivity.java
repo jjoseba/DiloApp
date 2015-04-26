@@ -11,8 +11,10 @@ import com.jjoseba.pecsmobile.ui.GridItemClickedListener;
 import com.jjoseba.pecsmobile.ui.NewCardListener;
 import com.jjoseba.pecsmobile.ui.ZoomOutPageTransformer;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -21,11 +23,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import org.lucasr.twowayview.TwoWayView;
 
@@ -173,6 +177,18 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
             }
 
         }
+    }
+
+    @Override
+    public void onLongClick(CardPECS clicked) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.requestWindowFeature(Window.FEATURE_SWIPE_TO_DISMISS);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.card_dialog);
+        dialog.findViewById(R.id.card_frame).setBackgroundColor(clicked.getCardColor());
+        ((TextView) dialog.findViewById(R.id.cardLabel)).setText(clicked.getLabel());
+        dialog.show();
     }
 
     private void animateCardContainer(final boolean show) {

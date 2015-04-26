@@ -7,4 +7,5 @@ import com.jjoseba.pecsmobile.model.CardPECS;
  */
 public interface GridItemClickedListener {
     public void onClick(CardPECS clicked, boolean addChildCard);
+    public void onLongClick(CardPECS clicked);
 }

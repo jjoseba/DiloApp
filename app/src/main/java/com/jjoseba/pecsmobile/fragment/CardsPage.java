@@ -126,17 +126,27 @@ public class CardsPage extends Fragment {
         gridView.setAdapter(cardsAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Log.d("Grid-clicked", "pos:" + position);
-
-                if (clickListener != null){
+                if (clickListener != null) {
                     CardPECS clicked = pecs.get(position);
-                    if (clicked instanceof ButtonCard){
+                    if (clicked instanceof ButtonCard) {
                         clickListener.onClick(parentCategory, true);
-                    }
-                    else{
+                    } else {
                         clickListener.onClick(clicked, false);
                     }
                 }
+            }
+        });
+
+        gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (clickListener != null) {
+                    CardPECS clicked = pecs.get(position);
+                    if (!(clicked instanceof ButtonCard)) {
+                        clickListener.onLongClick(clicked);
+                    }
+                }
+                return true;
             }
         });
         return rootView;

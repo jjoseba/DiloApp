@@ -28,4 +28,5 @@ dependencies {
     compile 'org.lucasr.twowayview:twowayview:0.1.4'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
+    compile 'com.github.markushi:circlebutton:1.1'
 }
