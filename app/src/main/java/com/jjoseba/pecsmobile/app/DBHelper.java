@@ -63,4 +63,11 @@ public class DBHelper extends SQLiteAssetHelper {
             if (id > 0) newCard.setCardId((int)id);
             return (id > 0);
         }
+
+        public boolean deleteCard(CardPECS cardToDelete){
+            SQLiteDatabase db = getReadableDatabase();
+
+            int result = db.delete(TABLE_CARDS, COLUMN_ID + " == " + cardToDelete.getCardId(), null);
+            return (result > 0);
+        }
 }
