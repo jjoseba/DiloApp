@@ -66,12 +66,18 @@ public class NewCardFragment extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CardPECS newCard = new CardPECS();
-                newCard.setCardColor(String.format("#%06X", (0xFFFFFF & previousColor)));
-                newCard.animateOnAppear = true;
-                newCard.setLabel(cardTitleTextView.getText().toString());
-                newCard.setAsCategory(switchCategory.isChecked());
-                if (listener != null){ listener.onNewCard(newCard); }
+                if (disableOkButton){
+                    //the colorPicker is visible, so we select the current color
+                    selectColor();
+                }
+                else{
+                    CardPECS newCard = new CardPECS();
+                    newCard.setCardColor(String.format("#%06X", (0xFFFFFF & previousColor)));
+                    newCard.animateOnAppear = true;
+                    newCard.setLabel(cardTitleTextView.getText().toString());
+                    newCard.setAsCategory(switchCategory.isChecked());
+                    if (listener != null){ listener.onNewCard(newCard); }
+                }
             }
         });
 
@@ -99,12 +105,7 @@ public class NewCardFragment extends Fragment {
         Button selectColorBtn = (Button) colorPickerContainer.findViewById(R.id.select_color_btn);
         selectColorBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                int selectedColor = picker.getColor();
-                picker.setOldCenterColor(selectedColor);
-                hideColorPicker();
-                changeColor(selectedColor, true);
-            }
+            public void onClick(View v) { selectColor(); }
         });
 
         ImageButton pickColor = (ImageButton) view.findViewById(R.id.pickColorButton);
@@ -116,6 +117,13 @@ public class NewCardFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void selectColor(){
+        int selectedColor = picker.getColor();
+        picker.setOldCenterColor(selectedColor);
+        hideColorPicker();
+        changeColor(selectedColor, true);
     }
 
     public void showColorPicker(){
