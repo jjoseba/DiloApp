@@ -47,13 +47,7 @@ public class CardsPage extends Fragment {
         Bundle args = getArguments();
         this.parentCategory = (CardPECS) args.get(PARENT_CATEGORY);
 
-        DBHelper db = new DBHelper(this.getActivity());
-        pecs = db.getCards(parentCategory == null? 0 : parentCategory.getCardId());
-        for (CardPECS card : pecs){
-            if (card.getHexCardColor() == null){
-                card.setCardColor(parentCategory.getHexCardColor());
-            }
-        }
+        pecs.addAll(getCards());
 
         /*CardPECS pec1 = new CardPECS();
         pec1.setLabel("Prueba1");
@@ -154,7 +148,25 @@ public class CardsPage extends Fragment {
 
 
     public void addCard(CardPECS card) {
-        pecs.add(pecs.size()-1, card);
+        pecs.add(pecs.size() - 1, card);
+        cardsAdapter.notifyDataSetChanged();
+    }
+
+    public ArrayList<CardPECS> getCards(){
+        DBHelper db = new DBHelper(this.getActivity());
+        ArrayList<CardPECS> pecsList = db.getCards(parentCategory == null? 0 : parentCategory.getCardId());
+        for (CardPECS card : pecs){
+            if (card.getHexCardColor() == null){
+                card.setCardColor(parentCategory.getHexCardColor());
+            }
+        }
+        return pecsList;
+    }
+
+    public void notifyDataSetChanged(){
+        pecs.clear();
+        pecs.addAll(getCards());
+        pecs.add(new ButtonCard());
         cardsAdapter.notifyDataSetChanged();
     }
 }

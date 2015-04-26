@@ -51,6 +51,7 @@ public class EditCardDialog extends Dialog{
             public void onClick(View v) {
                 DBHelper db = new DBHelper(ctx);
                 db.deleteCard(card);
+                cardChanged = true;
                 EditCardDialog.this.dismiss();
             }
         });
@@ -64,7 +65,7 @@ public class EditCardDialog extends Dialog{
         super.show();
     }
 
-    public boolean isCardChanged(){
+    public boolean hasDataChanged(){
         return cardChanged;
     }
 }

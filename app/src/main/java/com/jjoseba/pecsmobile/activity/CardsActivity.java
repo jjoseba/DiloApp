@@ -184,12 +184,17 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
 
     @Override
     public void onLongClick(CardPECS cardPressed) {
-        EditCardDialog dialog = new EditCardDialog(this, cardPressed);
+        final EditCardDialog dialog = new EditCardDialog(this, cardPressed);
         dialog.show();
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface d) {
 
+                if (dialog.hasDataChanged()){
+                    CardPECS currentCard = navigationCards.get(mLastPage);
+                    CardsPage currentPage = cardPages.get(currentCard);
+                    currentPage.notifyDataSetChanged();
+                }
             }
         });
     }
