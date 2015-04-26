@@ -113,9 +113,8 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
             else if (!newCardIsHiding){
                 animateCardContainer(FADE_OUT);
             }
-            return;
         }
-        if (mPager.getCurrentItem() == 0) {
+        else if (mPager.getCurrentItem() == 0) {
             // If the user is currently looking at the first step, allow the system to handle the
             // Back button. This calls finish() on this activity and pops the back stack.
             super.onBackPressed();
@@ -176,6 +175,10 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
     }
 
     private void animateCardContainer(final boolean show) {
+
+        //if the card is already hiding, don't launch the animation again
+        if (!show && newCardIsHiding) return;
+
         newCardContainer.setVisibility(View.VISIBLE);
         Animation fadeAnimation = new AlphaAnimation(show?0:1, show?1:0);
         fadeAnimation.setInterpolator(new DecelerateInterpolator()); //add this
@@ -235,6 +238,11 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
         animateCardContainer(FADE_OUT);
         CardsPage currentPage = cardPages.get(navigationCards.get(mLastPage));
         currentPage.addCard(card);
+    }
+
+    @Override
+    public void onCancel() {
+        animateCardContainer(FADE_OUT);
     }
 
 

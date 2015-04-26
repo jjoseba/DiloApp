@@ -75,6 +75,14 @@ public class NewCardFragment extends Fragment {
             }
         });
 
+        Button cancelButton = (Button) view.findViewById(R.id.cancelButton);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null){ listener.onCancel(); }
+            }
+        });
+
         colorPickerContainer = view.findViewById(R.id.pickerContainer);
         colorPickerContainer.setOnTouchListener(new View.OnTouchListener() {
             //Cancelamos la propagación del pulsado cuando colorPickerContainer es visible
