@@ -2,14 +2,12 @@ package com.jjoseba.pecsmobile.fragment;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
-import android.app.ActionBar;
 import android.support.v4.app.Fragment;
-import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
+import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +24,6 @@ import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.SaturationBar;
 import com.larswerkman.holocolorpicker.ValueBar;
 
-import org.w3c.dom.Text;
-
 public class NewCardFragment extends Fragment {
 
     private static float EXTRA_TRANSLATION = 300f;
@@ -42,7 +38,6 @@ public class NewCardFragment extends Fragment {
 
     private TextView cardTitleTextView;
     private Switch switchCategory;
-    private Button saveButton;
 
     private boolean disableOkButton = false;
     private NewCardListener listener;
@@ -62,21 +57,25 @@ public class NewCardFragment extends Fragment {
         colorBucket = view.findViewById(R.id.colorBucket);
         cardTitleTextView = (TextView) view.findViewById(R.id.et_title);
         switchCategory = (Switch) view.findViewById(R.id.sw_category);
-        saveButton = (Button) view.findViewById(R.id.saveButton);
+        Button saveButton = (Button) view.findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (disableOkButton){
+                if (disableOkButton) {
                     //the colorPicker is visible, so we select the current color
                     selectColor();
-                }
-                else{
-                    CardPECS newCard = new CardPECS();
-                    newCard.setCardColor(String.format("#%06X", (0xFFFFFF & previousColor)));
-                    newCard.animateOnAppear = true;
-                    newCard.setLabel(cardTitleTextView.getText().toString());
-                    newCard.setAsCategory(switchCategory.isChecked());
-                    if (listener != null){ listener.onNewCard(newCard); }
+                } else {
+                    if (validateForm()) {
+                        CardPECS newCard = new CardPECS();
+                        newCard.setCardColor(String.format("#%06X", (0xFFFFFF & previousColor)));
+                        newCard.animateOnAppear = true;
+                        newCard.setLabel(cardTitleTextView.getText().toString());
+                        newCard.setAsCategory(switchCategory.isChecked());
+                        if (listener != null) {
+                            listener.onNewCard(newCard);
+                        }
+                    }
+
                 }
             }
         });
@@ -117,6 +116,22 @@ public class NewCardFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private boolean validateForm() {
+        String label = cardTitleTextView.getText().toString();
+        if (label.trim().length() == 0){
+            String errMessage = "Hay que introducir un texto a la tarjeta!";
+            RelativeSizeSpan scaleStyle = new RelativeSizeSpan (1.8f);
+            SpannableStringBuilder ssbuilder = new SpannableStringBuilder(errMessage);
+            ssbuilder.setSpan(scaleStyle, 0, errMessage.length(), 0);
+
+            cardTitleTextView.requestFocus();
+            cardTitleTextView.setError(ssbuilder);
+            return false;
+        }
+        else return true;
+
     }
 
     private void selectColor(){
