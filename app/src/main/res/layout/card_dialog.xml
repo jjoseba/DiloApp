@@ -1,38 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:paddingBottom="30dp">
 
     <FrameLayout
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:background="@drawable/gridcard"
-        android:clickable="false"
-        android:layout_gravity="center"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp"
-        android:layout_centerHorizontal="true">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true">
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/card_frame"
-            android:padding="2dp"
-            android:orientation="vertical"
-            android:background="@color/green">
+        <FrameLayout
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:background="@drawable/gridcard"
+            android:clickable="false"
+            android:layout_gravity="center"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentStart="false"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="100dp">
 
-            <com.jjoseba.pecsmobile.ui.SquareImageView
-                android:id="@+id/card_image"
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/card_frame"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:background="@color/green">
 
-                android:src="@drawable/ic_launcher"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white">
-            </com.jjoseba.pecsmobile.ui.SquareImageView>
+                <com.jjoseba.pecsmobile.ui.SquareImageView
+                    android:id="@+id/card_image"
+
+                    android:src="@drawable/ic_launcher"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white">
+                </com.jjoseba.pecsmobile.ui.SquareImageView>
 
 
-        </LinearLayout>
+            </LinearLayout>
 
+        </FrameLayout>
     </FrameLayout>
 
 
@@ -47,17 +55,34 @@
         android:layout_gravity="left"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:visibility="gone" />
+
+    <Button
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:text="@string/action_cancel"
+        android:id="@+id/cancelButton"
+        android:layout_gravity="bottom"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentRight="false"
+        android:layout_centerHorizontal="true"
+        android:textColor="@drawable/dialog_text"
+        android:background="@drawable/dialog_button"
+        android:padding="15dp"
+        android:textSize="25dp" />
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center_horizontal"
-        android:layout_alignParentLeft="true"
         android:layout_marginLeft="0dp"
-        android:layout_alignParentTop="true">
+        android:layout_centerInParent="true"
+        android:id="@+id/dialog_buttons">
 
         <at.markushi.ui.CircleButton
             android:layout_width="110dip"

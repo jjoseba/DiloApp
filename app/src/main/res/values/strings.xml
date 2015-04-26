@@ -15,5 +15,6 @@
     <string name="action_accept">Aceptar</string>
     <string name="change_color">Elegir color</string>
     <string name="title_activity_show_cards">ShowCardsActivity</string>
+    <string name="action_cancel">CANCELAR</string>
 
 </resources>

@@ -28,6 +28,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -188,6 +189,14 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
         dialog.setContentView(R.layout.card_dialog);
         dialog.findViewById(R.id.card_frame).setBackgroundColor(clicked.getCardColor());
         ((TextView) dialog.findViewById(R.id.cardLabel)).setText(clicked.getLabel());
+        Button dialogButton = (Button) dialog.findViewById(R.id.cancelButton);
+        // if button is clicked, close the custom dialog
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
         dialog.show();
     }
 
@@ -210,7 +219,6 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
                     newCardContainer.setVisibility(View.GONE);
                     newCardIsHiding = false;
                 }
-
             }
             @Override
             public void onAnimationRepeat(Animation animation) {}
