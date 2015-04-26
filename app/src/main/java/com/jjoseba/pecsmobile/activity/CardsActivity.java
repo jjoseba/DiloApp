@@ -6,6 +6,7 @@ import com.jjoseba.pecsmobile.fragment.CardsPage;
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.fragment.NewCardFragment;
 import com.jjoseba.pecsmobile.model.CardPECS;
+import com.jjoseba.pecsmobile.ui.EditCardDialog;
 import com.jjoseba.pecsmobile.ui.EnableableViewPager;
 import com.jjoseba.pecsmobile.ui.GridItemClickedListener;
 import com.jjoseba.pecsmobile.ui.NewCardListener;
@@ -13,6 +14,7 @@ import com.jjoseba.pecsmobile.ui.ZoomOutPageTransformer;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -181,23 +183,15 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
     }
 
     @Override
-    public void onLongClick(CardPECS clicked) {
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.requestWindowFeature(Window.FEATURE_SWIPE_TO_DISMISS);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.card_dialog);
-        dialog.findViewById(R.id.card_frame).setBackgroundColor(clicked.getCardColor());
-        ((TextView) dialog.findViewById(R.id.cardLabel)).setText(clicked.getLabel());
-        Button dialogButton = (Button) dialog.findViewById(R.id.cancelButton);
-        // if button is clicked, close the custom dialog
-        dialogButton.setOnClickListener(new View.OnClickListener() {
+    public void onLongClick(CardPECS cardPressed) {
+        EditCardDialog dialog = new EditCardDialog(this, cardPressed);
+        dialog.show();
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
-            public void onClick(View v) {
-                dialog.dismiss();
+            public void onDismiss(DialogInterface d) {
+
             }
         });
-        dialog.show();
     }
 
     private void animateCardContainer(final boolean show) {

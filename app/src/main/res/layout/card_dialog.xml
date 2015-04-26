@@ -92,7 +92,8 @@
             android:src="@drawable/ic_action_cancel"
             app:cb_color="#FF5252"
             app:cb_pressedRingWidth="15dip"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:id="@+id/delete_button" />
 
         <at.markushi.ui.CircleButton
             android:layout_width="110dip"
@@ -102,7 +103,8 @@
             android:src="@drawable/ic_action_edit"
             app:cb_color="#2196F3"
             app:cb_pressedRingWidth="15dip"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:id="@+id/edit_button" />
     </LinearLayout>
 
 </RelativeLayout>
