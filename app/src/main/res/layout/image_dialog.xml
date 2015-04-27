@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingBottom="30dp">
+
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/cardLabel"
+        android:textColor="@color/white"
+        android:gravity="center|fill_horizontal"
+        android:layout_gravity="left"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone" />
+
+    <Button
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:text="@string/action_cancel"
+        android:id="@+id/cancelButton"
+        android:layout_gravity="bottom"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentRight="false"
+        android:layout_centerHorizontal="true"
+        android:textColor="@drawable/dialog_text"
+        android:background="@drawable/dialog_button"
+        android:padding="15dp"
+        android:textSize="25dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:layout_marginLeft="0dp"
+        android:layout_centerInParent="true"
+        android:id="@+id/dialog_buttons">
+
+        <at.markushi.ui.CircleButton
+            android:layout_width="110dip"
+            android:layout_height="110dip"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_action_picture"
+            app:cb_color="#4CAF50"
+            app:cb_pressedRingWidth="15dip"
+            android:layout_gravity="center"
+            android:id="@+id/gallery_button" />
+
+        <at.markushi.ui.CircleButton
+            android:layout_width="110dip"
+            android:layout_height="110dip"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_action_photo"
+            app:cb_color="#7B1FA2"
+            app:cb_pressedRingWidth="15dip"
+            android:layout_gravity="center"
+            android:id="@+id/edit_button" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -2,6 +2,7 @@ package com.jjoseba.pecsmobile.fragment;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.model.CardPECS;
+import com.jjoseba.pecsmobile.ui.ImageDialog;
 import com.jjoseba.pecsmobile.ui.NewCardListener;
 import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.SaturationBar;
@@ -29,6 +31,7 @@ public class NewCardFragment extends Fragment {
     private static float EXTRA_TRANSLATION = 300f;
     private static long ANIM_DURATION = 800;
     private static String PREVIOUS_COLOR = "previousColor";
+    public static final int REQUEST_CODE = 1;
 
     private ColorPicker picker;
     private View colorPickerContainer;
@@ -78,6 +81,14 @@ public class NewCardFragment extends Fragment {
                     }
 
                 }
+            }
+        });
+
+        View cardImage = view.findViewById(R.id.card_image);
+        cardImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ImageDialog(NewCardFragment.this.getActivity()).show();
             }
         });
 

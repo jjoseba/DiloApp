@@ -19,6 +19,6 @@
     <translate
         android:fromYDelta="-25"
         android:toYDelta="0"
-        android:duration="150"
-        android:startOffset="200"/>
+        android:duration="300"
+        android:startOffset="50"/>
 </set>
