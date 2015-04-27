@@ -2,7 +2,12 @@ package com.jjoseba.pecsmobile.fragment;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
@@ -15,6 +20,7 @@ import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -25,18 +31,21 @@ import com.jjoseba.pecsmobile.ui.NewCardListener;
 import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.SaturationBar;
 import com.larswerkman.holocolorpicker.ValueBar;
+import com.squareup.picasso.Picasso;
 
 public class NewCardFragment extends Fragment {
 
     private static float EXTRA_TRANSLATION = 300f;
     private static long ANIM_DURATION = 800;
     private static String PREVIOUS_COLOR = "previousColor";
-    public static final int REQUEST_CODE = 1;
+    public static final int REQUEST_IMAGE = 1;
+    public static final int REQUEST_CAMERA = 2;
 
     private ColorPicker picker;
     private View colorPickerContainer;
     private View cardFrame;
     private View colorBucket;
+    private ImageView cardImage;
     private int previousColor = CardPECS.DEFAULT_COLOR;
 
     private TextView cardTitleTextView;
@@ -84,11 +93,11 @@ public class NewCardFragment extends Fragment {
             }
         });
 
-        View cardImage = view.findViewById(R.id.card_image);
+        cardImage = (ImageView) view.findViewById(R.id.card_image);
         cardImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ImageDialog(NewCardFragment.this.getActivity()).show();
+                new ImageDialog(NewCardFragment.this).show();
             }
         });
 
@@ -213,10 +222,44 @@ public class NewCardFragment extends Fragment {
 
     }
 
+     @Override
+     public void onActivityResult(int requestCode, int resultCode,
+                                  Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+         if(resultCode == Activity.RESULT_OK){
+             switch(requestCode) {
+                 case REQUEST_IMAGE:
+                         Uri selectedImage = imageReturnedIntent.getData();
+                         String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                         Picasso.with(this.getActivity()).load(selectedImage).into(cardImage);
+
+                    /*
+                    Cursor cursor = getContentResolver().query(
+                            selectedImage, filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String filePath = cursor.getString(columnIndex);
+                    cursor.close();
+
+
+                    Bitmap yourSelectedImage = BitmapFactory.decodeFile(filePath);*/
+                     break;
+                 case REQUEST_CAMERA:
+                     Bundle extras = imageReturnedIntent.getExtras();
+                     Bitmap imageBitmap = (Bitmap) extras.get("data");
+                     cardImage.setImageBitmap(imageBitmap);
+
+             }
+         }
+
+    }
+
     public void resetForm(CardPECS clicked) {
         changeColor(clicked.getCardColor(), false);
         picker.setColor(clicked.getCardColor());
         cardTitleTextView.setText("");
         switchCategory.setChecked(false);
+        cardImage.setImageDrawable(null);
     }
 }

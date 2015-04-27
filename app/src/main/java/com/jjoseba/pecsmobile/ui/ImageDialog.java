@@ -2,6 +2,8 @@ package com.jjoseba.pecsmobile.ui;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -19,12 +21,12 @@ import com.jjoseba.pecsmobile.model.CardPECS;
 
 public class ImageDialog extends Dialog{
 
-    private Activity ctx;
+    private Fragment parentFragment;
     private boolean cardChanged = false;
 
-    public ImageDialog(Activity context){
-        super(context);
-        ctx = context;
+    public ImageDialog(Fragment f){
+        super(f.getActivity());
+        parentFragment = f;
     }
 
     @Override
@@ -52,13 +54,24 @@ public class ImageDialog extends Dialog{
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
-                ctx.startActivityForResult(intent, NewCardFragment.REQUEST_CODE);
+                parentFragment.startActivityForResult(intent, NewCardFragment.REQUEST_IMAGE);
                 ImageDialog.this.dismiss();
             }
         });
 
-        Animation appearButton1 = AnimationUtils.loadAnimation(ctx, R.anim.button_appear);
-        Animation appearButton2 = AnimationUtils.loadAnimation(ctx, R.anim.button_appear);
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(parentFragment.getActivity().getPackageManager()) != null) {
+                    parentFragment.startActivityForResult(takePictureIntent, NewCardFragment.REQUEST_CAMERA);
+                    ImageDialog.this.dismiss();
+                }
+            }
+        });
+
+        Animation appearButton1 = AnimationUtils.loadAnimation(parentFragment.getActivity(), R.anim.button_appear);
+        Animation appearButton2 = AnimationUtils.loadAnimation(parentFragment.getActivity(), R.anim.button_appear);
         appearButton2.setStartOffset(200);
         deleteBtn.startAnimation(appearButton1);
         editBtn.startAnimation(appearButton2);

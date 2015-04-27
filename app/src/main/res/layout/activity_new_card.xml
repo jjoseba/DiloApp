@@ -70,14 +70,21 @@
                     android:background="@color/default_card"
                     android:id="@+id/card_frame">
 
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/imageView2"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_action_new_picture"
+                        android:background="@color/gray"
+                        android:scaleType="center" />
+
                     <com.jjoseba.pecsmobile.ui.SquareImageView
                         android:id="@+id/card_image"
 
-                        android:src="@drawable/ic_action_new_picture"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/gray"
-                        android:scaleType="center">
+                        android:scaleType="fitXY">
                     </com.jjoseba.pecsmobile.ui.SquareImageView>
                 </FrameLayout>
             </FrameLayout>
