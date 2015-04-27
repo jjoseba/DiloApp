@@ -25,6 +25,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.jjoseba.pecsmobile.R;
+import com.jjoseba.pecsmobile.app.DBHelper;
 import com.jjoseba.pecsmobile.model.CardPECS;
 import com.jjoseba.pecsmobile.ui.ImageDialog;
 import com.jjoseba.pecsmobile.ui.NewCardListener;
@@ -53,17 +54,13 @@ public class NewCardFragment extends Fragment {
 
     private boolean disableOkButton = false;
     private NewCardListener listener;
+    private int parentCard;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.activity_new_card, container, false);
-
-        /*ActionBar bar = getActionBar();
-        if (bar != null) {
-            bar.setBackgroundDrawable(new ColorDrawable(cardColor));
-        }*/
 
         cardFrame = view.findViewById(R.id.card_frame);
         colorBucket = view.findViewById(R.id.colorBucket);
@@ -83,6 +80,8 @@ public class NewCardFragment extends Fragment {
                         newCard.animateOnAppear = true;
                         newCard.setLabel(cardTitleTextView.getText().toString());
                         newCard.setAsCategory(switchCategory.isChecked());
+                        DBHelper db = new DBHelper(NewCardFragment.this.getActivity());
+                        db.addCard(parentCard, newCard);
 
                         if (listener != null) {
                             listener.onNewCard(newCard);
@@ -261,5 +260,6 @@ public class NewCardFragment extends Fragment {
         cardTitleTextView.setText("");
         switchCategory.setChecked(false);
         cardImage.setImageDrawable(null);
+        this.parentCard = clicked.getCardId();
     }
 }

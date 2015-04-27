@@ -1,7 +1,6 @@
 package com.jjoseba.pecsmobile.activity;
 
 import com.jjoseba.pecsmobile.adapter.SelectedCardsAdapter;
-import com.jjoseba.pecsmobile.app.DBHelper;
 import com.jjoseba.pecsmobile.fragment.CardsPage;
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.fragment.NewCardFragment;
@@ -12,28 +11,21 @@ import com.jjoseba.pecsmobile.ui.GridItemClickedListener;
 import com.jjoseba.pecsmobile.ui.NewCardListener;
 import com.jjoseba.pecsmobile.ui.ZoomOutPageTransformer;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
-
 import org.lucasr.twowayview.TwoWayView;
 
 import java.util.ArrayList;
@@ -153,18 +145,12 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
         }
     }
 
-
-
     @Override
     public void onClick(CardPECS clicked, boolean addChildCard) {
 
-        //mPageTransformer.setAnimateFromRight((position % 2 != 0));
         if (addChildCard){
             animateCardContainer(FADE_IN);
             newCardFragment.resetForm(clicked);
-            /*Intent i = new Intent(this, NewCardActivity.class);
-            i.putExtra("cardColor", clicked.getCardColor());
-            startActivity(i);*/
         }
         else{
             if (clicked.isCategory()){
@@ -178,7 +164,6 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
                 selectedCards.add(clicked);
                 selectedCardsAdapter.notifyDataSetChanged();
             }
-
         }
     }
 
@@ -189,7 +174,6 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface d) {
-
                 if (dialog.hasDataChanged()){
                     CardPECS currentCard = navigationCards.get(mLastPage);
                     CardsPage currentPage = cardPages.get(currentCard);
@@ -224,7 +208,6 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
         });
         if (!show) newCardIsHiding = true;
         newCardContainer.startAnimation(fadeAnimation);
-
     }
 
     @Override
@@ -256,9 +239,6 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
         CardPECS currentCard = navigationCards.get(mLastPage);
         CardsPage currentPage = cardPages.get(currentCard);
         currentPage.addCard(card);
-
-        DBHelper db = new DBHelper(this);
-        db.addCard(currentCard.getCardId(), card);
     }
 
     @Override
@@ -289,7 +269,6 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
         @Override
         public int getItemPosition(Object object){
             return POSITION_NONE;
-
         }
 
         public void removeFragment(CardPECS cardToRemove){
