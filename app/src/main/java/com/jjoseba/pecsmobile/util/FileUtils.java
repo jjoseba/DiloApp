@@ -53,6 +53,11 @@ public class FileUtils {
         storageBaseLocation = (external!=null)?external.getAbsolutePath():"";
     }
 
+    public static boolean deleteImage(String imageFilename) {
+        File imageFile = new File(getImagesPath() + imageFilename);
+        return imageFile.exists() && imageFile.delete();
+    }
+
     public static String getPath(Activity ctx, Uri uri) {
         // just some safety built in
         if( uri == null ) {

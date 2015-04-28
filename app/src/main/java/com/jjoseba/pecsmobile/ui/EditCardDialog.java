@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.app.DBHelper;
 import com.jjoseba.pecsmobile.model.CardPECS;
+import com.jjoseba.pecsmobile.util.FileUtils;
 
 public class EditCardDialog extends Dialog{
 
@@ -52,6 +53,9 @@ public class EditCardDialog extends Dialog{
             @Override
             public void onClick(View v) {
                 DBHelper db = new DBHelper(ctx);
+                if (card.getImagePath() != null){
+                    FileUtils.deleteImage(card.getImageFilename());
+                }
                 db.deleteCard(card);
                 cardChanged = true;
                 cardDeleted = true;
