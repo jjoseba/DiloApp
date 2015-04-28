@@ -11,7 +11,9 @@ import android.widget.TextView;
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.model.CardPECS;
 import com.jjoseba.pecsmobile.ui.ButtonCard;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -63,14 +65,17 @@ public class SelectedCardsAdapter  extends BaseAdapter {
         } else {
             holder = (CardViewHolder) convertView.getTag();
         }
-        if (card instanceof ButtonCard){
-            holder.cardFrame.setVisibility(View.INVISIBLE);
+
+        holder.cardFrame.setBackgroundColor(card.getCardColor());
+        holder.cardFrame.setVisibility(View.VISIBLE);
+        String imagePath = card.getImagePath();
+        if (imagePath != null){
+            File image = new File(imagePath);
+            if (image.exists()) {
+                Picasso.with(ctx).load(image).into(holder.image);
+            }
         }
-        else{
-            holder.cardFrame.setBackgroundColor(card.getCardColor());
-            holder.image.setImageResource(R.drawable.ic_launcher);
-            holder.cardFrame.setVisibility(View.VISIBLE);
-        }
+
         return convertView;
 
     }

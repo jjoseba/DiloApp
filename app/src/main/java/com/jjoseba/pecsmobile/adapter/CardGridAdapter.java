@@ -68,6 +68,8 @@ public class CardGridAdapter extends ArrayAdapter<CardPECS> {
         else{
             holder.cardFrame.setBackgroundColor(card.getCardColor());
             holder.label.setText(card.getLabel());
+            holder.cardFrame.setVisibility(View.VISIBLE);
+            holder.addButton.setVisibility(View.GONE);
             String imagePath = card.getImagePath();
             if (imagePath != null){
                 File image = new File(imagePath);
@@ -75,9 +77,6 @@ public class CardGridAdapter extends ArrayAdapter<CardPECS> {
                     Picasso.with(_ctx).load(image).into(holder.image);
                 }
             }
-
-            holder.cardFrame.setVisibility(View.VISIBLE);
-            holder.addButton.setVisibility(View.GONE);
 
             if (card.animateOnAppear || card.animateDeletion){
                 Animation anim = AnimationUtils.loadAnimation(_ctx, R.anim.card_appear);
