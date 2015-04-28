@@ -29,6 +29,7 @@ import com.jjoseba.pecsmobile.app.DBHelper;
 import com.jjoseba.pecsmobile.model.CardPECS;
 import com.jjoseba.pecsmobile.ui.ImageDialog;
 import com.jjoseba.pecsmobile.ui.NewCardListener;
+import com.jjoseba.pecsmobile.util.FileUtils;
 import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.SaturationBar;
 import com.larswerkman.holocolorpicker.ValueBar;
@@ -56,6 +57,8 @@ public class NewCardFragment extends Fragment {
     private NewCardListener listener;
     private int parentCard;
 
+    private String cardImagePath;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -80,6 +83,9 @@ public class NewCardFragment extends Fragment {
                         newCard.animateOnAppear = true;
                         newCard.setLabel(cardTitleTextView.getText().toString());
                         newCard.setAsCategory(switchCategory.isChecked());
+                        if (cardImagePath != null){
+                            newCard.setImageFilename(FileUtils.copyFileToInternal(cardImagePath));
+                        }
                         DBHelper db = new DBHelper(NewCardFragment.this.getActivity());
                         db.addCard(parentCard, newCard);
 
@@ -228,21 +234,11 @@ public class NewCardFragment extends Fragment {
          if(resultCode == Activity.RESULT_OK){
              switch(requestCode) {
                  case REQUEST_IMAGE:
-                         Uri selectedImage = imageReturnedIntent.getData();
-                         String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                         Picasso.with(this.getActivity()).load(selectedImage).into(cardImage);
+                     Uri selectedImage = imageReturnedIntent.getData();
+                     String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                     Picasso.with(this.getActivity()).load(selectedImage).into(cardImage);
+                     cardImagePath = FileUtils.getPath(this.getActivity(), selectedImage);
 
-                    /*
-                    Cursor cursor = getContentResolver().query(
-                            selectedImage, filePathColumn, null, null, null);
-                    cursor.moveToFirst();
-
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String filePath = cursor.getString(columnIndex);
-                    cursor.close();
-
-
-                    Bitmap yourSelectedImage = BitmapFactory.decodeFile(filePath);*/
                      break;
                  case REQUEST_CAMERA:
                      Bundle extras = imageReturnedIntent.getExtras();

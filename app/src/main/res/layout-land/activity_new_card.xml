@@ -18,22 +18,19 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@android:string/cancel"
-            android:id="@+id/button"
-            android:drawableLeft="@drawable/ic_action_cancel"
+            android:text="@string/new_card_title"
+            android:id="@+id/cancelButton"
+            android:drawableLeft="@drawable/ic_action_back"
             android:layout_weight="1"
-            android:background="@drawable/bar_button"
+            android:background="@color/transparent"
             android:textColor="@color/white"
-            android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:textSize="30sp"
-            android:visibility="gone" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/whitetransp"
-            android:visibility="visible"></View>
+            android:visibility="visible"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:elegantTextHeight="false"
+            android:paddingLeft="5dp" />
 
         <Button
             android:layout_width="wrap_content"

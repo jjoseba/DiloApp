@@ -1,8 +1,10 @@
 package com.jjoseba.pecsmobile.app;
 
 import android.app.Application;
+import android.support.v4.content.ContextCompat;
 
 import com.jjoseba.pecsmobile.R;
+import com.jjoseba.pecsmobile.util.FileUtils;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
@@ -19,6 +21,9 @@ public class PECSMobile extends Application {
                         .setFontAttrId(R.attr.fontPath)
                         .build()
         );
+
+        //We set the StoragePath
+        FileUtils.initialize(getApplicationContext());
     }
 
 }

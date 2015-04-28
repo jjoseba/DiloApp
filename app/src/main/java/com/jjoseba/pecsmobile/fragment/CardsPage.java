@@ -163,10 +163,11 @@ public class CardsPage extends Fragment {
         return pecsList;
     }
 
-    public void notifyDataSetChanged(){
-        pecs.clear();
-        pecs.addAll(getCards());
-        pecs.add(new ButtonCard());
+    public void notifyCardChanged(CardPECS card, boolean deleted){
+
+        if (deleted){
+            cardsAdapter.removeCard(card);
+        }
         cardsAdapter.notifyDataSetChanged();
     }
 }

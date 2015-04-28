@@ -4,8 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -14,12 +16,12 @@ import android.widget.TextView;
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.model.CardPECS;
 import com.jjoseba.pecsmobile.ui.ButtonCard;
+import com.jjoseba.pecsmobile.util.ReverseInterpolator;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.List;
 
-/**
- * Created by Joseba on 28/12/2014.
- */
 public class CardGridAdapter extends ArrayAdapter<CardPECS> {
 
     private List<CardPECS> cards;
@@ -66,15 +68,28 @@ public class CardGridAdapter extends ArrayAdapter<CardPECS> {
         else{
             holder.cardFrame.setBackgroundColor(card.getCardColor());
             holder.label.setText(card.getLabel());
-            holder.image.setImageResource(R.drawable.ic_launcher);
+            String imagePath = card.getImagePath();
+            if (imagePath != null){
+                File image = new File(imagePath);
+                if (image.exists()) {
+                    Picasso.with(_ctx).load(image).into(holder.image);
+                }
+            }
+
             holder.cardFrame.setVisibility(View.VISIBLE);
             holder.addButton.setVisibility(View.GONE);
-            if (card.animateOnAppear){
+
+            if (card.animateOnAppear || card.animateDeletion){
                 Animation anim = AnimationUtils.loadAnimation(_ctx, R.anim.card_appear);
                 anim.setDuration(750);
+                if (card.animateDeletion) {
+                    anim.setInterpolator(new ReverseInterpolator(new DecelerateInterpolator()));
+                }
+                final View finalConvertView = convertView;
                 anim.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
+                        finalConvertView.setHasTransientState(true);
                     }
 
                     @Override
@@ -83,7 +98,15 @@ public class CardGridAdapter extends ArrayAdapter<CardPECS> {
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        card.animateOnAppear = false;
+                        if (card.animateOnAppear){
+                            card.animateOnAppear = false;
+                        }
+                        else if (card.animateDeletion){
+                            cards.remove(card);
+                            CardGridAdapter.this.notifyDataSetChanged();
+                        }
+
+                        finalConvertView.setHasTransientState(false);
                     }
                 });
                 convertView.startAnimation(anim);
@@ -106,5 +129,10 @@ public class CardGridAdapter extends ArrayAdapter<CardPECS> {
     @Override
     public long getItemId(int position) {
         return 0;
+    }
+
+    public void removeCard(CardPECS card) {
+        card.animateDeletion = true;
+        notifyDataSetChanged();
     }
 }

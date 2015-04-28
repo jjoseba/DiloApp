@@ -19,6 +19,7 @@ public class EditCardDialog extends Dialog{
     private Context ctx;
     private CardPECS card;
     private boolean cardChanged = false;
+    private boolean cardDeleted = false;
 
     public EditCardDialog(Context context, CardPECS card){
         super(context);
@@ -39,6 +40,7 @@ public class EditCardDialog extends Dialog{
         this.findViewById(R.id.cancelButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cardChanged = true;
                 EditCardDialog.this.dismiss();
             }
         });
@@ -52,6 +54,7 @@ public class EditCardDialog extends Dialog{
                 DBHelper db = new DBHelper(ctx);
                 db.deleteCard(card);
                 cardChanged = true;
+                cardDeleted = true;
                 EditCardDialog.this.dismiss();
             }
         });
@@ -68,4 +71,6 @@ public class EditCardDialog extends Dialog{
     public boolean hasDataChanged(){
         return cardChanged;
     }
+
+    public boolean isCardDeleted(){ return cardDeleted; }
 }

@@ -2,6 +2,8 @@ package com.jjoseba.pecsmobile.model;
 
 import android.graphics.Color;
 
+import com.jjoseba.pecsmobile.util.FileUtils;
+
 import java.io.Serializable;
 
 /**
@@ -19,6 +21,7 @@ public class CardPECS implements Serializable{
 
     //only for UI purposes
     public boolean animateOnAppear;
+    public boolean animateDeletion;
 
     public String getLabel() {
         return label;
@@ -28,11 +31,15 @@ public class CardPECS implements Serializable{
         this.label = label;
     }
 
-    public String getImagePath() {
+    public String getImageFilename(){
         return imagePath;
     }
 
-    public void setImagePath(String imagePath) {
+    public String getImagePath() {
+        return (imagePath!=null && imagePath.length()>0)?(FileUtils.getImagesPath() + imagePath):null;
+    }
+
+    public void setImageFilename(String imagePath) {
         this.imagePath = imagePath;
     }
 

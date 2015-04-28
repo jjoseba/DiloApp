@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
 import com.jjoseba.pecsmobile.model.CardPECS;
+import com.jjoseba.pecsmobile.util.FileUtils;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class DBHelper extends SQLiteAssetHelper {
         private static final String COLUMN_CATEGORY = "is_category";
         private static final String COLUMN_COLOR = "color";
         private static final String COLUMN_PARENT = "parent";
+        private static final String COLUMN_IMAGE = "image";
 
         public DBHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -32,7 +34,7 @@ public class DBHelper extends SQLiteAssetHelper {
 
             ArrayList<CardPECS> cards = new ArrayList<CardPECS>();
             SQLiteDatabase db = getReadableDatabase();
-            Cursor cursor = db.query(TABLE_CARDS, new String[]{COLUMN_ID, COLUMN_CATEGORY, COLUMN_LABEL, COLUMN_COLOR, "image", COLUMN_PARENT},
+            Cursor cursor = db.query(TABLE_CARDS, new String[]{COLUMN_ID, COLUMN_CATEGORY, COLUMN_LABEL, COLUMN_COLOR, COLUMN_IMAGE, COLUMN_PARENT},
                     COLUMN_PARENT + " == " + parent, null, null, null, null);
 
             cursor.moveToFirst();
@@ -42,6 +44,7 @@ public class DBHelper extends SQLiteAssetHelper {
                 card.setLabel(cursor.getString(cursor.getColumnIndex(COLUMN_LABEL)));
                 card.setAsCategory(cursor.getInt(cursor.getColumnIndex(COLUMN_CATEGORY)) == 1);
                 card.setCardColor(cursor.getString(cursor.getColumnIndex(COLUMN_COLOR)));
+                card.setImageFilename(cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE)));
                 cards.add(card);
 
                 cursor.moveToNext();
@@ -59,6 +62,7 @@ public class DBHelper extends SQLiteAssetHelper {
             cardValues.put(COLUMN_CATEGORY, newCard.isCategory());
             cardValues.put(COLUMN_COLOR, newCard.getHexCardColor());
             cardValues.put(COLUMN_PARENT, parent);
+            cardValues.put(COLUMN_IMAGE, newCard.getImageFilename());
             long id = db.insert(TABLE_CARDS, null, cardValues);
             if (id > 0) newCard.setCardId((int)id);
             return (id > 0);
