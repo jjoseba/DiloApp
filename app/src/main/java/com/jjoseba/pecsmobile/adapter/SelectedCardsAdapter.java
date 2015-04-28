@@ -68,13 +68,8 @@ public class SelectedCardsAdapter  extends BaseAdapter {
 
         holder.cardFrame.setBackgroundColor(card.getCardColor());
         holder.cardFrame.setVisibility(View.VISIBLE);
-        String imagePath = card.getImagePath();
-        if (imagePath != null){
-            File image = new File(imagePath);
-            if (image.exists()) {
-                Picasso.with(ctx).load(image).into(holder.image);
-            }
-        }
+        File imageFile = new File(card.getImagePath());
+        Picasso.with(ctx).load(imageFile).placeholder(R.drawable.empty).error(R.drawable.empty).into(holder.image);
 
         return convertView;
 

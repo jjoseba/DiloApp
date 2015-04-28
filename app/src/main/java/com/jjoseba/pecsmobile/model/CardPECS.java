@@ -36,7 +36,7 @@ public class CardPECS implements Serializable{
     }
 
     public String getImagePath() {
-        return (imagePath!=null && imagePath.length()>0)?(FileUtils.getImagesPath() + imagePath):null;
+        return (imagePath!=null && imagePath.length()>0)?(FileUtils.getImagesPath() + imagePath):"";
     }
 
     public void setImageFilename(String imagePath) {

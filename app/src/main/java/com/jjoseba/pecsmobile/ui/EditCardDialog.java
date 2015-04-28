@@ -8,12 +8,16 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.app.DBHelper;
 import com.jjoseba.pecsmobile.model.CardPECS;
 import com.jjoseba.pecsmobile.util.FileUtils;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 public class EditCardDialog extends Dialog{
 
@@ -37,6 +41,9 @@ public class EditCardDialog extends Dialog{
         this.setContentView(R.layout.card_dialog);
 
         this.findViewById(R.id.card_frame).setBackgroundColor(card.getCardColor());
+
+        File imageFile = new File(card.getImagePath());
+        Picasso.with(ctx).load(imageFile).placeholder(R.drawable.empty).error(R.drawable.empty).into((ImageView) findViewById(R.id.card_image));
         ((TextView) this.findViewById(R.id.cardLabel)).setText(card.getLabel());
         this.findViewById(R.id.cancelButton).setOnClickListener(new View.OnClickListener() {
             @Override

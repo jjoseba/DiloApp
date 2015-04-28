@@ -70,13 +70,8 @@ public class CardGridAdapter extends ArrayAdapter<CardPECS> {
             holder.label.setText(card.getLabel());
             holder.cardFrame.setVisibility(View.VISIBLE);
             holder.addButton.setVisibility(View.GONE);
-            String imagePath = card.getImagePath();
-            if (imagePath != null){
-                File image = new File(imagePath);
-                if (image.exists()) {
-                    Picasso.with(_ctx).load(image).into(holder.image);
-                }
-            }
+            File imageFile = new File( card.getImagePath());
+            Picasso.with(_ctx).load(imageFile).placeholder(R.drawable.empty).error(R.drawable.empty).into(holder.image);
 
             if (card.animateOnAppear || card.animateDeletion){
                 Animation anim = AnimationUtils.loadAnimation(_ctx, R.anim.card_appear);

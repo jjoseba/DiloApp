@@ -6,7 +6,7 @@
     android:baselineAligned="false"
     android:background="@color/background">
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -21,7 +21,6 @@
             android:text="@string/new_card_title"
             android:id="@+id/cancelButton"
             android:drawableLeft="@drawable/ic_action_back"
-            android:layout_weight="1"
             android:background="@color/transparent"
             android:textColor="@color/white"
             android:paddingRight="20dp"
@@ -30,22 +29,27 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:elegantTextHeight="false"
-            android:paddingLeft="5dp" />
+            android:paddingLeft="5dp"
+            android:layout_alignParentTop="true" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/saveButton"
             android:drawableLeft="@drawable/ic_action_done"
-            android:layout_weight="1"
             android:background="@drawable/bar_button"
             android:textColor="@color/white"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:textSize="30sp"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:layout_gravity="right"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <FrameLayout
         android:layout_width="fill_parent"
@@ -80,14 +84,21 @@
                         android:id="@+id/card_frame"
                         android:background="@color/default_card">
 
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/imageView2"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_action_new_picture"
+                            android:background="@color/gray"
+                            android:scaleType="center" />
+
                         <com.jjoseba.pecsmobile.ui.SquareImageView
                             android:id="@+id/card_image"
 
-                            android:src="@drawable/ic_action_new_picture"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@color/gray"
-                            android:scaleType="center">
+                            android:scaleType="fitXY">
                         </com.jjoseba.pecsmobile.ui.SquareImageView>
                     </FrameLayout>
                 </FrameLayout>
