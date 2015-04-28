@@ -89,7 +89,7 @@
             android:layout_height="110dip"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:src="@drawable/ic_action_cancel"
+            android:src="@drawable/ic_action_discard"
             app:cb_color="#FF5252"
             app:cb_pressedRingWidth="15dip"
             android:layout_gravity="center"
