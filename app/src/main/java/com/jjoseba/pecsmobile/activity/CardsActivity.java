@@ -163,8 +163,11 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
                 mPager.setPagingEnabled(true);
             }
             else{
-                selectedCards.add(clicked);
-                selectedCardsAdapter.notifyDataSetChanged();
+                if (!selectedCards.contains(clicked)){
+                    selectedCards.add(clicked);
+                    selectedCardsAdapter.notifyDataSetChanged();
+                }
+
             }
         }
     }
