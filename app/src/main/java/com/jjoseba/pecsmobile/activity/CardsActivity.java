@@ -107,6 +107,14 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
     }
 
     @Override
+    protected void onResume(){
+
+        super.onResume();
+        selectedCards.clear();
+        selectedCardsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void onBackPressed() {
         if (newCardContainer.getVisibility() == View.VISIBLE){
             if (newCardFragment.isColorPickerVisible()){
@@ -225,6 +233,7 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
             mPagerAdapter.removeFragment(lastPageCard);
             navigationCards.remove(mLastPage);
             mPagerAdapter.notifyDataSetChanged();
+
             if ( currentPage == 0){
                 mPager.setPagingEnabled(false);
             }
