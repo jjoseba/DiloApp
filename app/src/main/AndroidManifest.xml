@@ -27,7 +27,7 @@
             android:name=".activity.ShowCardsActivity"
             android:label="@string/title_activity_show_cards"
             android:parentActivityName=".activity.CardsActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.jjoseba.pecsmobile.activity.CardsActivity" />
