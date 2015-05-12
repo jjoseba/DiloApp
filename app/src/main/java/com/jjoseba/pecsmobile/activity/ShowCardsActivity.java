@@ -1,15 +1,22 @@
 package com.jjoseba.pecsmobile.activity;
 
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -20,13 +27,18 @@ import com.jjoseba.pecsmobile.adapter.SelectedCardsAdapter;
 import com.jjoseba.pecsmobile.model.CardPECS;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class ShowCardsActivity extends Activity {
+public class ShowCardsActivity extends Activity implements OnInitListener {
+
+    private static final int MY_DATA_CHECK_CODE = 0;
 
     private ArrayList<CardPECS> selectedCards = new ArrayList<CardPECS>();
     private GridView cardsList;
+
+    private TextToSpeech myTTS;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -39,6 +51,10 @@ public class ShowCardsActivity extends Activity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_show_cards);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        Intent checkTTSIntent = new Intent();
+        checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+        startActivityForResult(checkTTSIntent, MY_DATA_CHECK_CODE);
 
         Bundle extras = getIntent().getExtras();
         selectedCards = (ArrayList<CardPECS>) extras.getSerializable("result");
@@ -65,6 +81,13 @@ public class ShowCardsActivity extends Activity {
         }
         CardGridAdapter adapter = new CardGridAdapter(this, R.layout.card_results, selectedCards);
         cardsList.setAdapter(adapter);
+        final String finalTitle = title;
+        cardsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                myTTS.speak(finalTitle, TextToSpeech.QUEUE_FLUSH, null);
+            }
+        });
     }
 
     @Override
@@ -115,5 +138,23 @@ public class ShowCardsActivity extends Activity {
                 break;
         }
         return super.onTouchEvent(event);
+    }
+
+    @Override
+    public void onInit(int status) {
+
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == MY_DATA_CHECK_CODE) {
+            if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
+                myTTS = new TextToSpeech(this, this);
+            }
+            else {
+                Intent installTTSIntent = new Intent();
+                installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+                startActivity(installTTSIntent);
+            }
+        }
     }
 }
