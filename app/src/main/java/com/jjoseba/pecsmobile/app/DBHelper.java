@@ -25,6 +25,7 @@ public class DBHelper extends SQLiteAssetHelper {
         private static final String COLUMN_COLOR = "color";
         private static final String COLUMN_PARENT = "parent";
         private static final String COLUMN_IMAGE = "image";
+        private static final String COLUMN_DISABLED = "is_disabled";
 
         public DBHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,7 +35,7 @@ public class DBHelper extends SQLiteAssetHelper {
 
             ArrayList<CardPECS> cards = new ArrayList<CardPECS>();
             SQLiteDatabase db = getReadableDatabase();
-            Cursor cursor = db.query(TABLE_CARDS, new String[]{COLUMN_ID, COLUMN_CATEGORY, COLUMN_LABEL, COLUMN_COLOR, COLUMN_IMAGE, COLUMN_PARENT},
+            Cursor cursor = db.query(TABLE_CARDS, new String[]{COLUMN_ID, COLUMN_CATEGORY, COLUMN_LABEL, COLUMN_COLOR, COLUMN_IMAGE, COLUMN_PARENT, COLUMN_DISABLED},
                     COLUMN_PARENT + " == " + parent, null, null, null, null);
 
             cursor.moveToFirst();
@@ -45,6 +46,7 @@ public class DBHelper extends SQLiteAssetHelper {
                 card.setAsCategory(cursor.getInt(cursor.getColumnIndex(COLUMN_CATEGORY)) == 1);
                 card.setCardColor(cursor.getString(cursor.getColumnIndex(COLUMN_COLOR)));
                 card.setImageFilename(cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE)));
+                card.setDisabled(cursor.getInt(cursor.getColumnIndex(COLUMN_DISABLED)) == 1);
                 cards.add(card);
 
                 cursor.moveToNext();
@@ -63,6 +65,7 @@ public class DBHelper extends SQLiteAssetHelper {
             cardValues.put(COLUMN_COLOR, newCard.getHexCardColor());
             cardValues.put(COLUMN_PARENT, parent);
             cardValues.put(COLUMN_IMAGE, newCard.getImageFilename());
+            cardValues.put(COLUMN_DISABLED, newCard.isDisabled());
             long id = db.insert(TABLE_CARDS, null, cardValues);
             if (id > 0) newCard.setCardId((int)id);
             return (id > 0);
