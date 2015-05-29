@@ -1,0 +1,1 @@
+ALTER TABLE "main"."pecs" ADD COLUMN "is_disabled" INTEGER DEFAULT 0;

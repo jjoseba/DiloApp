@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class DBHelper extends SQLiteAssetHelper {
 
         private static final String DATABASE_NAME = "pecs.sqlite";
-        private static final int DATABASE_VERSION = 1;
+        private static final int DATABASE_VERSION = 2;
         private static final String TABLE_CARDS = "pecs";
         private static final String COLUMN_ID = "id_card";
         private static final String COLUMN_LABEL = "label";

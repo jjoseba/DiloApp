@@ -17,6 +17,7 @@ public class CardPECS implements Serializable{
     private String imagePath;
     private int cardId;
     private boolean isCategory;
+    private boolean disabled;
     private String cardColor;
 
     //only for UI purposes
@@ -64,5 +65,8 @@ public class CardPECS implements Serializable{
     public void setCardColor(String cardColor) { this.cardColor = cardColor; }
 
     public int getCardColor(){ return ( cardColor!=null? Color.parseColor(cardColor) : DEFAULT_COLOR); }
+
+    public void setDisabled(boolean state){ disabled = state; }
+    public boolean isDisabled(){ return disabled; }
 
 }
