@@ -10,6 +10,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,7 +40,7 @@ public class CardGridAdapter extends ArrayAdapter<CardPECS> {
         TextView label;
         ImageView image;
         View cardFrame;
-        View addButton;
+        ImageView addButton;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -55,7 +56,7 @@ public class CardGridAdapter extends ArrayAdapter<CardPECS> {
             holder.label = (TextView) convertView.findViewById(R.id.card_label);
             holder.image = (ImageView) convertView.findViewById(R.id.card_image);
             holder.cardFrame = convertView.findViewById(R.id.card_frame);
-            holder.addButton = convertView.findViewById(R.id.addButton);
+            holder.addButton = (ImageView) convertView.findViewById(R.id.addButton);
 
             convertView.setTag(holder);
         } else {
@@ -63,6 +64,7 @@ public class CardGridAdapter extends ArrayAdapter<CardPECS> {
         }
         if (card instanceof ButtonCard){
             holder.cardFrame.setVisibility(View.INVISIBLE);
+            holder.addButton.setImageResource(R.drawable.newcard);
             holder.addButton.setVisibility(View.VISIBLE);
         }
         else{
@@ -72,6 +74,11 @@ public class CardGridAdapter extends ArrayAdapter<CardPECS> {
             holder.addButton.setVisibility(View.GONE);
             File imageFile = new File( card.getImagePath());
             Picasso.with(_ctx).load(imageFile).placeholder(R.drawable.empty).error(R.drawable.empty).into(holder.image);
+
+            if (card.isDisabled()){
+                holder.addButton.setVisibility(View.VISIBLE);
+                holder.addButton.setImageResource(R.drawable.disabledcard);
+            }
 
             if (card.animateOnAppear || card.animateDeletion){
                 Animation anim = AnimationUtils.loadAnimation(_ctx, R.anim.card_appear);

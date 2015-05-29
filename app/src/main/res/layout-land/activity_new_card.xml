@@ -124,17 +124,6 @@
                         android:inputType="text"
                         android:imeOptions="actionDone"/>
 
-                    <Switch
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/label_category"
-                        android:id="@+id/sw_category"
-                        android:textSize="28sp"
-                        android:hint="@string/placeholder_label"
-                        android:textStyle="normal"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp" />
-
                     <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="fill_parent"
@@ -168,6 +157,24 @@
                             android:scaleType="fitCenter" />
 
                     </LinearLayout>
+
+                    <Switch
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_category"
+                        android:id="@+id/sw_category"
+                        android:textSize="28sp"
+                        android:hint="@string/placeholder_label"
+                        android:textStyle="normal"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp" />
+
+                    <Switch
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_disabled"
+                        android:id="@+id/sw_disabled"
+                        android:textSize="28sp" />
 
                 </LinearLayout>
             </TableRow>

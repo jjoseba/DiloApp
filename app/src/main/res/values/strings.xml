@@ -16,5 +16,6 @@
     <string name="change_color">Elegir color</string>
     <string name="title_activity_show_cards">ShowCardsActivity</string>
     <string name="action_cancel">CANCELAR</string>
+    <string name="label_disabled">Deshabilitada</string>
 
 </resources>

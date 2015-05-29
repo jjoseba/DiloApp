@@ -52,6 +52,7 @@ public class NewCardFragment extends Fragment {
 
     private TextView cardTitleTextView;
     private Switch switchCategory;
+    private Switch switchDisabled;
 
     private boolean disableOkButton = false;
     private NewCardListener listener;
@@ -69,6 +70,7 @@ public class NewCardFragment extends Fragment {
         colorBucket = view.findViewById(R.id.colorBucket);
         cardTitleTextView = (TextView) view.findViewById(R.id.et_title);
         switchCategory = (Switch) view.findViewById(R.id.sw_category);
+        switchDisabled = (Switch) view.findViewById(R.id.sw_disabled);
         Button saveButton = (Button) view.findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +85,7 @@ public class NewCardFragment extends Fragment {
                         newCard.animateOnAppear = true;
                         newCard.setLabel(cardTitleTextView.getText().toString());
                         newCard.setAsCategory(switchCategory.isChecked());
+                        newCard.setDisabled(switchDisabled.isChecked());
                         if (cardImagePath != null){
                             newCard.setImageFilename(FileUtils.copyFileToInternal(cardImagePath));
                         }
@@ -255,6 +258,7 @@ public class NewCardFragment extends Fragment {
         picker.setColor(clicked.getCardColor());
         cardTitleTextView.setText("");
         switchCategory.setChecked(false);
+        switchDisabled.setChecked(false);
         cardImage.setImageDrawable(null);
         this.parentCard = clicked.getCardId();
     }

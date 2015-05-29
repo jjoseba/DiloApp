@@ -124,7 +124,7 @@ public class CardsPage extends Fragment {
                     CardPECS clicked = pecs.get(position);
                     if (clicked instanceof ButtonCard) {
                         clickListener.onClick(parentCategory, true);
-                    } else {
+                    } else if (!clicked.isDisabled()){
                         clickListener.onClick(clicked, false);
                     }
                 }
