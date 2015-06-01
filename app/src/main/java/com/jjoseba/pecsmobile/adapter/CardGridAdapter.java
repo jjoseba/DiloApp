@@ -29,11 +29,17 @@ public class CardGridAdapter extends ArrayAdapter<CardPECS> {
     private Context _ctx;
     private int layout;
 
+    private static int bgOverlayColor;
+    private static int transparentColor;
+
     public CardGridAdapter(Context context, int layout, List<CardPECS> cards) {
         super(context, layout, cards);
         this.layout = layout;
         this.cards = cards;
         this._ctx = context;
+
+        bgOverlayColor = _ctx.getResources().getColor(R.color.black_overlay);
+        transparentColor = _ctx.getResources().getColor(R.color.transparent);
     }
 
     protected class CardViewHolder{
@@ -66,6 +72,8 @@ public class CardGridAdapter extends ArrayAdapter<CardPECS> {
             holder.cardFrame.setVisibility(View.INVISIBLE);
             holder.addButton.setImageResource(R.drawable.newcard);
             holder.addButton.setVisibility(View.VISIBLE);
+
+            holder.addButton.setBackgroundColor(bgOverlayColor);
         }
         else{
             holder.cardFrame.setBackgroundColor(card.getCardColor());
@@ -76,6 +84,7 @@ public class CardGridAdapter extends ArrayAdapter<CardPECS> {
             Picasso.with(_ctx).load(imageFile).placeholder(R.drawable.empty).error(R.drawable.empty).into(holder.image);
 
             if (card.isDisabled()){
+                holder.addButton.setBackgroundColor(transparentColor);
                 holder.addButton.setVisibility(View.VISIBLE);
                 holder.addButton.setImageResource(R.drawable.disabledcard);
             }
