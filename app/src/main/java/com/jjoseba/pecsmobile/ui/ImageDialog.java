@@ -23,6 +23,7 @@ public class ImageDialog extends Dialog{
 
     private Fragment parentFragment;
     private boolean cardChanged = false;
+    private boolean textForImage = false;
 
     public ImageDialog(Fragment f){
         super(f.getActivity());
@@ -46,6 +47,7 @@ public class ImageDialog extends Dialog{
 
         View deleteBtn =  this.findViewById(R.id.gallery_button);
         View editBtn = this.findViewById(R.id.edit_button);
+        View textBtn = this.findViewById(R.id.text_button);
 
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,11 +72,22 @@ public class ImageDialog extends Dialog{
             }
         });
 
+        textBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                textForImage = true;
+                ImageDialog.this.dismiss();
+            }
+        });
+
         Animation appearButton1 = AnimationUtils.loadAnimation(parentFragment.getActivity(), R.anim.button_appear);
         Animation appearButton2 = AnimationUtils.loadAnimation(parentFragment.getActivity(), R.anim.button_appear);
-        appearButton2.setStartOffset(200);
+        Animation appearButton3 = AnimationUtils.loadAnimation(parentFragment.getActivity(), R.anim.button_appear);
+        appearButton2.setStartOffset(150);
+        appearButton3.setStartOffset(300);
         deleteBtn.startAnimation(appearButton1);
         editBtn.startAnimation(appearButton2);
+        textBtn.startAnimation(appearButton3);
 
         super.show();
     }
@@ -82,4 +95,5 @@ public class ImageDialog extends Dialog{
     public boolean hasDataChanged(){
         return cardChanged;
     }
+    public boolean isTextForImage(){ return textForImage; }
 }

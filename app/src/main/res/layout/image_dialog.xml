@@ -48,8 +48,8 @@
         <at.markushi.ui.CircleButton
             android:layout_width="110dip"
             android:layout_height="110dip"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:src="@drawable/ic_action_picture"
             app:cb_color="#4CAF50"
             app:cb_pressedRingWidth="15dip"
@@ -59,13 +59,24 @@
         <at.markushi.ui.CircleButton
             android:layout_width="110dip"
             android:layout_height="110dip"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:src="@drawable/ic_action_photo"
             app:cb_color="#7B1FA2"
             app:cb_pressedRingWidth="15dip"
             android:layout_gravity="center"
             android:id="@+id/edit_button" />
+
+        <at.markushi.ui.CircleButton
+            android:layout_width="110dip"
+            android:layout_height="110dip"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ic_spellcheck"
+            app:cb_color="#2196F3"
+            app:cb_pressedRingWidth="15dip"
+            android:layout_gravity="center"
+            android:id="@+id/text_button" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -3,6 +3,7 @@ package com.jjoseba.pecsmobile.fragment;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -10,7 +11,9 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.SpannableStringBuilder;
+import android.text.TextWatcher;
 import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,12 +54,15 @@ public class NewCardFragment extends Fragment {
     private int previousColor = CardPECS.DEFAULT_COLOR;
 
     private TextView cardTitleTextView;
+    private TextView cardTextImage;
     private Switch switchCategory;
     private Switch switchDisabled;
 
     private boolean disableOkButton = false;
     private NewCardListener listener;
     private int parentCard;
+
+    private boolean textAsImage = false;
 
     private String cardImagePath;
 
@@ -69,6 +75,15 @@ public class NewCardFragment extends Fragment {
         cardFrame = view.findViewById(R.id.card_frame);
         colorBucket = view.findViewById(R.id.colorBucket);
         cardTitleTextView = (TextView) view.findViewById(R.id.et_title);
+        cardTitleTextView.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {  }
+            public void afterTextChanged(Editable s) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length()>0) cardTextImage.setText(s);
+            }
+        });
+        cardTextImage = (TextView) view.findViewById(R.id.card_imageText);
         switchCategory = (Switch) view.findViewById(R.id.sw_category);
         switchDisabled = (Switch) view.findViewById(R.id.sw_disabled);
         Button saveButton = (Button) view.findViewById(R.id.saveButton);
@@ -105,7 +120,17 @@ public class NewCardFragment extends Fragment {
         cardImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ImageDialog(NewCardFragment.this).show();
+                final ImageDialog dialog = new ImageDialog(NewCardFragment.this);
+                dialog.show();
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface d) {
+                        if (dialog.isTextForImage()){
+                            setTextForImage();
+                        }
+                    }
+                });
+
             }
         });
 
@@ -207,7 +232,6 @@ public class NewCardFragment extends Fragment {
             colorBucket.setBackgroundColor(colorTo);
         }
 
-
         previousColor = colorTo;
     }
     protected void toggleColorPicker(boolean show){
@@ -236,25 +260,44 @@ public class NewCardFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
          if(resultCode == Activity.RESULT_OK){
              switch(requestCode) {
+
                  case REQUEST_IMAGE:
                      Uri selectedImage = imageReturnedIntent.getData();
                      String[] filePathColumn = {MediaStore.Images.Media.DATA};
                      Picasso.with(this.getActivity()).load(selectedImage).into(cardImage);
                      cardImagePath = FileUtils.getPath(this.getActivity(), selectedImage);
+                     hideTextForImage();
 
                      break;
+
                  case REQUEST_CAMERA:
                      Bundle extras = imageReturnedIntent.getExtras();
                      Bitmap imageBitmap = (Bitmap) extras.get("data");
                      cardImage.setImageBitmap(imageBitmap);
+                     hideTextForImage();
 
+                     break;
              }
          }
 
     }
 
+    private void setTextForImage(){
+        textAsImage = true;
+        cardTextImage.setVisibility(View.VISIBLE);
+        cardTextImage.setAllCaps(true);
+        cardTextImage.setText(cardTitleTextView.getText());
+    }
+
+    private void hideTextForImage(){
+        cardTextImage.setVisibility(View.GONE);
+        textAsImage = false;
+
+    }
+
     public void resetForm(CardPECS clicked) {
         changeColor(clicked.getCardColor(), false);
+
         picker.setColor(clicked.getCardColor());
         cardTitleTextView.setText("");
         switchCategory.setChecked(false);
