@@ -31,6 +31,18 @@ public class DBHelper extends SQLiteAssetHelper {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 
+        protected ContentValues getRowValuesFromCard(CardPECS card){
+            ContentValues cardValues = new ContentValues();
+            cardValues.put(COLUMN_LABEL, card.getLabel());
+            cardValues.put(COLUMN_CATEGORY, card.isCategory());
+            cardValues.put(COLUMN_COLOR, card.getHexCardColor());
+            cardValues.put(COLUMN_PARENT, card.getParentID());
+            cardValues.put(COLUMN_IMAGE, card.getImageFilename());
+            cardValues.put(COLUMN_DISABLED, card.isDisabled());
+
+            return cardValues;
+        }
+
         public ArrayList<CardPECS> getCards(int parent) {
 
             ArrayList<CardPECS> cards = new ArrayList<CardPECS>();
@@ -42,6 +54,7 @@ public class DBHelper extends SQLiteAssetHelper {
             while (!cursor.isAfterLast()) {
                 CardPECS card = new CardPECS();
                 card.setCardId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
+                card.setParentID(cursor.getInt(cursor.getColumnIndex(COLUMN_PARENT)));
                 card.setLabel(cursor.getString(cursor.getColumnIndex(COLUMN_LABEL)));
                 card.setAsCategory(cursor.getInt(cursor.getColumnIndex(COLUMN_CATEGORY)) == 1);
                 card.setCardColor(cursor.getString(cursor.getColumnIndex(COLUMN_COLOR)));
@@ -59,15 +72,10 @@ public class DBHelper extends SQLiteAssetHelper {
         public boolean addCard(int parent, CardPECS newCard){
 
             SQLiteDatabase db = getReadableDatabase();
-            ContentValues cardValues = new ContentValues();
-            cardValues.put(COLUMN_LABEL, newCard.getLabel());
-            cardValues.put(COLUMN_CATEGORY, newCard.isCategory());
-            cardValues.put(COLUMN_COLOR, newCard.getHexCardColor());
-            cardValues.put(COLUMN_PARENT, parent);
-            cardValues.put(COLUMN_IMAGE, newCard.getImageFilename());
-            cardValues.put(COLUMN_DISABLED, newCard.isDisabled());
-            long id = db.insert(TABLE_CARDS, null, cardValues);
+            newCard.setParentID(parent);
+            long id = db.insert(TABLE_CARDS, null, getRowValuesFromCard(newCard));
             if (id > 0) newCard.setCardId((int)id);
+
             return (id > 0);
         }
 
@@ -76,5 +84,11 @@ public class DBHelper extends SQLiteAssetHelper {
             int cardID = cardToDelete.getCardId();
             int result = db.delete(TABLE_CARDS, COLUMN_ID + " == " + cardID + " OR " + COLUMN_PARENT + " == " + cardID, null);
             return (result > 0);
+        }
+
+        public boolean updateCard(CardPECS card){
+            SQLiteDatabase db = getReadableDatabase();
+            int changes = db.update(TABLE_CARDS, getRowValuesFromCard(card), COLUMN_ID + " == " + card.getCardId(), null);
+            return (changes > 0);
         }
 }
