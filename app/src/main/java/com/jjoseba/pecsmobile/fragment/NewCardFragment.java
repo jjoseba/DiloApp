@@ -33,6 +33,7 @@ import com.jjoseba.pecsmobile.model.CardPECS;
 import com.jjoseba.pecsmobile.ui.ImageDialog;
 import com.jjoseba.pecsmobile.ui.NewCardListener;
 import com.jjoseba.pecsmobile.util.FileUtils;
+import com.jjoseba.pecsmobile.util.ImageUtils;
 import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.SaturationBar;
 import com.larswerkman.holocolorpicker.ValueBar;
@@ -103,6 +104,9 @@ public class NewCardFragment extends Fragment {
                         newCard.setDisabled(switchDisabled.isChecked());
                         if (cardImagePath != null){
                             newCard.setImageFilename(FileUtils.copyFileToInternal(cardImagePath));
+                        }
+                        else if (textAsImage){
+                            newCard.setImageFilename(ImageUtils.saveViewImage(cardTextImage));
                         }
                         DBHelper db = new DBHelper(NewCardFragment.this.getActivity());
                         db.addCard(parentCard, newCard);
