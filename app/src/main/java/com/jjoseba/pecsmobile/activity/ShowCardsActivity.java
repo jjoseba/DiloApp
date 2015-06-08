@@ -52,14 +52,17 @@ public class ShowCardsActivity extends Activity implements OnInitListener {
         setContentView(R.layout.activity_show_cards);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        /*
         Intent checkTTSIntent = new Intent();
         checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         startActivityForResult(checkTTSIntent, MY_DATA_CHECK_CODE);
+        */
+        myTTS = new TextToSpeech(this, this);
 
         Bundle extras = getIntent().getExtras();
         selectedCards = (ArrayList<CardPECS>) extras.getSerializable("result");
         String title = "";
-        for (CardPECS card : selectedCards){ title += card.getLabel() + " ";  }
+        for (CardPECS card : selectedCards){ title += card.getLabel() + ", ";  }
 
         ActionBar actionBar = getActionBar();
         if (actionBar != null){

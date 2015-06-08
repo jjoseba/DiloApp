@@ -16,6 +16,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -34,7 +35,7 @@ import java.util.HashMap;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class CardsActivity extends FragmentActivity implements GridItemClickedListener, NewCardListener, ViewPager.OnPageChangeListener {
+public class CardsActivity extends FragmentActivity implements TextToSpeech.OnInitListener, GridItemClickedListener, NewCardListener, ViewPager.OnPageChangeListener {
 
     private static final boolean FADE_IN = true;
     private static final boolean FADE_OUT = false;
@@ -52,6 +53,8 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
     protected ArrayList<CardPECS> selectedCards = new ArrayList<CardPECS>();
     private TwoWayView selectedCardsList;
     private SelectedCardsAdapter selectedCardsAdapter;
+
+    private TextToSpeech myTTS;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -104,6 +107,8 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
                 }
             }
         });
+
+        myTTS = new TextToSpeech(this, this);
     }
 
     @Override
@@ -258,6 +263,11 @@ public class CardsActivity extends FragmentActivity implements GridItemClickedLi
     @Override
     public void onCancel() {
         animateCardContainer(FADE_OUT);
+    }
+
+    @Override
+    public void onInit(int status) {
+
     }
 
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
