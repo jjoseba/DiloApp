@@ -106,7 +106,9 @@ public class NewCardFragment extends Fragment {
                             newCard.setImageFilename(FileUtils.copyFileToInternal(cardImagePath));
                         }
                         else if (textAsImage){
+                            cardTextImage.setTextColor(previousColor);
                             newCard.setImageFilename(ImageUtils.saveViewImage(cardTextImage));
+                            cardTextImage.setTextColor(0x000000);
                         }
                         DBHelper db = new DBHelper(NewCardFragment.this.getActivity());
                         db.addCard(parentCard, newCard);
