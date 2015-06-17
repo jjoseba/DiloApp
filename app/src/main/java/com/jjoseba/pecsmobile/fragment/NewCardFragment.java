@@ -37,6 +37,7 @@ import com.jjoseba.pecsmobile.util.ImageUtils;
 import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.SaturationBar;
 import com.larswerkman.holocolorpicker.ValueBar;
+import com.soundcloud.android.crop.Crop;
 import com.squareup.picasso.Picasso;
 
 public class NewCardFragment extends Fragment {
@@ -269,11 +270,14 @@ public class NewCardFragment extends Fragment {
 
                  case REQUEST_IMAGE:
                      Uri selectedImage = imageReturnedIntent.getData();
-                     String[] filePathColumn = {MediaStore.Images.Media.DATA};
                      Picasso.with(this.getActivity()).load(selectedImage).into(cardImage);
                      cardImagePath = FileUtils.getPath(this.getActivity(), selectedImage);
                      hideTextForImage();
 
+                     Crop.of(selectedImage, selectedImage)
+                         .asSquare()
+                         .withMaxSize(300, 300)
+                         .start(getActivity());
                      break;
 
                  case REQUEST_CAMERA:

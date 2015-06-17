@@ -29,4 +29,5 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     compile 'com.github.markushi:circlebutton:1.1'
+    compile 'com.soundcloud.android:android-crop:1.0.0@aar'
 }
