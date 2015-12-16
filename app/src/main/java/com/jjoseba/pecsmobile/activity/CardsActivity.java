@@ -7,7 +7,7 @@ import com.jjoseba.pecsmobile.fragment.NewCardFragment;
 import com.jjoseba.pecsmobile.model.CardPECS;
 import com.jjoseba.pecsmobile.ui.EditCardDialog;
 import com.jjoseba.pecsmobile.ui.EnableableViewPager;
-import com.jjoseba.pecsmobile.ui.GridItemClickedListener;
+import com.jjoseba.pecsmobile.ui.CardsGridListener;
 import com.jjoseba.pecsmobile.ui.NewCardListener;
 import com.jjoseba.pecsmobile.ui.ZoomOutPageTransformer;
 
@@ -35,7 +35,7 @@ import java.util.HashMap;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class CardsActivity extends FragmentActivity implements TextToSpeech.OnInitListener, GridItemClickedListener, NewCardListener, ViewPager.OnPageChangeListener {
+public class CardsActivity extends FragmentActivity implements TextToSpeech.OnInitListener, CardsGridListener, NewCardListener, ViewPager.OnPageChangeListener {
 
     private static final boolean FADE_IN = true;
     private static final boolean FADE_OUT = false;
@@ -161,34 +161,37 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
     }
 
     @Override
-    public void onClick(CardPECS clicked, boolean addChildCard) {
+    public void onCardSelected(CardPECS clicked) {
 
-        if (addChildCard){
-            animateCardContainer(FADE_IN);
-            newCardFragment.resetForm(clicked);
+        if (clicked.isCategory()){
+            int target = mPager.getCurrentItem() + 1;
+            navigationCards.add(clicked);
+            mPagerAdapter.notifyDataSetChanged();
+            mPager.setCurrentItem(target, true);
+            mPager.setPagingEnabled(true);
         }
         else{
-            if (clicked.isCategory()){
-                int target = mPager.getCurrentItem() + 1;
-                navigationCards.add(clicked);
-                mPagerAdapter.notifyDataSetChanged();
-                mPager.setCurrentItem(target, true);
-                mPager.setPagingEnabled(true);
+            if (!selectedCards.contains(clicked)){
+                selectedCards.add(clicked);
+                selectedCardsAdapter.notifyDataSetChanged();
             }
-            else{
-                if (!selectedCards.contains(clicked)){
-                    selectedCards.add(clicked);
-                    selectedCardsAdapter.notifyDataSetChanged();
-                }
 
-            }
         }
+
     }
 
     @Override
-    public void onLongClick(final CardPECS cardPressed) {
+    public void onAddCardButton(CardPECS clicked){
+        animateCardContainer(FADE_IN);
+        newCardFragment.resetForm(clicked);
+    }
+
+
+    @Override
+    public void onCardLongClick(final CardPECS cardPressed) {
         final EditCardDialog dialog = new EditCardDialog(this, cardPressed);
         dialog.show();
+
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface d) {
