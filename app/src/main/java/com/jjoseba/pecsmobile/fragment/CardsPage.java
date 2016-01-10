@@ -13,9 +13,10 @@ import android.widget.GridView;
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.adapter.CardGridAdapter;
 import com.jjoseba.pecsmobile.app.DBHelper;
-import com.jjoseba.pecsmobile.model.CardPECS;
-import com.jjoseba.pecsmobile.ui.ButtonCard;
+import com.jjoseba.pecsmobile.model.Card;
+import com.jjoseba.pecsmobile.ui.cards.ButtonCard;
 import com.jjoseba.pecsmobile.ui.CardsGridListener;
+import com.jjoseba.pecsmobile.ui.cards.TempButtonCard;
 
 import java.util.ArrayList;
 
@@ -23,13 +24,13 @@ public class CardsPage extends Fragment {
 
     public static String PARENT_CATEGORY = "parentCategory";
 
-    private CardPECS parentCategory;
-    private ArrayList<CardPECS> pecs = new ArrayList<CardPECS>();
+    private Card parentCategory;
+    private ArrayList<Card> pecs = new ArrayList<Card>();
     private CardGridAdapter cardsAdapter;
     private CardsGridListener clickListener;
 
 
-    public static CardsPage newInstance(CardPECS parentCategory) {
+    public static CardsPage newInstance(Card parentCategory) {
         CardsPage f = new CardsPage();
         Bundle args = new Bundle();
         args.putSerializable(PARENT_CATEGORY, parentCategory);
@@ -44,10 +45,11 @@ public class CardsPage extends Fragment {
     {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-        this.parentCategory = (CardPECS) args.get(PARENT_CATEGORY);
+        this.parentCategory = (Card) args.get(PARENT_CATEGORY);
 
         pecs.addAll(getCards());
         pecs.add(new ButtonCard());
+        pecs.add(new TempButtonCard());
     }
 
     @Override
@@ -79,9 +81,12 @@ public class CardsPage extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 if (clickListener != null) {
-                    CardPECS clicked = pecs.get(position);
+                    Card clicked = pecs.get(position);
                     if (clicked instanceof ButtonCard) {
-                        clickListener.onAddCardButton(clicked);
+                        if (clicked instanceof TempButtonCard)
+                            clickListener.onTempCardButton();
+                        else
+                            clickListener.onAddCardButton(clicked);
                     } else if (!clicked.isDisabled()){
                         clickListener.onCardSelected(clicked);
                     }
@@ -93,7 +98,7 @@ public class CardsPage extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 if (clickListener != null) {
-                    CardPECS clicked = pecs.get(position);
+                    Card clicked = pecs.get(position);
                     if (!(clicked instanceof ButtonCard)) {
                         clickListener.onCardLongClick(clicked);
                     }
@@ -105,15 +110,15 @@ public class CardsPage extends Fragment {
     }
 
 
-    public void addCard(CardPECS card) {
+    public void addCard(Card card) {
         pecs.add(pecs.size() - 1, card);
         cardsAdapter.notifyDataSetChanged();
     }
 
-    public ArrayList<CardPECS> getCards(){
+    public ArrayList<Card> getCards(){
         DBHelper db = new DBHelper(this.getActivity());
-        ArrayList<CardPECS> pecsList = db.getCards(parentCategory == null? 0 : parentCategory.getCardId());
-        for (CardPECS card : pecs){
+        ArrayList<Card> pecsList = db.getCards(parentCategory == null? 0 : parentCategory.getCardId());
+        for (Card card : pecs){
             if (card.getHexCardColor() == null){
                 card.setCardColor(parentCategory.getHexCardColor());
             }
@@ -121,7 +126,7 @@ public class CardsPage extends Fragment {
         return pecsList;
     }
 
-    public void notifyCardChanged(CardPECS card, boolean deleted){
+    public void notifyCardChanged(Card card, boolean deleted){
 
         if (deleted){
             cardsAdapter.removeCard(card);

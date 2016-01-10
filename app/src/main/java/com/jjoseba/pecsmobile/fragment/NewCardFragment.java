@@ -5,17 +5,14 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 import android.text.style.RelativeSizeSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,8 +26,9 @@ import android.widget.TextView;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.app.DBHelper;
-import com.jjoseba.pecsmobile.model.CardPECS;
-import com.jjoseba.pecsmobile.ui.ImageDialog;
+import com.jjoseba.pecsmobile.model.Card;
+import com.jjoseba.pecsmobile.ui.cards.CardPECS;
+import com.jjoseba.pecsmobile.ui.dialog.ImageDialog;
 import com.jjoseba.pecsmobile.ui.NewCardListener;
 import com.jjoseba.pecsmobile.util.FileUtils;
 import com.jjoseba.pecsmobile.util.ImageUtils;
@@ -53,7 +51,7 @@ public class NewCardFragment extends Fragment {
     private View cardFrame;
     private View colorBucket;
     private ImageView cardImage;
-    private int previousColor = CardPECS.DEFAULT_COLOR;
+    private int previousColor = Card.DEFAULT_COLOR;
 
     private TextView cardTitleTextView;
     private TextView cardTextImage;
@@ -305,7 +303,7 @@ public class NewCardFragment extends Fragment {
 
     }
 
-    public void resetForm(CardPECS clicked) {
+    public void resetForm(Card clicked) {
         changeColor(clicked.getCardColor(), false);
 
         picker.setColor(clicked.getCardColor());

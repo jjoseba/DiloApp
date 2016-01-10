@@ -1,7 +1,9 @@
 package com.jjoseba.pecsmobile.model;
 
+import android.content.Context;
 import android.graphics.Color;
 
+import com.jjoseba.pecsmobile.adapter.CardGridAdapter;
 import com.jjoseba.pecsmobile.util.FileUtils;
 
 import java.io.Serializable;
@@ -9,7 +11,7 @@ import java.io.Serializable;
 /**
  * Created by Joseba on 28/12/2014.
  */
-public class CardPECS implements Serializable{
+public abstract class Card implements Serializable{
 
     public static int DEFAULT_COLOR = 0xFF555555;
 
@@ -24,6 +26,7 @@ public class CardPECS implements Serializable{
     //only for UI purposes
     public boolean animateOnAppear;
     public boolean animateDeletion;
+
 
     public String getLabel() { return label; }
     public void setLabel(String label) { this.label = label; }
@@ -60,5 +63,7 @@ public class CardPECS implements Serializable{
 
     public int getParentID() { return parentID; }
     public void setParentID(int parentID) { this.parentID = parentID; }
+
+    public abstract void inflateCard(CardGridAdapter.CardViewHolder viewHolder, Context ctx);
 
 }

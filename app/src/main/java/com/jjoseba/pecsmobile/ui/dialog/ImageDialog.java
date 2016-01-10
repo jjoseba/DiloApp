@@ -1,23 +1,17 @@
-package com.jjoseba.pecsmobile.ui;
+package com.jjoseba.pecsmobile.ui.dialog;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.jjoseba.pecsmobile.R;
-import com.jjoseba.pecsmobile.app.DBHelper;
 import com.jjoseba.pecsmobile.fragment.NewCardFragment;
-import com.jjoseba.pecsmobile.model.CardPECS;
 
 public class ImageDialog extends Dialog{
 

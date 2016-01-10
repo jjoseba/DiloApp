@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -18,13 +17,11 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.adapter.CardGridAdapter;
-import com.jjoseba.pecsmobile.adapter.SelectedCardsAdapter;
-import com.jjoseba.pecsmobile.model.CardPECS;
+import com.jjoseba.pecsmobile.model.Card;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -35,7 +32,7 @@ public class ShowCardsActivity extends Activity implements OnInitListener {
 
     private static final int MY_DATA_CHECK_CODE = 0;
 
-    private ArrayList<CardPECS> selectedCards = new ArrayList<CardPECS>();
+    private ArrayList<Card> selectedCards = new ArrayList<Card>();
     private GridView cardsList;
 
     private TextToSpeech myTTS;
@@ -60,9 +57,9 @@ public class ShowCardsActivity extends Activity implements OnInitListener {
         myTTS = new TextToSpeech(this, this);
 
         Bundle extras = getIntent().getExtras();
-        selectedCards = (ArrayList<CardPECS>) extras.getSerializable("result");
+        selectedCards = (ArrayList<Card>) extras.getSerializable("result");
         String title = "";
-        for (CardPECS card : selectedCards){ title += card.getLabel() + ", ";  }
+        for (Card card : selectedCards){ title += card.getLabel() + ", ";  }
 
         ActionBar actionBar = getActionBar();
         if (actionBar != null){

@@ -4,17 +4,20 @@ import com.jjoseba.pecsmobile.adapter.SelectedCardsAdapter;
 import com.jjoseba.pecsmobile.fragment.CardsPage;
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.fragment.NewCardFragment;
-import com.jjoseba.pecsmobile.model.CardPECS;
-import com.jjoseba.pecsmobile.ui.EditCardDialog;
-import com.jjoseba.pecsmobile.ui.EnableableViewPager;
+import com.jjoseba.pecsmobile.model.Card;
+import com.jjoseba.pecsmobile.ui.cards.CardPECS;
+import com.jjoseba.pecsmobile.ui.dialog.EditCardDialog;
+import com.jjoseba.pecsmobile.ui.viewpager.EnableableViewPager;
 import com.jjoseba.pecsmobile.ui.CardsGridListener;
 import com.jjoseba.pecsmobile.ui.NewCardListener;
-import com.jjoseba.pecsmobile.ui.ZoomOutPageTransformer;
+import com.jjoseba.pecsmobile.ui.viewpager.ZoomOutPageTransformer;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
@@ -22,12 +25,18 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
+
 import org.lucasr.twowayview.TwoWayView;
 
 import java.util.ArrayList;
@@ -43,14 +52,14 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
     private EnableableViewPager mPager;
     private ScreenSlidePagerAdapter mPagerAdapter;
     private ZoomOutPageTransformer mPageTransformer;
-    private HashMap<CardPECS, CardsPage> cardPages = new HashMap<CardPECS, CardsPage>();
+    private HashMap<Card, CardsPage> cardPages = new HashMap<Card, CardsPage>();
     private int mLastPage;
     private NewCardFragment newCardFragment;
     private View newCardContainer;
     private boolean newCardIsHiding = false;
 
-    protected ArrayList<CardPECS> navigationCards = new ArrayList<CardPECS>();
-    protected ArrayList<CardPECS> selectedCards = new ArrayList<CardPECS>();
+    protected ArrayList<Card> navigationCards = new ArrayList<Card>();
+    protected ArrayList<Card> selectedCards = new ArrayList<Card>();
     private TwoWayView selectedCardsList;
     private SelectedCardsAdapter selectedCardsAdapter;
 
@@ -154,14 +163,14 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
 
         mLastPage = savedInstanceState.getInt("currentPage", mLastPage);
-        ArrayList<CardPECS> cards = (ArrayList<CardPECS>) savedInstanceState.getSerializable("cards");
+        ArrayList<Card> cards = (ArrayList<Card>) savedInstanceState.getSerializable("cards");
         if (cards != null && cards.size() > 0){
             navigationCards = cards;
         }
     }
 
     @Override
-    public void onCardSelected(CardPECS clicked) {
+    public void onCardSelected(Card clicked) {
 
         if (clicked.isCategory()){
             int target = mPager.getCurrentItem() + 1;
@@ -181,14 +190,52 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
     }
 
     @Override
-    public void onAddCardButton(CardPECS clicked){
+    public void onAddCardButton(Card clicked){
         animateCardContainer(FADE_IN);
         newCardFragment.resetForm(clicked);
     }
 
+    @Override
+    public void onTempCardButton() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+        builder.setCancelable(true);
+        final AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                input.setFocusableInTouchMode(true);
+                input.requestFocusFromTouch();
+                InputMethodManager lManager = (InputMethodManager)CardsActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                lManager.showSoftInput(input, 0);
+            }
+        });
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                CardPECS card = new CardPECS();
+                card.setLabel(input.getText().toString());
+                selectedCards.add(card);
+                selectedCardsAdapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            //@Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                dialog.dismiss();
+                return true;
+            }
+        });
+        dialog.show();
+    }
 
     @Override
-    public void onCardLongClick(final CardPECS cardPressed) {
+    public void onCardLongClick(final Card cardPressed) {
         final EditCardDialog dialog = new EditCardDialog(this, cardPressed);
         dialog.show();
 
@@ -196,7 +243,7 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
             @Override
             public void onDismiss(DialogInterface d) {
                 if (dialog.hasDataChanged()){
-                    CardPECS currentCard = navigationCards.get(mLastPage);
+                    Card currentCard = navigationCards.get(mLastPage);
                     CardsPage currentPage = cardPages.get(currentCard);
                     currentPage.notifyCardChanged(cardPressed, dialog.isCardDeleted());
                 }
@@ -237,7 +284,7 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
 
         if (currentPage < mLastPage){
             // swiping back --> remove last page
-            CardPECS lastPageCard = navigationCards.get(mLastPage);
+            Card lastPageCard = navigationCards.get(mLastPage);
             mPagerAdapter.removeFragment(lastPageCard);
             navigationCards.remove(mLastPage);
             mPagerAdapter.notifyDataSetChanged();
@@ -256,9 +303,9 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
     public void onPageScrollStateChanged(int i) {  }
 
     @Override
-    public void onNewCard(CardPECS card) {
+    public void onNewCard(Card card) {
         animateCardContainer(FADE_OUT);
-        CardPECS currentCard = navigationCards.get(mLastPage);
+        Card currentCard = navigationCards.get(mLastPage);
         CardsPage currentPage = cardPages.get(currentCard);
         currentPage.addCard(card);
     }
@@ -284,7 +331,7 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
 
         @Override
         public Fragment getItem(int position) {
-            CardPECS card = navigationCards.get(position);
+            Card card = navigationCards.get(position);
             CardsPage page = cardPages.get(card);
             if (page == null){
                 page = CardsPage.newInstance(card);
@@ -298,7 +345,7 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
             return POSITION_NONE;
         }
 
-        public void removeFragment(CardPECS cardToRemove){
+        public void removeFragment(Card cardToRemove){
             CardsPage page = cardPages.get(cardToRemove);
             cardPages.remove(cardToRemove);
             mFragmentManager.beginTransaction().remove(page).commit();

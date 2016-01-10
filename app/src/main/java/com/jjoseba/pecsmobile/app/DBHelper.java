@@ -7,7 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
-import com.jjoseba.pecsmobile.model.CardPECS;
+import com.jjoseba.pecsmobile.model.Card;
+import com.jjoseba.pecsmobile.ui.cards.CardPECS;
 import com.jjoseba.pecsmobile.util.FileUtils;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
@@ -31,7 +32,7 @@ public class DBHelper extends SQLiteAssetHelper {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 
-        protected ContentValues getRowValuesFromCard(CardPECS card){
+        protected ContentValues getRowValuesFromCard(Card card){
             ContentValues cardValues = new ContentValues();
             cardValues.put(COLUMN_LABEL, card.getLabel());
             cardValues.put(COLUMN_CATEGORY, card.isCategory());
@@ -43,16 +44,16 @@ public class DBHelper extends SQLiteAssetHelper {
             return cardValues;
         }
 
-        public ArrayList<CardPECS> getCards(int parent) {
+        public ArrayList<Card> getCards(int parent) {
 
-            ArrayList<CardPECS> cards = new ArrayList<CardPECS>();
+            ArrayList<Card> cards = new ArrayList<Card>();
             SQLiteDatabase db = getReadableDatabase();
             Cursor cursor = db.query(TABLE_CARDS, new String[]{COLUMN_ID, COLUMN_CATEGORY, COLUMN_LABEL, COLUMN_COLOR, COLUMN_IMAGE, COLUMN_PARENT, COLUMN_DISABLED},
                     COLUMN_PARENT + " == " + parent, null, null, null, null);
 
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                CardPECS card = new CardPECS();
+                Card card = new CardPECS();
                 card.setCardId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
                 card.setParentID(cursor.getInt(cursor.getColumnIndex(COLUMN_PARENT)));
                 card.setLabel(cursor.getString(cursor.getColumnIndex(COLUMN_LABEL)));
@@ -69,7 +70,7 @@ public class DBHelper extends SQLiteAssetHelper {
 
         }
 
-        public boolean addCard(int parent, CardPECS newCard){
+        public boolean addCard(int parent, Card newCard){
 
             SQLiteDatabase db = getReadableDatabase();
             newCard.setParentID(parent);
@@ -79,14 +80,14 @@ public class DBHelper extends SQLiteAssetHelper {
             return (id > 0);
         }
 
-        public boolean deleteCard(CardPECS cardToDelete){
+        public boolean deleteCard(Card cardToDelete){
             SQLiteDatabase db = getReadableDatabase();
             int cardID = cardToDelete.getCardId();
             int result = db.delete(TABLE_CARDS, COLUMN_ID + " == " + cardID + " OR " + COLUMN_PARENT + " == " + cardID, null);
             return (result > 0);
         }
 
-        public boolean updateCard(CardPECS card){
+        public boolean updateCard(Card card){
             SQLiteDatabase db = getReadableDatabase();
             int changes = db.update(TABLE_CARDS, getRowValuesFromCard(card), COLUMN_ID + " == " + card.getCardId(), null);
             return (changes > 0);

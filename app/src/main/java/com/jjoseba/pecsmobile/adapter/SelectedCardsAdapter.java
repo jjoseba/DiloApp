@@ -9,8 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jjoseba.pecsmobile.R;
-import com.jjoseba.pecsmobile.model.CardPECS;
-import com.jjoseba.pecsmobile.ui.ButtonCard;
+import com.jjoseba.pecsmobile.model.Card;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -19,10 +18,10 @@ import java.util.ArrayList;
 
 public class SelectedCardsAdapter  extends BaseAdapter {
 
-    private ArrayList<CardPECS> cards;
+    private ArrayList<Card> cards;
     private Context ctx;
 
-    public SelectedCardsAdapter(Context context, ArrayList<CardPECS> cards){
+    public SelectedCardsAdapter(Context context, ArrayList<Card> cards){
         this.cards = cards;
         this.ctx = context;
     }
@@ -51,7 +50,7 @@ public class SelectedCardsAdapter  extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         CardViewHolder holder;
-        CardPECS card = cards.get(position);
+        Card card = cards.get(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(ctx).inflate(R.layout.card_small, null);

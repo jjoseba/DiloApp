@@ -1,21 +1,18 @@
-package com.jjoseba.pecsmobile.ui;
+package com.jjoseba.pecsmobile.ui.dialog;
 
-import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.app.DBHelper;
-import com.jjoseba.pecsmobile.model.CardPECS;
+import com.jjoseba.pecsmobile.model.Card;
 import com.jjoseba.pecsmobile.util.FileUtils;
 import com.squareup.picasso.Picasso;
 
@@ -26,11 +23,11 @@ import at.markushi.ui.CircleButton;
 public class EditCardDialog extends Dialog{
 
     private Context ctx;
-    private CardPECS card;
+    private Card card;
     private boolean cardChanged = false;
     private boolean cardDeleted = false;
 
-    public EditCardDialog(Context context, CardPECS card){
+    public EditCardDialog(Context context, Card card){
         super(context);
         ctx = context;
         this.card = card;
