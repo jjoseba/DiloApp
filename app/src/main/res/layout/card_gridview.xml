@@ -45,7 +45,7 @@
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/addButton"
+        android:id="@+id/button_image"
         android:background="@color/black_overlay"
         android:src="@drawable/newcard"
         android:scaleType="fitCenter"

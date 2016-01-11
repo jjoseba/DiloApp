@@ -49,11 +49,6 @@ public class ShowCardsActivity extends Activity implements OnInitListener {
         setContentView(R.layout.activity_show_cards);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        /*
-        Intent checkTTSIntent = new Intent();
-        checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
-        startActivityForResult(checkTTSIntent, MY_DATA_CHECK_CODE);
-        */
         myTTS = new TextToSpeech(this, this);
 
         Bundle extras = getIntent().getExtras();
@@ -79,7 +74,7 @@ public class ShowCardsActivity extends Activity implements OnInitListener {
             cardsList.setPadding(metrics.widthPixels / 4, 0,metrics.widthPixels / 4, 0);
             cardsList.setColumnWidth(metrics.widthPixels / 2);
         }
-        CardGridAdapter adapter = new CardGridAdapter(this, R.layout.card_results, selectedCards);
+        CardGridAdapter adapter = new CardGridAdapter(this, R.layout.card_gridview, selectedCards);
         cardsList.setAdapter(adapter);
         final String finalTitle = title;
         cardsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

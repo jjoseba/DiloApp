@@ -8,9 +8,6 @@ import com.jjoseba.pecsmobile.util.FileUtils;
 
 import java.io.Serializable;
 
-/**
- * Created by Joseba on 28/12/2014.
- */
 public abstract class Card implements Serializable{
 
     public static int DEFAULT_COLOR = 0xFF555555;
@@ -27,6 +24,7 @@ public abstract class Card implements Serializable{
     public boolean animateOnAppear;
     public boolean animateDeletion;
 
+    public abstract int getLayoutResource();
 
     public String getLabel() { return label; }
     public void setLabel(String label) { this.label = label; }

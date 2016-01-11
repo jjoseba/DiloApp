@@ -5,8 +5,11 @@ import com.jjoseba.pecsmobile.fragment.CardsPage;
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.fragment.NewCardFragment;
 import com.jjoseba.pecsmobile.model.Card;
+import com.jjoseba.pecsmobile.ui.EditTextBackEvent;
 import com.jjoseba.pecsmobile.ui.cards.CardPECS;
+import com.jjoseba.pecsmobile.ui.cards.CardTempPECS;
 import com.jjoseba.pecsmobile.ui.dialog.EditCardDialog;
+import com.jjoseba.pecsmobile.ui.dialog.HiddenInputDialog;
 import com.jjoseba.pecsmobile.ui.viewpager.EnableableViewPager;
 import com.jjoseba.pecsmobile.ui.CardsGridListener;
 import com.jjoseba.pecsmobile.ui.NewCardListener;
@@ -26,8 +29,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.InputType;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
@@ -197,41 +203,19 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
 
     @Override
     public void onTempCardButton() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        builder.setView(input);
-        builder.setCancelable(true);
-        final AlertDialog dialog = builder.create();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+        HiddenInputDialog dialog = new HiddenInputDialog();
+        dialog.setOnTextListener(new HiddenInputDialog.InputListener() {
             @Override
-            public void onShow(DialogInterface dialog) {
-                input.setFocusableInTouchMode(true);
-                input.requestFocusFromTouch();
-                InputMethodManager lManager = (InputMethodManager)CardsActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
-                lManager.showSoftInput(input, 0);
-            }
-        });
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                CardPECS card = new CardPECS();
-                card.setLabel(input.getText().toString());
+            public void onText(String cardLabel) {
+                CardTempPECS card = new CardTempPECS();
+                card.setCardColor(navigationCards.get(navigationCards.size() - 1).getHexCardColor());
+                card.setLabel(cardLabel);
                 selectedCards.add(card);
                 selectedCardsAdapter.notifyDataSetChanged();
-                dialog.dismiss();
             }
         });
-        input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            //@Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                dialog.dismiss();
-                return true;
-            }
-        });
-        dialog.show();
+        dialog.show(this.getFragmentManager(), "Hidden");
     }
 
     @Override

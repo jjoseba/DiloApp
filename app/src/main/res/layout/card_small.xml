@@ -26,4 +26,15 @@
 
     </LinearLayout>
 
+    <TextView
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/card_label"
+        android:layout_gravity="center"
+        android:textSize="13sp"
+        android:maxLines="8"
+        android:text="tt"
+        android:textAlignment="center"
+        android:gravity="center"/>
+
 </FrameLayout>

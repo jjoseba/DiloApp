@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.model.Card;
+import com.jjoseba.pecsmobile.ui.cards.ButtonCard;
 import com.jjoseba.pecsmobile.util.ReverseInterpolator;
 
 import java.util.List;
@@ -25,6 +26,9 @@ public class CardGridAdapter extends ArrayAdapter<Card> {
 
     public static int bgOverlayColor;
     public static int transparentColor;
+
+    private static final int CARD_TYPE_PECS = 0;
+    private static final int CARD_TYPE_BUTTON = 1;
 
     public CardGridAdapter(Context context, int layout, List<Card> cards) {
         super(context, layout, cards);
@@ -40,7 +44,7 @@ public class CardGridAdapter extends ArrayAdapter<Card> {
         public TextView label;
         public ImageView image;
         public View cardFrame;
-        public ImageView addButton;
+        public ImageView buttonImage;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -49,14 +53,22 @@ public class CardGridAdapter extends ArrayAdapter<Card> {
         final Card card = cards.get(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(_ctx).inflate(layout, null);
+
+            switch (getItemViewType(position)){
+                case CARD_TYPE_BUTTON:
+                    convertView = LayoutInflater.from(_ctx).inflate(card.getLayoutResource(), null);
+                    break;
+                case CARD_TYPE_PECS:
+                    convertView = LayoutInflater.from(_ctx).inflate(layout, null);
+                    break;
+            }
 
             // Set up the ViewHolder
             holder = new CardViewHolder();
             holder.label = (TextView) convertView.findViewById(R.id.card_label);
             holder.image = (ImageView) convertView.findViewById(R.id.card_image);
             holder.cardFrame = convertView.findViewById(R.id.card_frame);
-            holder.addButton = (ImageView) convertView.findViewById(R.id.addButton);
+            holder.buttonImage = (ImageView) convertView.findViewById(R.id.button_image);
 
             convertView.setTag(holder);
         } else {
@@ -114,6 +126,18 @@ public class CardGridAdapter extends ArrayAdapter<Card> {
     @Override
     public long getItemId(int position) {
         return 0;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        // Define a way to determine which layout to use, here it's just evens and odds.
+        Card card = cards.get(position);
+        return (card instanceof ButtonCard ? CARD_TYPE_BUTTON : CARD_TYPE_PECS);
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 2; // Count of different layouts
     }
 
     public void removeCard(Card card) {

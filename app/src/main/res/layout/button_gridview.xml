@@ -6,46 +6,47 @@
     android:background="@drawable/gridcard"
     android:clickable="false">
 
-    <LinearLayout
+    <FrameLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:id="@+id/card_frame"
-    android:padding="4dp"
+    android:padding="8dp"
     android:orientation="vertical"
     android:background="@color/green">
 
         <com.jjoseba.pecsmobile.ui.SquareImageView
             android:id="@+id/card_image"
-
             android:src="@drawable/ic_launcher"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:visibility="visible"
+            android:layout_marginBottom="23dp">
         </com.jjoseba.pecsmobile.ui.SquareImageView>
 
         <TextView
             android:id="@+id/card_label"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:text="@string/app_name"
-            android:textSize="18sp"
+            android:textSize="60sp"
             android:textAlignment="center"
             android:textColor="@color/black_overlay"
             android:layout_gravity="center"
-            android:background="@color/white"
             android:paddingTop="5dp"
             android:autoText="false"
+            android:background="@color/white"
             android:gravity="center"
             android:textStyle="bold">
         </TextView>
 
 
-    </LinearLayout>
+    </FrameLayout>
 
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/addButton"
+        android:id="@+id/button_image"
         android:background="@color/black_overlay"
         android:src="@drawable/newcard"
         android:scaleType="fitCenter"

@@ -20,11 +20,16 @@ public class ButtonCard extends Card {
     }
 
     @Override
+    public int getLayoutResource() {
+        return R.layout.button_gridview;
+    }
+
+    @Override
     public void inflateCard(CardGridAdapter.CardViewHolder holder, Context ctx) {
 
         holder.cardFrame.setVisibility(View.INVISIBLE);
-        holder.addButton.setImageResource(R.drawable.newcard);
-        holder.addButton.setVisibility(View.VISIBLE);
-        holder.addButton.setBackgroundColor(CardGridAdapter.bgOverlayColor);
+        holder.buttonImage.setImageResource(R.drawable.newcard);
+        holder.buttonImage.setVisibility(View.VISIBLE);
+        holder.buttonImage.setBackgroundColor(CardGridAdapter.bgOverlayColor);
     }
 }

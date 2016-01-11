@@ -10,10 +10,12 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
-/**
- * Created by Joseba on 17/12/2015.
- */
 public class CardPECS extends Card {
+
+    @Override
+    public int getLayoutResource() {
+        return R.layout.card_gridview;
+    }
 
     @Override
     public void inflateCard(CardGridAdapter.CardViewHolder holder, Context ctx) {
@@ -21,14 +23,14 @@ public class CardPECS extends Card {
         holder.cardFrame.setBackgroundColor(this.getCardColor());
         holder.label.setText(this.getLabel());
         holder.cardFrame.setVisibility(View.VISIBLE);
-        holder.addButton.setVisibility(View.GONE);
+        holder.buttonImage.setVisibility(View.GONE);
         File imageFile = new File( this.getImagePath());
         Picasso.with(ctx).load(imageFile).placeholder(R.drawable.empty).error(R.drawable.empty).into(holder.image);
 
         if (this.isDisabled()){
-            holder.addButton.setBackgroundColor(CardGridAdapter.transparentColor);
-            holder.addButton.setVisibility(View.VISIBLE);
-            holder.addButton.setImageResource(R.drawable.disabledcard);
+            holder.buttonImage.setBackgroundColor(CardGridAdapter.transparentColor);
+            holder.buttonImage.setVisibility(View.VISIBLE);
+            holder.buttonImage.setImageResource(R.drawable.disabledcard);
         }
     }
 
