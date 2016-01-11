@@ -13,6 +13,7 @@ import android.widget.GridView;
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.adapter.CardGridAdapter;
 import com.jjoseba.pecsmobile.app.DBHelper;
+import com.jjoseba.pecsmobile.app.PECSMobile;
 import com.jjoseba.pecsmobile.model.Card;
 import com.jjoseba.pecsmobile.ui.cards.ButtonCard;
 import com.jjoseba.pecsmobile.ui.CardsGridListener;
@@ -48,8 +49,8 @@ public class CardsPage extends Fragment {
         this.parentCategory = (Card) args.get(PARENT_CATEGORY);
 
         pecs.addAll(getCards());
-        pecs.add(new ButtonCard());
-        pecs.add(new TempButtonCard());
+        if (PECSMobile.SHOW_ADD_BUTTON_CARD) pecs.add(new ButtonCard());
+        if (PECSMobile.SHOW_TEMP_TEXT_BUTTON_CARD) pecs.add(new TempButtonCard());
     }
 
     @Override
@@ -111,7 +112,7 @@ public class CardsPage extends Fragment {
 
 
     public void addCard(Card card) {
-        pecs.add(pecs.size() - 1, card);
+        pecs.add(pecs.size() - PECSMobile.CUSTOM_BUTTON_CARDS, card);
         cardsAdapter.notifyDataSetChanged();
     }
 

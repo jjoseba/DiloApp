@@ -13,6 +13,10 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
  */
 public class PECSMobile extends Application {
 
+    public static final boolean SHOW_ADD_BUTTON_CARD = true;
+    public static final boolean SHOW_TEMP_TEXT_BUTTON_CARD = true;
+    public static int CUSTOM_BUTTON_CARDS;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -24,6 +28,11 @@ public class PECSMobile extends Application {
 
         //We set the StoragePath
         FileUtils.initialize(getApplicationContext());
+
+        //We sum all the custom cards
+        CUSTOM_BUTTON_CARDS = 0;
+        if (SHOW_ADD_BUTTON_CARD) CUSTOM_BUTTON_CARDS++;
+        if (SHOW_TEMP_TEXT_BUTTON_CARD) CUSTOM_BUTTON_CARDS++;
     }
 
 }
