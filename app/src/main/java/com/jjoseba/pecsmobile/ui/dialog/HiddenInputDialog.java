@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -60,9 +61,10 @@ public class HiddenInputDialog extends DialogFragment{
         dialog.setCanceledOnTouchOutside(true);
 
         input = new EditTextBackEvent(getActivity());
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
         input.setFocusableInTouchMode(true);
-        input.setPadding(0, 0, 0, 0);
+        input.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+        input.setPadding(15, 0, 0, 0);
         input.setBackgroundResource(R.color.transparent);
 
         return input;
@@ -81,8 +83,8 @@ public class HiddenInputDialog extends DialogFragment{
         attrs.gravity = Gravity.TOP | Gravity.LEFT;
         attrs.horizontalMargin = 0;
         attrs.verticalMargin = 0;
-        attrs.height = (int) (metrics.heightPixels * 0.01);
-        attrs.width = (int) (metrics.widthPixels * 0.01);
+        attrs.height = (int) (metrics.density * 75);
+        attrs.width = (int) (metrics.widthPixels);
 
         window.setAttributes(attrs);
 
