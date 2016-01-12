@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 
@@ -243,6 +244,8 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
                 if (!show){
                     newCardContainer.setVisibility(View.GONE);
                     newCardIsHiding = false;
+                    InputMethodManager imm =  (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(newCardContainer.getWindowToken(), 0);
                 }
             }
             @Override
