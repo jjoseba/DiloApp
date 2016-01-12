@@ -18,5 +18,6 @@ public class CardTempPECS extends ButtonCard {
         holder.buttonImage.setVisibility(View.GONE);
         //holder.buttonImage.setBackgroundColor(CardGridAdapter.bgOverlayColor);
         holder.label.setText(this.getLabel());
+        holder.label.setTextColor(this.getCardColor());
     }
 }

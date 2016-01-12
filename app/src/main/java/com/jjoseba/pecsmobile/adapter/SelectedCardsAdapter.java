@@ -73,6 +73,7 @@ public class SelectedCardsAdapter  extends BaseAdapter {
             //holder.image.setVisibility(View.INVISIBLE);
             holder.image.setImageDrawable(null);
             holder.label.setVisibility(View.VISIBLE);
+            holder.label.setTextColor(card.getCardColor());
             holder.label.setText(card.getLabel());
         }
         else{
