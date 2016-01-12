@@ -181,9 +181,7 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
                 selectedCards.add(clicked);
                 selectedCardsAdapter.notifyDataSetChanged();
             }
-
         }
-
     }
 
     @Override

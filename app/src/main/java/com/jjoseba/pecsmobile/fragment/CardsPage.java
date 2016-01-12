@@ -87,7 +87,7 @@ public class CardsPage extends Fragment {
                         if (clicked instanceof TempButtonCard)
                             clickListener.onTempCardButton();
                         else
-                            clickListener.onAddCardButton(clicked);
+                            clickListener.onAddCardButton(parentCategory);
                     } else if (!clicked.isDisabled()){
                         clickListener.onCardSelected(clicked);
                     }
