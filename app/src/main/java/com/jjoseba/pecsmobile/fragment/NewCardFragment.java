@@ -13,6 +13,7 @@ import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 import android.text.style.RelativeSizeSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,6 +39,8 @@ import com.larswerkman.holocolorpicker.ValueBar;
 import com.soundcloud.android.crop.Crop;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+
 public class NewCardFragment extends Fragment {
 
     private static float EXTRA_TRANSLATION = 300f;
@@ -45,6 +48,7 @@ public class NewCardFragment extends Fragment {
     private static String PREVIOUS_COLOR = "previousColor";
     public static final int REQUEST_IMAGE = 1;
     public static final int REQUEST_CAMERA = 2;
+    public static final int REQUEST_CROP = 6709;
 
     private ColorPicker picker;
     private View colorPickerContainer;
@@ -269,13 +273,14 @@ public class NewCardFragment extends Fragment {
                  case REQUEST_IMAGE:
                      Uri selectedImage = imageReturnedIntent.getData();
                      Picasso.with(this.getActivity()).load(selectedImage).into(cardImage);
-                     cardImagePath = FileUtils.getPath(this.getActivity(), selectedImage);
                      hideTextForImage();
+                     cardImagePath = FileUtils.copyFileTemp(this.getActivity(), selectedImage);
+                     Uri cardImageUri = Uri.fromFile(new File(cardImagePath));
 
-                     Crop.of(selectedImage, selectedImage)
+                     Crop.of(cardImageUri, FileUtils.getCropTempResultURI())
                          .asSquare()
                          .withMaxSize(300, 300)
-                         .start(getActivity());
+                         .start(this.getActivity());
                      break;
 
                  case REQUEST_CAMERA:
@@ -283,8 +288,8 @@ public class NewCardFragment extends Fragment {
                      Bitmap imageBitmap = (Bitmap) extras.get("data");
                      cardImage.setImageBitmap(imageBitmap);
                      hideTextForImage();
-
                      break;
+
              }
          }
 
@@ -312,5 +317,11 @@ public class NewCardFragment extends Fragment {
         switchDisabled.setChecked(false);
         cardImage.setImageDrawable(null);
         this.parentCard = clicked.getCardId();
+    }
+
+    public void notifySuccessfulCrop(){
+        Log.d("Crop", "Loading:" + cardImagePath);
+        cardImagePath = FileUtils.copyFileTemp(getActivity(), FileUtils.getCropTempResultURI());
+        //Picasso.with(getActivity()).load(cardImagePath).error(R.drawable.empty).into(cardImage);
     }
 }

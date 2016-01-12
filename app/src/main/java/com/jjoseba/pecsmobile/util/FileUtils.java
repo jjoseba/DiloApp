@@ -19,15 +19,25 @@ public class FileUtils {
 
     private static String storageBaseLocation;
     private static String IMAGES_DIR = "images";
+    private static Uri cropTempResultURI;
 
     public static String getImagesPath(){
         return storageBaseLocation + File.separator;
     }
 
-    public static String copyFileToInternal(String filePath){
+    public static Uri getCropTempResultURI(){
+        if (cropTempResultURI == null){
+            cropTempResultURI = Uri.fromFile(new File( getImagesPath() + "cropped.jpg"));
+        }
+        return cropTempResultURI;
+    }
 
-        String destPath = System.currentTimeMillis() + ".jpg";
-        File source = new File(filePath);
+    public static String copyFile(String fileSourcePath, String fileDestinationName){
+
+        String destPath = (fileDestinationName != null)
+                ? fileDestinationName
+                : fileSourcePath.substring(fileSourcePath.lastIndexOf(File.pathSeparator));
+        File source = new File(fileSourcePath);
         File destination = new File(getImagesPath() + destPath);
 
         try {
@@ -44,6 +54,24 @@ public class FileUtils {
             e.printStackTrace();
         }
 
+        return destination.getPath();
+    }
+
+    public static String copyFileTemp(String filePath){
+        String tempPath = "temp.jpg";
+        return copyFile(filePath, tempPath);
+    }
+
+    public static String copyFileTemp(Context ctx, Uri fileUri){
+        String sourcePath = getPath(ctx, fileUri);
+        return copyFileTemp(sourcePath);
+    }
+
+    public static String copyFileToInternal(String filePath){
+
+        String destPath = System.currentTimeMillis() + ".jpg";
+        copyFile(filePath, destPath );
+
         return destPath;
     }
 
@@ -58,7 +86,7 @@ public class FileUtils {
         return imageFile.exists() && imageFile.delete();
     }
 
-    public static String getPath(Activity ctx, Uri uri) {
+    public static String getPath(Context ctx, Uri uri) {
         // just some safety built in
         if( uri == null ) {
             // TODO perform some logging or show user feedback
