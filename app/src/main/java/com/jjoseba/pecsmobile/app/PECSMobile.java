@@ -15,6 +15,9 @@ public class PECSMobile extends Application {
 
     public static final boolean SHOW_ADD_BUTTON_CARD = true;
     public static final boolean SHOW_TEMP_TEXT_BUTTON_CARD = true;
+    public static final int DISPLAY_MODE_CARDS = 1;
+    public static final int DISPLAY_MODE_TEXT = 2;
+    public static final int DISPLAY_MODE = DISPLAY_MODE_TEXT;
     public static int CUSTOM_BUTTON_CARDS;
 
     @Override

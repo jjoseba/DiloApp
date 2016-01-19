@@ -18,9 +18,11 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.adapter.SelectedCardsAdapter;
+import com.jjoseba.pecsmobile.app.PECSMobile;
 import com.jjoseba.pecsmobile.fragment.CardsPage;
 import com.jjoseba.pecsmobile.fragment.NewCardFragment;
 import com.jjoseba.pecsmobile.model.Card;
@@ -58,6 +60,7 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
     protected ArrayList<Card> navigationCards = new ArrayList<Card>();
     protected ArrayList<Card> selectedCards = new ArrayList<Card>();
     private TwoWayView selectedCardsList;
+    private TextView selectedCardsText;
     private SelectedCardsAdapter selectedCardsAdapter;
 
     private TextToSpeech myTTS;
@@ -93,15 +96,28 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
 
         selectedCardsAdapter = new SelectedCardsAdapter(this, selectedCards);
         selectedCardsList = (TwoWayView) findViewById(R.id.selected_cards_list);
+        selectedCardsText = (TextView) findViewById(R.id.selected_cards_text);
         selectedCardsList.setAdapter(selectedCardsAdapter);
-        selectedCardsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(CardsActivity.this, ShowCardsActivity.class);
-                i.putExtra("result", selectedCards);
-                startActivity(i);
-            }
-        });
+        switch(PECSMobile.DISPLAY_MODE){
+            //In cards mode, we hide the textview and apply the listener
+            case PECSMobile.DISPLAY_MODE_CARDS:
+                selectedCardsText.setVisibility(View.GONE);
+                selectedCardsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent i = new Intent(CardsActivity.this, ShowCardsActivity.class);
+                        i.putExtra("result", selectedCards);
+                        startActivity(i);
+                    }
+                });
+                break;
+
+            //In text mode, we simply hide the cards view
+            case PECSMobile.DISPLAY_MODE_TEXT:
+                selectedCardsList.setVisibility(View.GONE);
+                break;
+        }
+
 
         ImageButton removeCardBtn = (ImageButton) findViewById(R.id.removeLastCard);
         removeCardBtn.setOnClickListener(new View.OnClickListener() {
@@ -166,6 +182,14 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
         }
     }
 
+    private void updateTextDisplay(){
+        String message = "";
+        for (Card card : navigationCards){
+            message += card.getLabel()==null ? "" : card.getLabel() + " ";
+        }
+        selectedCardsText.setText(message);
+    }
+
     @Override
     public void onCardSelected(Card clicked) {
 
@@ -177,9 +201,18 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
             mPager.setPagingEnabled(true);
         }
         else{
-            if (!selectedCards.contains(clicked)){
-                selectedCards.add(clicked);
-                selectedCardsAdapter.notifyDataSetChanged();
+            switch (PECSMobile.DISPLAY_MODE ){
+                case PECSMobile.DISPLAY_MODE_CARDS:
+                    if (!selectedCards.contains(clicked)){
+                        selectedCards.add(clicked);
+                        selectedCardsAdapter.notifyDataSetChanged();
+                    }
+                    break;
+
+                case PECSMobile.DISPLAY_MODE_TEXT:
+                    updateTextDisplay();
+                    selectedCardsText.setText(selectedCardsText.getText().toString() + clicked.getLabel());
+                    break;
             }
         }
     }
@@ -197,11 +230,21 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
         dialog.setOnTextListener(new HiddenInputDialog.InputListener() {
             @Override
             public void onText(String cardLabel) {
-                CardTempPECS card = new CardTempPECS();
-                card.setCardColor(navigationCards.get(navigationCards.size() - 1).getHexCardColor());
-                card.setLabel(cardLabel);
-                selectedCards.add(card);
-                selectedCardsAdapter.notifyDataSetChanged();
+                switch (PECSMobile.DISPLAY_MODE ){
+                    case PECSMobile.DISPLAY_MODE_CARDS:
+                        CardTempPECS card = new CardTempPECS();
+                        card.setCardColor(navigationCards.get(navigationCards.size() - 1).getHexCardColor());
+                        card.setLabel(cardLabel);
+                        selectedCards.add(card);
+                        selectedCardsAdapter.notifyDataSetChanged();
+                        break;
+
+                    case PECSMobile.DISPLAY_MODE_TEXT:
+                        updateTextDisplay();
+                        selectedCardsText.setText(selectedCardsText.getText().toString() + cardLabel);
+                        break;
+                }
+
             }
         });
         dialog.show(this.getFragmentManager(), "Hidden");
@@ -324,6 +367,13 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
             CardsPage page = cardPages.get(cardToRemove);
             cardPages.remove(cardToRemove);
             mFragmentManager.beginTransaction().remove(page).commit();
+
+        }
+
+        @Override
+        public void notifyDataSetChanged(){
+            super.notifyDataSetChanged();
+            updateTextDisplay();
         }
 
         @Override
