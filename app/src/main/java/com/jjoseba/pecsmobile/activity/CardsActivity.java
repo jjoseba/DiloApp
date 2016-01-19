@@ -98,6 +98,8 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
         selectedCardsList = (TwoWayView) findViewById(R.id.selected_cards_list);
         selectedCardsText = (TextView) findViewById(R.id.selected_cards_text);
         selectedCardsList.setAdapter(selectedCardsAdapter);
+        ImageButton removeCardBtn = (ImageButton) findViewById(R.id.removeLastCard);
+
         switch(PECSMobile.DISPLAY_MODE){
             //In cards mode, we hide the textview and apply the listener
             case PECSMobile.DISPLAY_MODE_CARDS:
@@ -110,25 +112,27 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
                         startActivity(i);
                     }
                 });
+                removeCardBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (selectedCards.size() > 0) {
+                            selectedCards.remove(selectedCards.size() - 1);
+                            selectedCardsAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
                 break;
 
-            //In text mode, we simply hide the cards view
+            //In text mode, we simply hide the cards view and the button
             case PECSMobile.DISPLAY_MODE_TEXT:
                 selectedCardsList.setVisibility(View.GONE);
+                removeCardBtn.setVisibility(View.GONE);
                 break;
         }
 
 
-        ImageButton removeCardBtn = (ImageButton) findViewById(R.id.removeLastCard);
-        removeCardBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (selectedCards.size() > 0){
-                    selectedCards.remove(selectedCards.size()-1);
-                    selectedCardsAdapter.notifyDataSetChanged();
-                }
-            }
-        });
+
+
 
         myTTS = new TextToSpeech(this, this);
     }
