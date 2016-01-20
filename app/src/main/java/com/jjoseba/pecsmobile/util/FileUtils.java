@@ -25,9 +25,9 @@ public class FileUtils {
         return storageBaseLocation + File.separator;
     }
 
-    public static Uri getCropTempResultURI(){
+    public static Uri getTempImageURI(){
         if (cropTempResultURI == null){
-            cropTempResultURI = Uri.fromFile(new File( getImagesPath() + "cropped.jpg"));
+            cropTempResultURI = Uri.fromFile(new File( getImagesPath() + "temp_image.jpg"));
         }
         return cropTempResultURI;
     }

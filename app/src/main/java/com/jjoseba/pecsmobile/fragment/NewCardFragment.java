@@ -37,6 +37,7 @@ import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.SaturationBar;
 import com.larswerkman.holocolorpicker.ValueBar;
 import com.soundcloud.android.crop.Crop;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -277,17 +278,22 @@ public class NewCardFragment extends Fragment {
                      cardImagePath = FileUtils.copyFileTemp(this.getActivity(), selectedImage);
                      Uri cardImageUri = Uri.fromFile(new File(cardImagePath));
 
-                     Crop.of(cardImageUri, FileUtils.getCropTempResultURI())
+                     Crop.of(cardImageUri, FileUtils.getTempImageURI())
                          .asSquare()
                          .withMaxSize(300, 300)
                          .start(this.getActivity());
                      break;
 
                  case REQUEST_CAMERA:
-                     Bundle extras = imageReturnedIntent.getExtras();
-                     Bitmap imageBitmap = (Bitmap) extras.get("data");
-                     cardImage.setImageBitmap(imageBitmap);
+                     Uri tempUri = FileUtils.getTempImageURI();
+                     cardImagePath = FileUtils.copyFileTemp(this.getActivity(), tempUri);
+                     Picasso.with(this.getActivity()).load(tempUri).memoryPolicy(MemoryPolicy.NO_CACHE).into(cardImage);
+
                      hideTextForImage();
+                     Crop.of(tempUri, tempUri)
+                             .asSquare()
+                             .withMaxSize(300, 300)
+                             .start(this.getActivity());
                      break;
 
              }
@@ -321,7 +327,9 @@ public class NewCardFragment extends Fragment {
 
     public void notifySuccessfulCrop(){
         Log.d("Crop", "Loading:" + cardImagePath);
-        cardImagePath = FileUtils.copyFileTemp(getActivity(), FileUtils.getCropTempResultURI());
-        //Picasso.with(getActivity()).load(cardImagePath).error(R.drawable.empty).into(cardImage);
+        cardImagePath = FileUtils.copyFileTemp(getActivity(), FileUtils.getTempImageURI());
+        File image = new File(cardImagePath);
+        Log.d("Crop", image.exists()?"Exists!":"noooooo");
+        Picasso.with(getActivity()).load(image).memoryPolicy(MemoryPolicy.NO_CACHE).error(R.drawable.empty).into(cardImage);
     }
 }

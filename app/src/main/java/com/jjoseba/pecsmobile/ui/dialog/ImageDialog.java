@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.fragment.NewCardFragment;
+import com.jjoseba.pecsmobile.util.FileUtils;
 
 public class ImageDialog extends Dialog{
 
@@ -58,8 +59,9 @@ public class ImageDialog extends Dialog{
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (takePictureIntent.resolveActivity(parentFragment.getActivity().getPackageManager()) != null) {
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, FileUtils.getTempImageURI());
                     parentFragment.startActivityForResult(takePictureIntent, NewCardFragment.REQUEST_CAMERA);
                     ImageDialog.this.dismiss();
                 }
