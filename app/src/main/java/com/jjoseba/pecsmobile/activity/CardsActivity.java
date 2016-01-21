@@ -127,6 +127,14 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
             case PECSMobile.DISPLAY_MODE_TEXT:
                 selectedCardsList.setVisibility(View.GONE);
                 removeCardBtn.setVisibility(View.GONE);
+                //Initialize TTS
+                myTTS = new TextToSpeech(this, this);
+                selectedCardsText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        myTTS.speak(selectedCardsText.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
+                    }
+                });
                 break;
         }
 
@@ -394,6 +402,16 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
         super.onActivityResult(requestCode, resultCode, intent);
         if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             newCardFragment.notifySuccessfulCrop();
+        }
+        else if (requestCode == 0) {
+            if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
+                myTTS = new TextToSpeech(this, this);
+            }
+            else {
+                Intent installTTSIntent = new Intent();
+                installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+                startActivity(installTTSIntent);
+            }
         }
     }
 }
