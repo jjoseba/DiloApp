@@ -2,7 +2,9 @@ package com.jjoseba.pecsmobile.ui.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
@@ -37,8 +39,10 @@ public class EditCardDialog extends Dialog{
     public void show(){
 
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.requestWindowFeature(Window.FEATURE_SWIPE_TO_DISMISS);
-        this.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+            this.requestWindowFeature(Window.FEATURE_SWIPE_TO_DISMISS);
+        }
+        this.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         this.setContentView(R.layout.card_dialog);
 
         this.findViewById(R.id.card_frame).setBackgroundColor(card.getCardColor());

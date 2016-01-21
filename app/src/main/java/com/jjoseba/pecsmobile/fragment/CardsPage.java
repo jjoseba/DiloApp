@@ -1,6 +1,5 @@
 package com.jjoseba.pecsmobile.fragment;
 
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,7 +25,7 @@ public class CardsPage extends Fragment {
     public static String PARENT_CATEGORY = "parentCategory";
 
     private Card parentCategory;
-    private ArrayList<Card> pecs = new ArrayList<Card>();
+    private ArrayList<Card> pecs = new ArrayList<>();
     private CardGridAdapter cardsAdapter;
     private CardsGridListener clickListener;
 

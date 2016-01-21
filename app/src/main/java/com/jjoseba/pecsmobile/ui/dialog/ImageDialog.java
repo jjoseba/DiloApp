@@ -1,6 +1,8 @@
 package com.jjoseba.pecsmobile.ui.dialog;
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
@@ -29,8 +31,10 @@ public class ImageDialog extends Dialog{
     public void show(){
 
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.requestWindowFeature(Window.FEATURE_SWIPE_TO_DISMISS);
-        this.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+            this.requestWindowFeature(Window.FEATURE_SWIPE_TO_DISMISS);
+        }
+        this.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         this.setContentView(R.layout.image_dialog);
 
         this.findViewById(R.id.cancelButton).setOnClickListener(new View.OnClickListener() {

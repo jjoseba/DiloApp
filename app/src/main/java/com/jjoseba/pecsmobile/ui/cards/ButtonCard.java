@@ -7,17 +7,7 @@ import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.adapter.CardGridAdapter;
 import com.jjoseba.pecsmobile.model.Card;
 
-
 public class ButtonCard extends Card {
-    private String category;
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
 
     @Override
     public int getLayoutResource() {

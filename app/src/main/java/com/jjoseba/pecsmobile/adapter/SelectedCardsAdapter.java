@@ -54,7 +54,7 @@ public class SelectedCardsAdapter  extends BaseAdapter {
         Card card = cards.get(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(ctx).inflate(R.layout.card_small, null);
+            convertView = LayoutInflater.from(ctx).inflate(R.layout.card_small, parent);
 
             // Set up the ViewHolder
             holder = new CardViewHolder();

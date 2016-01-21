@@ -1,8 +1,5 @@
 package com.jjoseba.pecsmobile.util;
 
-
-import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -18,7 +15,6 @@ import java.io.OutputStream;
 public class FileUtils {
 
     private static String storageBaseLocation;
-    private static String IMAGES_DIR = "images";
     private static Uri cropTempResultURI;
 
     public static String getImagesPath(){
@@ -99,7 +95,9 @@ public class FileUtils {
         if( cursor != null ){
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
-            return cursor.getString(column_index);
+            String path =  cursor.getString(column_index);
+            cursor.close();
+            return path;
         }
         // this is our fallback here
         return uri.getPath();

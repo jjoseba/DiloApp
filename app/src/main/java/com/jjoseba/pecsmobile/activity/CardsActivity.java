@@ -50,16 +50,14 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
 
     private EnableableViewPager mPager;
     private ScreenSlidePagerAdapter mPagerAdapter;
-    private ZoomOutPageTransformer mPageTransformer;
-    private HashMap<Card, CardsPage> cardPages = new HashMap<Card, CardsPage>();
+    private HashMap<Card, CardsPage> cardPages = new HashMap<>();
     private int mLastPage;
     private NewCardFragment newCardFragment;
     private View newCardContainer;
     private boolean newCardIsHiding = false;
 
-    protected ArrayList<Card> navigationCards = new ArrayList<Card>();
-    protected ArrayList<Card> selectedCards = new ArrayList<Card>();
-    private TwoWayView selectedCardsList;
+    protected ArrayList<Card> navigationCards = new ArrayList<>();
+    protected ArrayList<Card> selectedCards = new ArrayList<>();
     private TextView selectedCardsText;
     private SelectedCardsAdapter selectedCardsAdapter;
 
@@ -82,7 +80,7 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
 
         mPager = (EnableableViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(this.getSupportFragmentManager());
-        mPageTransformer = new ZoomOutPageTransformer();
+        ZoomOutPageTransformer mPageTransformer = new ZoomOutPageTransformer();
 
         mPager.setAdapter(mPagerAdapter);
         mPager.setPageTransformer(false, mPageTransformer);
@@ -95,7 +93,7 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
         newCardFragment.setNewCardListener(this);
 
         selectedCardsAdapter = new SelectedCardsAdapter(this, selectedCards);
-        selectedCardsList = (TwoWayView) findViewById(R.id.selected_cards_list);
+        TwoWayView selectedCardsList = (TwoWayView) findViewById(R.id.selected_cards_list);
         selectedCardsText = (TextView) findViewById(R.id.selected_cards_text);
         selectedCardsList.setAdapter(selectedCardsAdapter);
         ImageButton removeCardBtn = (ImageButton) findViewById(R.id.removeLastCard);
@@ -253,7 +251,8 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
 
                     case PECSMobile.DISPLAY_MODE_TEXT:
                         updateTextDisplay();
-                        selectedCardsText.setText(selectedCardsText.getText().toString() + cardLabel);
+                        String cardsMessage = selectedCardsText.getText().toString() + cardLabel;
+                        selectedCardsText.setText(cardsMessage);
                         break;
                 }
 

@@ -17,16 +17,11 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.ui.EditTextBackEvent;
-import com.jjoseba.pecsmobile.ui.cards.CardTempPECS;
 
-/**
- * Created by Joseba on 11/01/2016.
- */
 public class HiddenInputDialog extends DialogFragment{
 
     public interface InputListener {
@@ -84,7 +79,7 @@ public class HiddenInputDialog extends DialogFragment{
         attrs.horizontalMargin = 0;
         attrs.verticalMargin = 0;
         attrs.height = (int) (metrics.density * 75);
-        attrs.width = (int) (metrics.widthPixels);
+        attrs.width = metrics.widthPixels;
 
         window.setAttributes(attrs);
 

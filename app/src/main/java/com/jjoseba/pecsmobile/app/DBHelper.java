@@ -4,12 +4,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteQueryBuilder;
-import android.util.Log;
 
 import com.jjoseba.pecsmobile.model.Card;
 import com.jjoseba.pecsmobile.ui.cards.CardPECS;
-import com.jjoseba.pecsmobile.util.FileUtils;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.ArrayList;
@@ -46,7 +43,7 @@ public class DBHelper extends SQLiteAssetHelper {
 
         public ArrayList<Card> getCards(int parent) {
 
-            ArrayList<Card> cards = new ArrayList<Card>();
+            ArrayList<Card> cards = new ArrayList<>();
             SQLiteDatabase db = getReadableDatabase();
             Cursor cursor = db.query(TABLE_CARDS, new String[]{COLUMN_ID, COLUMN_CATEGORY, COLUMN_LABEL, COLUMN_COLOR, COLUMN_IMAGE, COLUMN_PARENT, COLUMN_DISABLED},
                     COLUMN_PARENT + " == " + parent, null, null, null, null);

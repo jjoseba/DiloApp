@@ -1,12 +1,9 @@
 package com.jjoseba.pecsmobile.ui;
 
-        import android.content.Context;
-        import android.util.AttributeSet;
-        import android.widget.ImageView;
+import android.content.Context;
+import android.util.AttributeSet;
+import android.widget.ImageView;
 
-/**
- * Created by Joseba on 20/01/2015.
- */
 public class SquareImageView  extends ImageView {
     public SquareImageView(Context context) {
         super(context);

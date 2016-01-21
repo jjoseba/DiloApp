@@ -5,7 +5,6 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -44,12 +43,10 @@ import java.io.File;
 
 public class NewCardFragment extends Fragment {
 
-    private static float EXTRA_TRANSLATION = 300f;
-    private static long ANIM_DURATION = 800;
-    private static String PREVIOUS_COLOR = "previousColor";
+    private static final float EXTRA_TRANSLATION = 300f;
+    private static final long ANIM_DURATION = 800;
     public static final int REQUEST_IMAGE = 1;
     public static final int REQUEST_CAMERA = 2;
-    public static final int REQUEST_CROP = 6709;
 
     private ColorPicker picker;
     private View colorPickerContainer;

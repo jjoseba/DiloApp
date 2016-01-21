@@ -5,9 +5,6 @@ import android.view.View;
 
 import com.jjoseba.pecsmobile.adapter.CardGridAdapter;
 
-/**
- * Created by Joseba on 10/01/2016.
- */
 public class CardTempPECS extends ButtonCard {
     @Override
     public void inflateCard(CardGridAdapter.CardViewHolder holder, Context ctx) {
