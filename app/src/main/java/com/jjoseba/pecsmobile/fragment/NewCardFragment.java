@@ -106,14 +106,15 @@ public class NewCardFragment extends Fragment {
                         newCard.setLabel(cardTitleTextView.getText().toString());
                         newCard.setAsCategory(switchCategory.isChecked());
                         newCard.setDisabled(switchDisabled.isChecked());
-                        if (cardImagePath != null){
-                            newCard.setImageFilename(FileUtils.copyFileToInternal(cardImagePath));
-                        }
-                        else if (textAsImage){
+                        if (textAsImage){
                             cardTextImage.setTextColor(previousColor);
                             newCard.setImageFilename(ImageUtils.saveViewImage(cardTextImage));
                             cardTextImage.setTextColor(0x000000);
                         }
+                        else if (cardImagePath != null){
+                            newCard.setImageFilename(FileUtils.copyFileToInternal(cardImagePath));
+                        }
+
                         DBHelper db = new DBHelper(NewCardFragment.this.getActivity());
                         db.addCard(parentCard, newCard);
 
@@ -231,8 +232,10 @@ public class NewCardFragment extends Fragment {
 
                 @Override
                 public void onAnimationUpdate(ValueAnimator animator) {
-                    cardFrame.setBackgroundColor((Integer)animator.getAnimatedValue());
-                    colorBucket.setBackgroundColor((Integer)animator.getAnimatedValue());
+                    int animColor = (Integer)animator.getAnimatedValue();
+                    cardFrame.setBackgroundColor(animColor);
+                    colorBucket.setBackgroundColor(animColor);
+                    cardTextImage.setTextColor(animColor);
                 }
             });
             colorAnimation.setDuration(ANIM_DURATION).start();
@@ -240,6 +243,7 @@ public class NewCardFragment extends Fragment {
         else{
             cardFrame.setBackgroundColor(colorTo);
             colorBucket.setBackgroundColor(colorTo);
+            cardTextImage.setTextColor(colorTo);
         }
 
         previousColor = colorTo;
@@ -305,19 +309,22 @@ public class NewCardFragment extends Fragment {
         textAsImage = true;
         cardTextImage.setVisibility(View.VISIBLE);
         cardTextImage.setAllCaps(true);
+        cardTextImage.setTextColor(picker.getColor());
         cardTextImage.setText(cardTitleTextView.getText());
+        cardImage.setImageDrawable(null);
     }
 
     private void hideTextForImage(){
         cardTextImage.setVisibility(View.GONE);
         textAsImage = false;
-
     }
 
     public void resetForm(Card clicked) {
         changeColor(clicked.getCardColor(), false);
-
+        textAsImage = false;
         picker.setColor(clicked.getCardColor());
+        cardTextImage.setVisibility(View.GONE);
+        cardTextImage.setText("");
         cardTitleTextView.setText("");
         switchCategory.setChecked(false);
         switchDisabled.setChecked(false);
