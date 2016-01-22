@@ -1,34 +1,27 @@
 package com.jjoseba.pecsmobile.activity;
 
-import android.annotation.TargetApi;
 import android.app.ActionBar;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.adapter.CardGridAdapter;
 import com.jjoseba.pecsmobile.model.Card;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
-
-public class ShowCardsActivity extends Activity implements OnInitListener {
+public class ShowCardsActivity extends BaseActivity implements OnInitListener {
 
     private static final int MY_DATA_CHECK_CODE = 0;
 
@@ -38,21 +31,18 @@ public class ShowCardsActivity extends Activity implements OnInitListener {
     private TextToSpeech myTTS;
 
     @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_show_cards);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        PreferenceManager.setDefaultValues(this, R.xml.prefs, false);
 
         myTTS = new TextToSpeech(this, this);
 
         Bundle extras = getIntent().getExtras();
         selectedCards = (ArrayList<Card>) extras.getSerializable("result");
+        if (selectedCards == null) selectedCards = new ArrayList<>();
         String title = "";
         for (Card card : selectedCards){ title += card.getLabel() + ", ";  }
 
@@ -107,33 +97,6 @@ public class ShowCardsActivity extends Activity implements OnInitListener {
         return super.onOptionsItemSelected(item);
     }
 
-
-    private float x1,x2;
-    static final int MIN_DISTANCE = 150;
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event)
-    {
-        switch(event.getAction())
-        {
-            case MotionEvent.ACTION_DOWN:
-                x1 = event.getX();
-                break;
-            case MotionEvent.ACTION_UP:
-                x2 = event.getX();
-                float deltaX = x2 - x1;
-                if (Math.abs(deltaX) > MIN_DISTANCE)
-                {
-                    Toast.makeText(this, "left2right swipe", Toast.LENGTH_SHORT).show ();
-                }
-                else
-                {
-                    // consider as something else - a screen tap for example
-                }
-                break;
-        }
-        return super.onTouchEvent(event);
-    }
 
     @Override
     public void onInit(int status) {

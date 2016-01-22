@@ -41,9 +41,9 @@ import org.lucasr.twowayview.TwoWayView;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class CardsActivity extends FragmentActivity implements TextToSpeech.OnInitListener, CardsGridListener, NewCardListener, ViewPager.OnPageChangeListener {
+
+public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitListener, CardsGridListener, NewCardListener, ViewPager.OnPageChangeListener {
 
     private static final boolean FADE_IN = true;
     private static final boolean FADE_OUT = false;
@@ -61,12 +61,9 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
     private TextView selectedCardsText;
     private SelectedCardsAdapter selectedCardsAdapter;
 
+    private ImageButton removeCardBtn;
+    TwoWayView selectedCardsList;
     private TextToSpeech myTTS;
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,9 +71,6 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         setContentView(R.layout.activity_cards);
-
-        //Initial card -- change this in the future
-        navigationCards.add(new CardPECS());
 
         mPager = (EnableableViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(this.getSupportFragmentManager());
@@ -93,10 +87,25 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
         newCardFragment.setNewCardListener(this);
 
         selectedCardsAdapter = new SelectedCardsAdapter(this, selectedCards);
-        TwoWayView selectedCardsList = (TwoWayView) findViewById(R.id.selected_cards_list);
+        selectedCardsList = (TwoWayView) findViewById(R.id.selected_cards_list);
         selectedCardsText = (TextView) findViewById(R.id.selected_cards_text);
         selectedCardsList.setAdapter(selectedCardsAdapter);
-        ImageButton removeCardBtn = (ImageButton) findViewById(R.id.removeLastCard);
+        removeCardBtn = (ImageButton) findViewById(R.id.removeLastCard);
+        myTTS = new TextToSpeech(this, this);
+    }
+
+    @Override
+    protected void onResume(){
+
+        super.onResume();
+        selectedCards.clear();
+        selectedCardsAdapter.notifyDataSetChanged();
+
+        //Initial card -- change this in the future
+        navigationCards.clear();
+        navigationCards.add(new CardPECS());
+        mPagerAdapter.notifyDataSetChanged();
+        mPager.setCurrentItem(0, true);
 
         switch(PECSMobile.DISPLAY_MODE){
             //In cards mode, we hide the textview and apply the listener
@@ -135,29 +144,13 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
                 });
                 break;
         }
-
-
-
-
-
-        myTTS = new TextToSpeech(this, this);
-    }
-
-    @Override
-    protected void onResume(){
-
-        super.onResume();
-        selectedCards.clear();
-        selectedCardsAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onBackPressed() {
         if (newCardContainer.getVisibility() == View.VISIBLE){
-            if (newCardFragment.isColorPickerVisible()){
-             newCardFragment.hideColorPicker();
-            }
-            else if (!newCardIsHiding){
+            newCardFragment.hideColorPicker();
+            if (!newCardIsHiding){
                 animateCardContainer(FADE_OUT);
             }
         }
@@ -165,7 +158,7 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
             // If the user is currently looking at the first step, allow the system to handle the
             // Back button. This calls finish() on this activity and pops the back stack.
             super.onBackPressed();
-
+            System.exit(0);
         } else {
             // Otherwise, select the previous step.
             mPager.setCurrentItem(mPager.getCurrentItem() - 1);
@@ -174,12 +167,10 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-
         super.onSaveInstanceState(outState);
         outState.putSerializable("cards", navigationCards);
         //outState.putSerializable("fragments", cardPages);
         outState.putInt("currentPage", mLastPage);
-
     }
 
     @Override
@@ -378,7 +369,6 @@ public class CardsActivity extends FragmentActivity implements TextToSpeech.OnIn
             CardsPage page = cardPages.get(cardToRemove);
             cardPages.remove(cardToRemove);
             mFragmentManager.beginTransaction().remove(page).commit();
-
         }
 
         @Override
