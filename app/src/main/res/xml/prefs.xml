@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:key="prefDisplayMode"
+        android:title="@string/prefCategory_displayMode">
+
+        <Preference android:summary="@string/prefDisplayModeSummary" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="prefDisplayModeCards"
+            android:title="@string/prefDisplayModeCards" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="prefDisplayModeText"
+            android:title="@string/prefDisplayModeText" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="prefCategory_cards"
+        android:title="@string/prefCategory_cards">
+        <CheckBoxPreference
+            android:icon="@drawable/prefs_addcard"
+            android:defaultValue="true"
+            android:key="prefShowAddCard"
+            android:summary="@string/prefShowAddCardSummary"
+            android:title="@string/prefShowAddCard" />
+
+        <CheckBoxPreference
+            android:icon="@drawable/prefs_temp"
+            android:defaultValue="true"
+            android:key="prefTempTextCard"
+            android:summary="@string/prefTempTextCardSummary"
+            android:title="@string/prefTempTextCard" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:dependency="prefShowAddCard"
+        android:key="prefCategory_actions"
+        android:title="@string/prefCategory_actions">
+        <CheckBoxPreference
+            android:icon="@drawable/prefs_photo"
+            android:defaultValue="true"
+            android:key="prefAllowCamera"
+            android:summary="@string/prefAllowCameraSummary"
+            android:title="@string/prefTempAllowCamera" />
+
+        <CheckBoxPreference
+            android:icon="@drawable/prefs_text"
+            android:defaultValue="true"
+            android:key="prefTextCard"
+            android:summary="@string/prefTextCardSummary"
+            android:title="@string/prefTextCard" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
