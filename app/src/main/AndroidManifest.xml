@@ -11,13 +11,14 @@
     <application
         android:name=".app.PECSMobile"
         android:allowBackup="true"
-        android:icon="@drawable/icon_balloons"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.CardsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher"
             android:screenOrientation="nosensor"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
             <intent-filter>
@@ -37,6 +38,7 @@
         </activity>
         <activity android:name="com.soundcloud.android.crop.CropImageActivity"/>
         <activity
+            android:icon="@drawable/ic_prefs"
             android:name=".activity.PrefsActivity"
             android:label="@string/config_launcher">
             <intent-filter>
