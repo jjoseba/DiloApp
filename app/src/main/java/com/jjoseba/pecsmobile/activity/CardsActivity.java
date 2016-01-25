@@ -7,7 +7,6 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -16,12 +15,8 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.jjoseba.pecsmobile.R;
-import com.jjoseba.pecsmobile.adapter.SelectedCardsAdapter;
 import com.jjoseba.pecsmobile.app.PECSMobile;
 import com.jjoseba.pecsmobile.fragment.CardsPage;
 import com.jjoseba.pecsmobile.fragment.NewCardFragment;
@@ -29,47 +24,42 @@ import com.jjoseba.pecsmobile.model.Card;
 import com.jjoseba.pecsmobile.ui.CardsGridListener;
 import com.jjoseba.pecsmobile.ui.NewCardListener;
 import com.jjoseba.pecsmobile.ui.cards.CardPECS;
-import com.jjoseba.pecsmobile.ui.cards.CardTempPECS;
 import com.jjoseba.pecsmobile.ui.dialog.EditCardDialog;
 import com.jjoseba.pecsmobile.ui.dialog.HiddenInputDialog;
+import com.jjoseba.pecsmobile.ui.displaymode.DisplayCardsStrategy;
+import com.jjoseba.pecsmobile.ui.displaymode.DisplayModeStrategy;
+import com.jjoseba.pecsmobile.ui.displaymode.DisplayTextStrategy;
 import com.jjoseba.pecsmobile.ui.viewpager.EnableableViewPager;
 import com.jjoseba.pecsmobile.ui.viewpager.ZoomOutPageTransformer;
 import com.soundcloud.android.crop.Crop;
 
-import org.lucasr.twowayview.TwoWayView;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-
-
 
 public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitListener, CardsGridListener, NewCardListener, ViewPager.OnPageChangeListener {
 
     private static final boolean FADE_IN = true;
     private static final boolean FADE_OUT = false;
 
+    protected ArrayList<Card> navigationCards = new ArrayList<>();
     private EnableableViewPager mPager;
     private ScreenSlidePagerAdapter mPagerAdapter;
     private HashMap<Card, CardsPage> cardPages = new HashMap<>();
     private int mLastPage;
+
     private NewCardFragment newCardFragment;
     private View newCardContainer;
     private boolean newCardIsHiding = false;
 
-    protected ArrayList<Card> navigationCards = new ArrayList<>();
-    protected ArrayList<Card> selectedCards = new ArrayList<>();
-    private TextView selectedCardsText;
-    private SelectedCardsAdapter selectedCardsAdapter;
-
-    private ImageButton removeCardBtn;
-    TwoWayView selectedCardsList;
-    private TextToSpeech myTTS;
+    private int displayMode = PECSMobile.DEFAULT_DISPLAY_MODE;
+    private boolean newCardButton = PECSMobile.DEFAULT_SHOW_NEWCARD_BUTTON;
+    private boolean tempCardButton = PECSMobile.DEFAULT_SHOW_TEMPTEXT_BUTTON;
+    private DisplayModeStrategy displayStrategy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
         setContentView(R.layout.activity_cards);
 
         mPager = (EnableableViewPager) findViewById(R.id.pager);
@@ -86,71 +76,41 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
         newCardFragment = (NewCardFragment) getSupportFragmentManager().findFragmentById(R.id.new_card_fragment);
         newCardFragment.setNewCardListener(this);
 
-        selectedCardsAdapter = new SelectedCardsAdapter(this, selectedCards);
-        selectedCardsList = (TwoWayView) findViewById(R.id.selected_cards_list);
-        selectedCardsText = (TextView) findViewById(R.id.selected_cards_text);
-        selectedCardsList.setAdapter(selectedCardsAdapter);
-        removeCardBtn = (ImageButton) findViewById(R.id.removeLastCard);
-        myTTS = new TextToSpeech(this, this);
+        fetchPreferences();
+        displayStrategy = (displayMode == PECSMobile.DISPLAY_MODE_CARDS)
+                ? new DisplayCardsStrategy() :  new DisplayTextStrategy();
+        displayStrategy.initialize(this, navigationCards);
     }
 
     @Override
     protected void onResume(){
 
         super.onResume();
-        selectedCards.clear();
-        selectedCardsAdapter.notifyDataSetChanged();
-
         //Initial card -- change this in the future
+        mPager.setCurrentItem(0, true);
         navigationCards.clear();
         navigationCards.add(new CardPECS());
         mPagerAdapter.notifyDataSetChanged();
-        mPager.setCurrentItem(0, true);
 
-        switch(PECSMobile.DISPLAY_MODE){
-            //In cards mode, we hide the textview and apply the listener
-            case PECSMobile.DISPLAY_MODE_CARDS:
-                selectedCardsText.setVisibility(View.GONE);
-                selectedCardsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent i = new Intent(CardsActivity.this, ShowCardsActivity.class);
-                        i.putExtra("result", selectedCards);
-                        startActivity(i);
-                    }
-                });
-                removeCardBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (selectedCards.size() > 0) {
-                            selectedCards.remove(selectedCards.size() - 1);
-                            selectedCardsAdapter.notifyDataSetChanged();
-                        }
-                    }
-                });
-                break;
+        fetchPreferences();
+        displayStrategy.onResume(this, navigationCards);
+    }
 
-            //In text mode, we simply hide the cards view and the button
-            case PECSMobile.DISPLAY_MODE_TEXT:
-                selectedCardsList.setVisibility(View.GONE);
-                removeCardBtn.setVisibility(View.GONE);
-                //Initialize TTS
-                myTTS = new TextToSpeech(this, this);
-                selectedCardsText.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        myTTS.speak(selectedCardsText.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
-                    }
-                });
-                break;
-        }
+    //Function to reload preferences values in this class
+    private void fetchPreferences(){
+        displayMode = prefs.getBoolean(PrefsActivity.DISPLAYMODE_CARD, true)
+                ? PECSMobile.DISPLAY_MODE_CARDS : PECSMobile.DISPLAY_MODE_TEXT;
+        tempCardButton = prefs.getBoolean(PrefsActivity.SHOW_TEMPTEXT_CARD, PECSMobile.DEFAULT_SHOW_TEMPTEXT_BUTTON);
+        newCardButton = prefs.getBoolean(PrefsActivity.SHOW_ADD_CARD, PECSMobile.DEFAULT_SHOW_NEWCARD_BUTTON);
     }
 
     @Override
     public void onBackPressed() {
         if (newCardContainer.getVisibility() == View.VISIBLE){
-            newCardFragment.hideColorPicker();
-            if (!newCardIsHiding){
+            if (newCardFragment.isColorPickerVisible()){
+                newCardFragment.hideColorPicker();
+            }
+            else if (!newCardIsHiding){
                 animateCardContainer(FADE_OUT);
             }
         }
@@ -167,10 +127,12 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+
         super.onSaveInstanceState(outState);
         outState.putSerializable("cards", navigationCards);
         //outState.putSerializable("fragments", cardPages);
         outState.putInt("currentPage", mLastPage);
+
     }
 
     @Override
@@ -181,14 +143,6 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
         if (cards != null && cards.size() > 0){
             navigationCards = cards;
         }
-    }
-
-    private void updateTextDisplay(){
-        String message = "";
-        for (Card card : navigationCards){
-            message += card.getLabel()==null ? "" : card.getLabel() + " ";
-        }
-        selectedCardsText.setText(message);
     }
 
     @Override
@@ -202,19 +156,7 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
             mPager.setPagingEnabled(true);
         }
         else{
-            switch (PECSMobile.DISPLAY_MODE ){
-                case PECSMobile.DISPLAY_MODE_CARDS:
-                    if (!selectedCards.contains(clicked)){
-                        selectedCards.add(clicked);
-                        selectedCardsAdapter.notifyDataSetChanged();
-                    }
-                    break;
-
-                case PECSMobile.DISPLAY_MODE_TEXT:
-                    updateTextDisplay();
-                    selectedCardsText.setText(selectedCardsText.getText().toString() + clicked.getLabel());
-                    break;
-            }
+            displayStrategy.onCardSelected(clicked);
         }
     }
 
@@ -231,22 +173,7 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
         dialog.setOnTextListener(new HiddenInputDialog.InputListener() {
             @Override
             public void onText(String cardLabel) {
-                switch (PECSMobile.DISPLAY_MODE ){
-                    case PECSMobile.DISPLAY_MODE_CARDS:
-                        CardTempPECS card = new CardTempPECS();
-                        card.setCardColor(navigationCards.get(navigationCards.size() - 1).getHexCardColor());
-                        card.setLabel(cardLabel);
-                        selectedCards.add(card);
-                        selectedCardsAdapter.notifyDataSetChanged();
-                        break;
-
-                    case PECSMobile.DISPLAY_MODE_TEXT:
-                        updateTextDisplay();
-                        String cardsMessage = selectedCardsText.getText().toString() + cardLabel;
-                        selectedCardsText.setText(cardsMessage);
-                        break;
-                }
-
+                displayStrategy.onNewTempTextCard(cardLabel);
             }
         });
         dialog.show(this.getFragmentManager(), "Hidden");
@@ -354,7 +281,7 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
             Card card = navigationCards.get(position);
             CardsPage page = cardPages.get(card);
             if (page == null){
-                page = CardsPage.newInstance(card);
+                page = CardsPage.newInstance(card, newCardButton, tempCardButton);
                 cardPages.put(card, page);
             }
             return page;
@@ -369,12 +296,13 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
             CardsPage page = cardPages.get(cardToRemove);
             cardPages.remove(cardToRemove);
             mFragmentManager.beginTransaction().remove(page).commit();
+
         }
 
         @Override
         public void notifyDataSetChanged(){
             super.notifyDataSetChanged();
-            updateTextDisplay();
+            displayStrategy.onSelectedCardsChanged();
         }
 
         @Override
@@ -389,18 +317,9 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
     public void onActivityResult(int requestCode, int resultCode,
                                  Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
+        displayStrategy.onActivityResult(this, requestCode, resultCode);
         if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             newCardFragment.notifySuccessfulCrop();
-        }
-        else if (requestCode == 0) {
-            if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
-                myTTS = new TextToSpeech(this, this);
-            }
-            else {
-                Intent installTTSIntent = new Intent();
-                installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-                startActivity(installTTSIntent);
-            }
         }
     }
 }

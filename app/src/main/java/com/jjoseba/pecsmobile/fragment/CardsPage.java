@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.jjoseba.pecsmobile.R;
+import com.jjoseba.pecsmobile.activity.PrefsActivity;
 import com.jjoseba.pecsmobile.adapter.CardGridAdapter;
 import com.jjoseba.pecsmobile.app.DBHelper;
 import com.jjoseba.pecsmobile.app.PECSMobile;
@@ -28,11 +29,13 @@ public class CardsPage extends Fragment {
     private ArrayList<Card> pecs = new ArrayList<>();
     private CardGridAdapter cardsAdapter;
     private CardsGridListener clickListener;
+    private int specialButtonsCount = 0;
 
-
-    public static CardsPage newInstance(Card parentCategory) {
+    public static CardsPage newInstance(Card parentCategory, boolean showAddButton, boolean showTempButton) {
         CardsPage f = new CardsPage();
         Bundle args = new Bundle();
+        args.putBoolean(PrefsActivity.SHOW_ADD_CARD, showAddButton);
+        args.putBoolean(PrefsActivity.SHOW_TEMPTEXT_CARD, showTempButton);
         args.putSerializable(PARENT_CATEGORY, parentCategory);
         f.setArguments(args);
 
@@ -48,8 +51,17 @@ public class CardsPage extends Fragment {
         this.parentCategory = (Card) args.get(PARENT_CATEGORY);
 
         pecs.addAll(getCards());
-        if (PECSMobile.SHOW_ADD_BUTTON_CARD) pecs.add(new ButtonCard());
-        if (PECSMobile.SHOW_TEMP_TEXT_BUTTON_CARD) pecs.add(new TempButtonCard());
+
+        boolean showAddButton = args.getBoolean(PrefsActivity.SHOW_ADD_CARD);
+        boolean showTempButton = args.getBoolean(PrefsActivity.SHOW_TEMPTEXT_CARD);
+        if (showAddButton) {
+            specialButtonsCount++;
+            pecs.add(new ButtonCard());
+        }
+        if (showTempButton){
+            specialButtonsCount++;
+            pecs.add(new TempButtonCard());
+        }
     }
 
     @Override
@@ -111,7 +123,7 @@ public class CardsPage extends Fragment {
 
 
     public void addCard(Card card) {
-        pecs.add(pecs.size() - PECSMobile.CUSTOM_BUTTON_CARDS, card);
+        pecs.add(pecs.size() - specialButtonsCount, card);
         cardsAdapter.notifyDataSetChanged();
     }
 

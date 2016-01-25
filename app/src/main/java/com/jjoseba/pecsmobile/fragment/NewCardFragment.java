@@ -146,6 +146,10 @@ public class NewCardFragment extends Fragment {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isColorPickerVisible()){
+                    colorPickerContainer.setVisibility(View.INVISIBLE);
+                    hideColorPicker();
+                }
                 if (listener != null){ listener.onCancel(); }
             }
         });

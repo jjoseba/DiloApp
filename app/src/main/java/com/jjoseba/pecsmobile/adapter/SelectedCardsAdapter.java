@@ -54,7 +54,7 @@ public class SelectedCardsAdapter  extends BaseAdapter {
         Card card = cards.get(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(ctx).inflate(R.layout.card_small, parent);
+            convertView = LayoutInflater.from(ctx).inflate(R.layout.card_small, parent, false);
 
             // Set up the ViewHolder
             holder = new CardViewHolder();
@@ -82,7 +82,6 @@ public class SelectedCardsAdapter  extends BaseAdapter {
             File imageFile = new File(card.getImagePath());
             Picasso.with(ctx).load(imageFile).placeholder(R.drawable.empty).error(R.drawable.empty).into(holder.image);
         }
-
 
         return convertView;
 
