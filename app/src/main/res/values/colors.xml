@@ -15,4 +15,8 @@
     <color name="default_card">#FF555555</color>
     <color name="background">#dedede</color>
 
+    <color name="colorPrimary">#339ff4</color>
+    <color name="colorPrimaryDark">#226ead</color>
+    <color name="colorPrimaryLight">#339ff4</color>
+    <color name="colorAccent">#339ff4</color>
 </resources>
