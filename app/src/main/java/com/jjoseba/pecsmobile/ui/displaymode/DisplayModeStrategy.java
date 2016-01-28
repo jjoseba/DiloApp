@@ -10,7 +10,7 @@ public interface DisplayModeStrategy {
     void initialize(BaseActivity activity, ArrayList<Card> navigationCards);
     void onActivityResult(BaseActivity activity, int requestCode, int resultCode);
     void onResume(BaseActivity activity, ArrayList<Card> navigationCards);
-    void onCardSelected(Card selectedCard);
+    void onCardSelected(final BaseActivity activity, Card selectedCard);
     void onNewTempTextCard(String cardLabel);
     void onSelectedCardsChanged();
 }

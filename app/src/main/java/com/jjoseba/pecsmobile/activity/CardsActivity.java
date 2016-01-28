@@ -26,9 +26,8 @@ import com.jjoseba.pecsmobile.ui.NewCardListener;
 import com.jjoseba.pecsmobile.ui.cards.CardPECS;
 import com.jjoseba.pecsmobile.ui.dialog.EditCardDialog;
 import com.jjoseba.pecsmobile.ui.dialog.HiddenInputDialog;
-import com.jjoseba.pecsmobile.ui.displaymode.DisplayCardsStrategy;
+import com.jjoseba.pecsmobile.ui.displaymode.DisplayModeFactory;
 import com.jjoseba.pecsmobile.ui.displaymode.DisplayModeStrategy;
-import com.jjoseba.pecsmobile.ui.displaymode.DisplayTextStrategy;
 import com.jjoseba.pecsmobile.ui.viewpager.EnableableViewPager;
 import com.jjoseba.pecsmobile.ui.viewpager.ZoomOutPageTransformer;
 import com.soundcloud.android.crop.Crop;
@@ -51,7 +50,6 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
     private View newCardContainer;
     private boolean newCardIsHiding = false;
 
-    private int displayMode = PECSMobile.DEFAULT_DISPLAY_MODE;
     private boolean newCardButton = PECSMobile.DEFAULT_SHOW_NEWCARD_BUTTON;
     private boolean tempCardButton = PECSMobile.DEFAULT_SHOW_TEMPTEXT_BUTTON;
     private DisplayModeStrategy displayStrategy;
@@ -78,8 +76,7 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
         newCardFragment.setNewCardListener(this);
 
         fetchPreferences();
-        displayStrategy = (displayMode == PECSMobile.DISPLAY_MODE_CARDS)
-                ? new DisplayCardsStrategy() :  new DisplayTextStrategy();
+        displayStrategy = new DisplayModeFactory(prefs).getCurrentDisplayMode();
         displayStrategy.initialize(this, navigationCards);
     }
 
@@ -93,8 +90,6 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
 
     //Function to reload preferences values in this class
     private void fetchPreferences(){
-        displayMode = prefs.getBoolean(PrefsActivity.DISPLAYMODE_CARD, true)
-                ? PECSMobile.DISPLAY_MODE_CARDS : PECSMobile.DISPLAY_MODE_TEXT;
         tempCardButton = prefs.getBoolean(PrefsActivity.SHOW_TEMPTEXT_CARD, PECSMobile.DEFAULT_SHOW_TEMPTEXT_BUTTON);
         newCardButton = prefs.getBoolean(PrefsActivity.SHOW_ADD_CARD, PECSMobile.DEFAULT_SHOW_NEWCARD_BUTTON);
     }
@@ -151,7 +146,7 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
             mPager.setPagingEnabled(true);
         }
         else{
-            displayStrategy.onCardSelected(clicked);
+            displayStrategy.onCardSelected(this, clicked);
         }
     }
 

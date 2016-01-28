@@ -50,6 +50,7 @@ public class DisplayTextStrategy implements DisplayModeStrategy, TextToSpeech.On
         this.navCards = navigationCards;
         activity.findViewById(R.id.selected_cards_list).setVisibility(View.GONE);
         activity.findViewById(R.id.removeLastCard).setVisibility(View.GONE);
+        updateTextDisplay();
         selectedCardsText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +60,7 @@ public class DisplayTextStrategy implements DisplayModeStrategy, TextToSpeech.On
     }
 
     @Override
-    public void onCardSelected(Card selectedCard) {
+    public void onCardSelected(final BaseActivity activity, Card selectedCard) {
         updateTextDisplay();
         String newMessage = selectedCardsText.getText().toString() + selectedCard.getLabel();
         selectedCardsText.setText(newMessage);

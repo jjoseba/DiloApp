@@ -4,6 +4,8 @@ import android.app.ActionBar;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -29,6 +31,7 @@ public class ShowCardsActivity extends BaseActivity implements OnInitListener {
     private GridView cardsList;
 
     private TextToSpeech myTTS;
+    private String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,7 @@ public class ShowCardsActivity extends BaseActivity implements OnInitListener {
         Bundle extras = getIntent().getExtras();
         selectedCards = (ArrayList<Card>) extras.getSerializable("result");
         if (selectedCards == null) selectedCards = new ArrayList<>();
-        String title = "";
+        title = "";
         for (Card card : selectedCards){ title += card.getLabel() + ", ";  }
 
         ActionBar actionBar = getActionBar();
@@ -73,7 +76,19 @@ public class ShowCardsActivity extends BaseActivity implements OnInitListener {
                 myTTS.speak(finalTitle, TextToSpeech.QUEUE_FLUSH, null);
             }
         });
+
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            public void run() {
+                myTTS.speak(title, TextToSpeech.QUEUE_FLUSH, null);
+            }
+        }, 100);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -106,7 +121,7 @@ public class ShowCardsActivity extends BaseActivity implements OnInitListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == MY_DATA_CHECK_CODE) {
             if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
-                myTTS = new TextToSpeech(this, this);
+                //myTTS = new TextToSpeech(this, this);
             }
             else {
                 Intent installTTSIntent = new Intent();

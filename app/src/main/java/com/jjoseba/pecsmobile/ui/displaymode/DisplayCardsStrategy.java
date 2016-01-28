@@ -19,11 +19,11 @@ import java.util.ArrayList;
 
 public class DisplayCardsStrategy implements DisplayModeStrategy {
 
-    private ArrayList<Card> navCards;
-    private ArrayList<Card> selectedCards = new ArrayList<>();
-    private TwoWayView selectedCardsList;
-    private SelectedCardsAdapter selectedCardsAdapter;
-    private ImageButton removeCardBtn;
+    protected ArrayList<Card> navCards;
+    protected ArrayList<Card> selectedCards = new ArrayList<>();
+    protected TwoWayView selectedCardsList;
+    protected SelectedCardsAdapter selectedCardsAdapter;
+    protected ImageButton removeCardBtn;
 
     @Override
     public int getDisplayMode() {
@@ -71,7 +71,7 @@ public class DisplayCardsStrategy implements DisplayModeStrategy {
     }
 
     @Override
-    public void onCardSelected(Card selectedCard) {
+    public void onCardSelected(final BaseActivity activity, Card selectedCard) {
         if (!selectedCards.contains(selectedCard)){
             selectedCards.add(selectedCard);
             selectedCardsAdapter.notifyDataSetChanged();
