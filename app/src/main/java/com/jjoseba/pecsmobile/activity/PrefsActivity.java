@@ -14,6 +14,7 @@ public class PrefsActivity extends FragmentActivity {
     public static final String SHOW_TEMPTEXT_CARD = "prefTempTextCard";
     public static final String DISPLAYMODE_TEXT = "prefDisplayModeText";
     public static final String DISPLAYMODE_CARD = "prefDisplayModeCards";
+    public static final String DISPLAYMODE_BASIC = "prefDisplayModeBasic";
     public static final String CREATE_CAMERA = "prefAllowCamera";
     public static final String CREATE_TEXTCARD = "prefTextCard";
 

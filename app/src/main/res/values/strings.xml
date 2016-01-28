@@ -34,6 +34,7 @@
     <string name="prefCategory_displayMode">Modo de presentación</string>
     <string name="prefCategory_cards">Funcionalidades</string>
     <string name="prefCategory_actions">Creación de tarjetas</string>
-    <string name="prefDisplayModeSummary">Añadir descripción de los modos de presentación</string>
+    <string name="prefDisplayModeSummary">Aquí puedes elegir el modo de presentación de las tarjetas seleccionadas. Cada uno de ellos está orientado a distintos niveles ...(//TO-DO: Terminar descripción)</string>
+    <string name="prefDisplayModeBasic">Modo básico</string>
 
 </resources>

@@ -53,12 +53,13 @@ public class PreferencesFragment extends PreferenceFragment implements Preferenc
                 .findPreference(PrefsActivity.DISPLAYMODE_TEXT));
         displayModes.add((CheckBoxPreference) getPreferenceManager()
                 .findPreference(PrefsActivity.DISPLAYMODE_CARD));
+        displayModes.add((CheckBoxPreference) getPreferenceManager()
+                .findPreference(PrefsActivity.DISPLAYMODE_BASIC));
 
         for (CheckBoxPreference cbp : displayModes) {
             cbp.setOnPreferenceClickListener(this);
         }
     }
-
 
     @Override
     public boolean onPreferenceClick(Preference preference) {

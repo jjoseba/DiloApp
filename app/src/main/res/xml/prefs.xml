@@ -8,6 +8,11 @@
         <Preference android:summary="@string/prefDisplayModeSummary" />
 
         <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="prefDisplayModeBasic"
+            android:title="@string/prefDisplayModeBasic" />
+
+        <CheckBoxPreference
             android:defaultValue="true"
             android:key="prefDisplayModeCards"
             android:title="@string/prefDisplayModeCards" />
