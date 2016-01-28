@@ -62,6 +62,7 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_cards);
 
+        navigationCards.add(new CardPECS());
         mPager = (EnableableViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(this.getSupportFragmentManager());
         ZoomOutPageTransformer mPageTransformer = new ZoomOutPageTransformer();
@@ -86,12 +87,6 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
     protected void onResume(){
 
         super.onResume();
-        //Initial card -- change this in the future
-        mPager.setCurrentItem(0, true);
-        navigationCards.clear();
-        navigationCards.add(new CardPECS());
-        mPagerAdapter.notifyDataSetChanged();
-
         fetchPreferences();
         displayStrategy.onResume(this, navigationCards);
     }
