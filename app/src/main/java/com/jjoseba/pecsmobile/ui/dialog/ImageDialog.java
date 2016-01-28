@@ -1,8 +1,10 @@
 package com.jjoseba.pecsmobile.ui.dialog;
 
 import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
@@ -13,6 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.jjoseba.pecsmobile.R;
+import com.jjoseba.pecsmobile.activity.PrefsActivity;
 import com.jjoseba.pecsmobile.fragment.NewCardFragment;
 import com.jjoseba.pecsmobile.util.FileUtils;
 
@@ -45,22 +48,17 @@ public class ImageDialog extends Dialog{
         });
 
         View galleryBtn =  this.findViewById(R.id.gallery_button);
-        View editBtn = this.findViewById(R.id.edit_button);
+        View cameraBtn = this.findViewById(R.id.camera_button);
         View textBtn = this.findViewById(R.id.text_button);
 
         galleryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                parentFragment.startActivityForResult(intent, NewCardFragment.REQUEST_IMAGE);
-                ImageDialog.this.dismiss();
+                startImagePicker();
             }
         });
 
-        editBtn.setOnClickListener(new View.OnClickListener() {
+        cameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -86,10 +84,32 @@ public class ImageDialog extends Dialog{
         appearButton2.setStartOffset(150);
         appearButton3.setStartOffset(300);
         galleryBtn.startAnimation(appearButton1);
-        editBtn.startAnimation(appearButton2);
+        cameraBtn.startAnimation(appearButton2);
         textBtn.startAnimation(appearButton3);
 
-        super.show();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+        boolean cameraEnabled = prefs.getBoolean(PrefsActivity.CREATE_CAMERA, true);
+        boolean textcardEnabled = prefs.getBoolean(PrefsActivity.CREATE_TEXTCARD, true);
+        if (!cameraEnabled && !textcardEnabled){
+            //if we only have the image option, launch it directly
+            super.show();
+            startImagePicker();
+        }
+        else{
+            cameraBtn.setVisibility(cameraEnabled ? View.VISIBLE : View.GONE);
+            textBtn.setVisibility(textcardEnabled ? View.VISIBLE : View.GONE);
+            super.show();
+        }
+
+    }
+
+    private void startImagePicker(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        parentFragment.startActivityForResult(intent, NewCardFragment.REQUEST_IMAGE);
+        ImageDialog.this.dismiss();
     }
 
     public boolean hasDataChanged(){

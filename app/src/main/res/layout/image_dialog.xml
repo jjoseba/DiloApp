@@ -65,7 +65,7 @@
             app:cb_color="#7B1FA2"
             app:cb_pressedRingWidth="15dip"
             android:layout_gravity="center"
-            android:id="@+id/edit_button" />
+            android:id="@+id/camera_button" />
 
         <at.markushi.ui.CircleButton
             android:layout_width="110dip"
