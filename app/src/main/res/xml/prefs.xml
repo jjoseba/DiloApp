@@ -40,6 +40,14 @@
             android:key="prefTempTextCard"
             android:summary="@string/prefTempTextCardSummary"
             android:title="@string/prefTempTextCard" />
+
+        <CheckBoxPreference
+            android:icon="@drawable/prefs_lock"
+            android:defaultValue="true"
+            android:key="prefDisableCard"
+            android:summary="@string/prefDisableCardSummary"
+            android:title="@string/prefDisableCard" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

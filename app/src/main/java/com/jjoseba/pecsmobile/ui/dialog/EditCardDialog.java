@@ -2,9 +2,11 @@ package com.jjoseba.pecsmobile.ui.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
@@ -13,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jjoseba.pecsmobile.R;
+import com.jjoseba.pecsmobile.activity.PrefsActivity;
 import com.jjoseba.pecsmobile.app.DBHelper;
 import com.jjoseba.pecsmobile.model.Card;
 import com.jjoseba.pecsmobile.util.FileUtils;
@@ -90,7 +93,6 @@ public class EditCardDialog extends Dialog{
             disableBtn.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_lock_open));
         }
 
-
         Animation appearButton1 = AnimationUtils.loadAnimation(ctx, R.anim.button_appear);
         Animation appearButton2 = AnimationUtils.loadAnimation(ctx, R.anim.button_appear);
         Animation appearButton3 = AnimationUtils.loadAnimation(ctx, R.anim.button_appear);
@@ -100,6 +102,11 @@ public class EditCardDialog extends Dialog{
         editBtn.startAnimation(appearButton1);
         disableBtn.startAnimation(appearButton2);
         deleteBtn.startAnimation(appearButton3);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+        if (!prefs.getBoolean(PrefsActivity.SHOW_DISABLE_CARD, true)){
+            disableBtn.setVisibility(View.GONE);
+        }
         super.show();
     }
 

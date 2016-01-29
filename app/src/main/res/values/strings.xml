@@ -36,5 +36,7 @@
     <string name="prefCategory_actions">Creación de tarjetas</string>
     <string name="prefDisplayModeSummary">Aquí puedes elegir el modo de presentación de las tarjetas seleccionadas. Cada uno de ellos está orientado a distintos niveles ...(//TO-DO: Terminar descripción)</string>
     <string name="prefDisplayModeBasic">Modo básico</string>
+    <string name="prefDisableCard">Deshabilitar tarjetas</string>
+    <string name="prefDisableCardSummary">Mostrar una opción para poder habilitar/deshabilitar las tarjetas</string>
 
 </resources>
