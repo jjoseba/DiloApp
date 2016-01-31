@@ -92,4 +92,9 @@ public class DisplayCardsStrategy implements DisplayModeStrategy {
     public void onSelectedCardsChanged() {
 
     }
+
+    @Override
+    public void setResetListener(ResetListener listener) {
+
+    }
 }

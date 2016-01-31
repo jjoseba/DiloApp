@@ -3,6 +3,7 @@ package com.jjoseba.pecsmobile.ui.displaymode;
 
 import android.content.Intent;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -18,6 +19,7 @@ public class DisplayTextStrategy implements DisplayModeStrategy, TextToSpeech.On
     private ArrayList<Card> navCards;
     private TextView selectedCardsText;
     private TextToSpeech myTTS;
+    private ResetListener listener;
 
     @Override
     public int getDisplayMode() {
@@ -55,6 +57,10 @@ public class DisplayTextStrategy implements DisplayModeStrategy, TextToSpeech.On
             @Override
             public void onClick(View v) {
                 myTTS.speak(selectedCardsText.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
+                if (listener!=null) {
+                    listener.resetCards();
+                    updateTextDisplay();
+                }
             }
         });
     }
@@ -76,6 +82,11 @@ public class DisplayTextStrategy implements DisplayModeStrategy, TextToSpeech.On
     @Override
     public void onSelectedCardsChanged() {
         updateTextDisplay();
+    }
+
+    @Override
+    public void setResetListener(ResetListener listener) {
+        this.listener = listener;
     }
 
     @Override

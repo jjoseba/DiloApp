@@ -4,6 +4,7 @@ import android.content.Intent;
 
 import com.jjoseba.pecsmobile.activity.BaseActivity;
 import com.jjoseba.pecsmobile.activity.ShowCardsActivity;
+import com.jjoseba.pecsmobile.app.PECSMobile;
 import com.jjoseba.pecsmobile.model.Card;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 public class DisplayBasicStrategy extends DisplayCardsStrategy {
     @Override
     public int getDisplayMode() {
-        return 0;
+        return PECSMobile.DISPLAY_MODE_BASIC;
     }
 
     @Override
@@ -23,5 +24,10 @@ public class DisplayBasicStrategy extends DisplayCardsStrategy {
             i.putExtra("result", viewCard);
             activity.startActivity(i);
         }
+    }
+
+    @Override
+    public void setResetListener(ResetListener listener) {
+
     }
 }

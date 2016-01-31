@@ -35,7 +35,7 @@ import com.soundcloud.android.crop.Crop;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitListener, CardsGridListener, NewCardListener, ViewPager.OnPageChangeListener {
+public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitListener, CardsGridListener, NewCardListener, ViewPager.OnPageChangeListener, DisplayModeStrategy.ResetListener {
 
     private static final boolean FADE_IN = true;
     private static final boolean FADE_OUT = false;
@@ -78,6 +78,7 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
         fetchPreferences();
         displayStrategy = new DisplayModeFactory(prefs).getCurrentDisplayMode();
         displayStrategy.initialize(this, navigationCards);
+        displayStrategy.setResetListener(this);
     }
 
     @Override
@@ -255,6 +256,11 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
     @Override
     public void onInit(int status) {
 
+    }
+
+    @Override
+    public void resetCards() {
+        mPager.setCurrentItem(0);
     }
 
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
