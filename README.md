@@ -1,6 +1,5 @@
 # PECSMobile
-==========
-![PECSMobile](/app/src/main/res/drawable-hdpi/ic_launcher.png?raw=true "PECSMobile")
+![PECSMobile](/app/src/main/res/drawable-hdpi/ic_launcher.png?raw=true "PECSMobile")<br/>
 PECS ( [Picture Exchange Communication System](https://en.wikipedia.org/wiki/Picture_Exchange_Communication_System) ) app for Android
 
 ## License
