@@ -3,7 +3,6 @@ package com.jjoseba.pecsmobile.ui;
 import android.content.Context;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.widget.TextView;
 
@@ -38,32 +37,36 @@ public class AutoFitTextView extends TextView {
             return;
 
         int targetWidth = textWidth - this.getPaddingLeft() - this.getPaddingRight();
+        String[] words = text.split("\\s+");
 
-        // text already fits with the xml-defined font size?
-        mTestPaint.set(this.getPaint());
-        mTestPaint.setTextSize(defaultTextSize);
-        if(mTestPaint.measureText(text) <= targetWidth) {
-            Log.d("Autofit", "text already fits!");
-            this.setTextSize(TypedValue.COMPLEX_UNIT_PX, defaultTextSize);
-            return;
+        float textSize = defaultTextSize;
+        for (int i=0; i<words.length; i++){
+            // text already fits with the xml-defined font size?
+            mTestPaint.set(this.getPaint());
+            mTestPaint.setTextSize(defaultTextSize);
+            if(mTestPaint.measureText(words[i]) <= targetWidth) {
+                textSize = Math.min(textSize, defaultTextSize);
+                continue;
+            }
+
+            float hi = defaultTextSize;
+            float lo = 2;
+            final float threshold = 0.5f; // How close we have to be
+
+            // adjust text size using binary search for efficiency
+            while (hi - lo > threshold) {
+                float size = (hi + lo) / 2;
+                mTestPaint.setTextSize(size);
+                if(mTestPaint.measureText(words[i]) >= targetWidth )
+                    hi = size; // too big
+                else
+                    lo = size; // too small
+            }
+            textSize = Math.min(textSize, lo);
         }
 
-        // adjust text size using binary search for efficiency
-        float hi = defaultTextSize;
-        float lo = 2;
-        final float threshold = 0.5f; // How close we have to be
-        while (hi - lo > threshold) {
-            float size = (hi + lo) / 2;
-            mTestPaint.setTextSize(size);
-            if(mTestPaint.measureText(text) >= targetWidth )
-                hi = size; // too big
-            else
-                lo = size; // too small
+        this.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
 
-        }
-
-        // Use lo so that we undershoot rather than overshoot
-        this.setTextSize(TypedValue.COMPLEX_UNIT_PX, lo);
     }
 
     @Override
