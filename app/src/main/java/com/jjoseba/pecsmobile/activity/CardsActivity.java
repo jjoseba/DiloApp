@@ -57,7 +57,7 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         setContentView(R.layout.activity_cards);
 
         navigationCards.add(new CardPECS());
