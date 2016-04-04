@@ -93,17 +93,17 @@
                             android:background="@color/gray"
                             android:scaleType="center" />
 
-                        <TextView
+                        <com.jjoseba.pecsmobile.ui.AutoFitTextView
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
                             android:text="fasdfa sdafsadfasf fdsfdsfdsf"
                             android:id="@+id/card_imageText"
                             android:layout_gravity="center"
                             android:maxLines="3"
-                            android:gravity="center_vertical|center_horizontal"
-                            android:textSize="50dp"
+                            android:gravity="center"
+                            android:textSize="80sp"
                             android:background="@color/white"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
 
                         <com.jjoseba.pecsmobile.ui.SquareImageView
                             android:id="@+id/card_image"
