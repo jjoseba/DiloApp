@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 public class AutoFitTextView extends TextView {
 
+    private static final int SMALLEST_SIZE = 3;
+    private static final float THRESHOLD = 0.5f;
+
     // Attributes
     private Paint mTestPaint;
     private float defaultTextSize;
@@ -40,24 +43,23 @@ public class AutoFitTextView extends TextView {
         String[] words = text.split("\\s+");
 
         float textSize = defaultTextSize;
-        for (int i=0; i<words.length; i++){
+        for (String word : words) {
             // text already fits with the xml-defined font size?
             mTestPaint.set(this.getPaint());
             mTestPaint.setTextSize(defaultTextSize);
-            if(mTestPaint.measureText(words[i]) <= targetWidth) {
+            if (mTestPaint.measureText(word) <= targetWidth) {
                 textSize = Math.min(textSize, defaultTextSize);
                 continue;
             }
 
             float hi = defaultTextSize;
-            float lo = 2;
-            final float threshold = 0.5f; // How close we have to be
+            float lo = SMALLEST_SIZE;
 
             // adjust text size using binary search for efficiency
-            while (hi - lo > threshold) {
+            while (hi - lo > THRESHOLD) {
                 float size = (hi + lo) / 2;
                 mTestPaint.setTextSize(size);
-                if(mTestPaint.measureText(words[i]) >= targetWidth )
+                if (mTestPaint.measureText(word) >= targetWidth)
                     hi = size; // too big
                 else
                     lo = size; // too small
@@ -66,7 +68,6 @@ public class AutoFitTextView extends TextView {
         }
 
         this.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
-
     }
 
     @Override
