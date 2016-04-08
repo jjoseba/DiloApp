@@ -3,7 +3,9 @@ package com.jjoseba.pecsmobile.activity;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
@@ -21,7 +23,6 @@ public class TTSActivity extends BaseActivity implements TextToSpeech.OnInitList
     private TextToSpeech myTTS;
 
     private boolean spoken = false;
-    private boolean speaking = false;
     private boolean manuallyActivated = false;
 
     @Override
@@ -41,22 +42,31 @@ public class TTSActivity extends BaseActivity implements TextToSpeech.OnInitList
             getActionBar().setDisplayHomeAsUpEnabled(false);
             getActionBar().setHomeButtonEnabled(false);
         }
+
     }
 
     protected void speak(String text){ speak(text, true); }
     protected void speak(String text, boolean isUserManuallyActivated){
-        if (!isUserManuallyActivated || !spoken){
-            if (myTTS != null && !myTTS.isSpeaking()){
-                manuallyActivated = isUserManuallyActivated;
+        if (isUserManuallyActivated && spoken){
+            boolean closeSecondTap = prefs.getBoolean(PrefsActivity.CLOSE_DOUBLETAP, false);
+            if (closeSecondTap){
+                finish(); return;
+            }
+        }
 
+        if (myTTS != null && !myTTS.isSpeaking()){
+            manuallyActivated = isUserManuallyActivated;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                myTTS.speak(text, TextToSpeech.QUEUE_FLUSH, null, text);
+            }
+            else{
                 HashMap<String, String> params = new HashMap<>();
                 params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "pecsmobile");
                 myTTS.speak(text, TextToSpeech.QUEUE_FLUSH, params);
             }
         }
-        else{
-            finish();
-        }
+
     }
 
     @Override
@@ -69,13 +79,12 @@ public class TTSActivity extends BaseActivity implements TextToSpeech.OnInitList
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CHECK_TTS_DATA) {
             if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
-                Log.d("TTS", "Creating TTS!");
                 myTTS = new TextToSpeech(this, this);
                 myTTS.setOnUtteranceProgressListener(new UtteranceProgressListener() {
                     @Override public void onStart(String utteranceId) {}
                     @Override public void onDone(String utteranceId) {
-                        speaking = false;
                         spoken = spoken || manuallyActivated;
+                        Log.d("TTS","spoken:"+spoken);
                     }
                     @Override public void onError(String utteranceId) {
                         Toast.makeText(TTSActivity.this, R.string.tts_failed, Toast.LENGTH_SHORT).show();

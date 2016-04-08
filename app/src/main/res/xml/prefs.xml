@@ -48,6 +48,13 @@
             android:summary="@string/prefDisableCardSummary"
             android:title="@string/prefDisableCard" />
 
+        <CheckBoxPreference
+            android:icon="@drawable/prefs_doubletap"
+            android:defaultValue="true"
+            android:key="prefCloseDoubleTap"
+            android:summary="@string/prefCloseDoubleTapSummary"
+            android:title="@string/prefCloseDoubleTap" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
