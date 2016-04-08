@@ -38,5 +38,6 @@
     <string name="prefDisplayModeBasic">Modo básico</string>
     <string name="prefDisableCard">Deshabilitar tarjetas</string>
     <string name="prefDisableCardSummary">Mostrar una opción para poder habilitar/deshabilitar las tarjetas</string>
+    <string name="title_activity_show_text">ShowTextActivity</string>
 
 </resources>

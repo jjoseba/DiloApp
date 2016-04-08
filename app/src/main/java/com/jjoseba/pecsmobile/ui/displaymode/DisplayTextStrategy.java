@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.activity.BaseActivity;
+import com.jjoseba.pecsmobile.activity.ShowCardsActivity;
+import com.jjoseba.pecsmobile.activity.ShowTextActivity;
 import com.jjoseba.pecsmobile.app.PECSMobile;
 import com.jjoseba.pecsmobile.model.Card;
 
@@ -48,18 +50,18 @@ public class DisplayTextStrategy implements DisplayModeStrategy, TextToSpeech.On
     }
 
     @Override
-    public void onResume(BaseActivity activity, ArrayList<Card> navigationCards) {
+    public void onResume(final BaseActivity activity, ArrayList<Card> navigationCards) {
         this.navCards = navigationCards;
         activity.findViewById(R.id.selected_cards_list).setVisibility(View.GONE);
         activity.findViewById(R.id.removeLastCard).setVisibility(View.GONE);
-        updateTextDisplay();
         selectedCardsText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myTTS.speak(selectedCardsText.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
-                if (listener!=null) {
-                    listener.resetCards();
-                    updateTextDisplay();
+                String text = selectedCardsText.getText().toString();
+                if (text.trim()!=""){
+                    Intent i = new Intent(activity, ShowTextActivity.class);
+                    i.putExtra("text", text);
+                    activity.startActivity(i);
                 }
             }
         });
@@ -94,11 +96,12 @@ public class DisplayTextStrategy implements DisplayModeStrategy, TextToSpeech.On
 
     }
 
-    private void updateTextDisplay(){
+    private String updateTextDisplay(){
         String message = "";
         for (Card card : navCards){
             message += card.getLabel()==null ? "" : card.getLabel() + " ";
         }
         selectedCardsText.setText(message);
+        return message;
     }
 }
