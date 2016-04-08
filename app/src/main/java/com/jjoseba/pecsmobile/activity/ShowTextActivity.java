@@ -16,6 +16,7 @@ public class ShowTextActivity extends BaseActivity implements TextToSpeech.OnIni
 
     private static final int MY_DATA_CHECK_CODE = 0;
     private TextToSpeech myTTS;
+    private boolean spoken = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,14 @@ public class ShowTextActivity extends BaseActivity implements TextToSpeech.OnIni
         text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myTTS.speak(title, TextToSpeech.QUEUE_FLUSH, null);
+                if (!spoken){
+                    myTTS.speak(title, TextToSpeech.QUEUE_FLUSH, null);
+                    spoken = true;
+                }
+                else{
+                    finish();
+                }
+
             }
         });
     }

@@ -136,6 +136,7 @@
                         android:layout_marginBottom="5dp"
                         android:paddingTop="10dp"
                         android:textAllCaps="true"
+                        android:capitalize="characters"
                         android:inputType="text|textCapCharacters"
                         android:imeOptions="actionDone"/>
 
