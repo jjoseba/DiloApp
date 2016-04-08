@@ -221,10 +221,12 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
         int currentPage = mPager.getCurrentItem();
 
         if (currentPage < mLastPage){
-            // swiping back --> remove last page
-            Card lastPageCard = navigationCards.get(mLastPage);
-            mPagerAdapter.removeFragment(lastPageCard);
-            navigationCards.remove(mLastPage);
+            // swiping back --> remove pages
+            for (int i=mLastPage;i>currentPage;i--){
+                Card lastPageCard = navigationCards.get(i);
+                mPagerAdapter.removeFragment(lastPageCard);
+                navigationCards.remove(i);
+            }
             mPagerAdapter.notifyDataSetChanged();
 
             if ( currentPage == 0){

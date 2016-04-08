@@ -24,6 +24,7 @@ public class DisplayCardsStrategy implements DisplayModeStrategy {
     protected TwoWayView selectedCardsList;
     protected SelectedCardsAdapter selectedCardsAdapter;
     protected ImageButton removeCardBtn;
+    private ResetListener listener;
 
     @Override
     public int getDisplayMode() {
@@ -48,6 +49,8 @@ public class DisplayCardsStrategy implements DisplayModeStrategy {
     public void onResume(final BaseActivity activity, ArrayList<Card> navigationCards) {
         this.navCards = navigationCards;
         activity.findViewById(R.id.selected_cards_text).setVisibility(View.GONE);
+
+        listener.resetCards();
         selectedCards.clear();
         selectedCardsAdapter.notifyDataSetChanged();
 
@@ -95,6 +98,6 @@ public class DisplayCardsStrategy implements DisplayModeStrategy {
 
     @Override
     public void setResetListener(ResetListener listener) {
-
+        this.listener = listener;
     }
 }
