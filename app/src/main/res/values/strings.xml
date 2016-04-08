@@ -1,46 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">PECSMobile</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_new_card">NewCardActivity</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="new_card_title">Nueva tarjeta</string>
-    <string name="placeholder_label">Nombre (etiqueta)</string>
-    <string name="label_category">Es categoria?</string>
-    <string name="label_image">imagen</string>
-    <string name="color_label">Color de la tarjeta</string>
-    <string name="action_accept">Aceptar</string>
-    <string name="change_color">Elegir color</string>
+    <string name="new_card_title">New card</string>
+    <string name="placeholder_label">Name (label)</string>
+    <string name="label_category">Is category?</string>
+    <string name="label_image">image</string>
+    <string name="color_label">Card color</string>
+    <string name="action_accept">Accept</string>
+    <string name="change_color">Choose color</string>
     <string name="title_activity_show_cards">ShowCardsActivity</string>
-    <string name="action_cancel">CANCELAR</string>
-    <string name="label_disabled">Deshabilitada</string>
-    <string name="config_launcher">Configuración</string>
-    <string name="prefShowAddCardSummary">Mostrar en cada categoría una tarjeta-botón para permitir añadir nuevas tarjetas</string>
-    <string name="prefShowAddCard">Crear nuevas tarjetas</string>
-    <string name="prefTempTextCardSummary">Mostrar una tarjeta-botón en cada categoría para añadir una tarjeta temporal basada en texto introducido desde el teclado</string>
-    <string name="prefTempTextCard">Tarjetas de texto temporales</string>
+    <string name="action_cancel">CANCEL</string>
+    <string name="label_disabled">Disabled</string>
+    <string name="config_launcher">Settings</string>
+    <string name="prefShowAddCardSummary">Show in each category a button-card that lets you add new cards</string>
+    <string name="prefShowAddCard">Create new cards</string>
+    <string name="prefTempTextCardSummary">Show a button-card to add a temporal text-based card</string>
+    <string name="prefTempTextCard">Temp text cards</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="prefAllowCameraSummary">Permitir utilizar la cámara del dispositivo para tomar imágenes para las tarjetas</string>
-    <string name="prefTempAllowCamera">Permitir uso de cámara</string>
-    <string name="prefTextCardSummary">Permitir crear tarjetas a partir de texto</string>
-    <string name="prefTextCard">Tarjetas de texto</string>
-    <string name="prefDisplayModeText">Modo texto</string>
-    <string name="prefDisplayModeCards">Modo tarjetas</string>
-    <string name="prefCategory_displayMode">Modo de presentación</string>
-    <string name="prefCategory_cards">Funcionalidades</string>
-    <string name="prefCategory_actions">Creación de tarjetas</string>
-    <string name="prefDisplayModeSummary">Aquí puedes elegir el modo de presentación de las tarjetas seleccionadas. Cada uno de ellos está orientado a distintos niveles ...(//TO-DO: Terminar descripción)</string>
-    <string name="prefDisplayModeBasic">Modo básico</string>
-    <string name="prefDisableCard">Deshabilitar tarjetas</string>
-    <string name="prefDisableCardSummary">Mostrar una opción para poder habilitar/deshabilitar las tarjetas</string>
+    <string name="prefAllowCameraSummary">Allow using the device's cameras to take pictures for card creation</string>
+    <string name="prefTempAllowCamera">Allow camera</string>
+    <string name="prefTextCardSummary">Allow creating text based cards</string>
+    <string name="prefTextCard">Text based cards</string>
+    <string name="prefDisplayModeText">Text mode</string>
+    <string name="prefDisplayModeCards">Cards mode</string>
+    <string name="prefCategory_displayMode">Display mode</string>
+    <string name="prefCategory_cards">Features</string>
+    <string name="prefCategory_actions">Card creation</string>
+    <string name="prefDisplayModeSummary">Here you can choose the display mode of the selected cards. Each of them is focused on a …(//TO-DO: Finish description)</string>
+    <string name="prefDisplayModeBasic">Basic mode</string>
+    <string name="prefDisableCard">Disable cards</string>
+    <string name="prefDisableCardSummary">Show an option to be able to enable/disable cards</string>
     <string name="title_activity_show_text">ShowTextActivity</string>
-    <string name="tts_failed">Ouch! TextToSpeech ha fallado</string>
-    <string name="prefCloseDoubleTap">Cierre con doble toque</string>
-    <string name="prefCloseDoubleTapSummary">Cerrar la vista de resultados al segundo toque en la pantalla</string>
-
+    <string name="tts_failed">Ouch! TextToSpeech failed</string>
+    <string name="prefCloseDoubleTap">Second tap close</string>
+    <string name="prefCloseDoubleTapSummary">Close the results view at second screen tap</string>
 </resources>
