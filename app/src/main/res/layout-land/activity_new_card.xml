@@ -96,12 +96,14 @@
                         <com.jjoseba.pecsmobile.ui.AutoFitTextView
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:text="fasdfa sdafsadfasf fdsfdsfdsf"
+                            android:text=""
                             android:id="@+id/card_imageText"
                             android:layout_gravity="center"
                             android:maxLines="3"
                             android:gravity="center"
                             android:textSize="80sp"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
                             android:background="@color/white"
                             android:visibility="gone" />
 
@@ -133,7 +135,8 @@
                         android:textSize="34sp"
                         android:layout_marginBottom="5dp"
                         android:paddingTop="10dp"
-                        android:inputType="textCapCharacters"
+                        android:textAllCaps="true"
+                        android:inputType="text|textCapCharacters"
                         android:imeOptions="actionDone"/>
 
                     <LinearLayout

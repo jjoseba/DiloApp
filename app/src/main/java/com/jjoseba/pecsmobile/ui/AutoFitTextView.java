@@ -3,13 +3,14 @@ package com.jjoseba.pecsmobile.ui;
 import android.content.Context;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.widget.TextView;
 
 public class AutoFitTextView extends TextView {
 
     private static final int SMALLEST_SIZE = 3;
-    private static final float THRESHOLD = 0.5f;
+    private static final float THRESHOLD = 1f;
 
     // Attributes
     private Paint mTestPaint;
@@ -36,10 +37,12 @@ public class AutoFitTextView extends TextView {
      */
     private void refitText(String text, int textWidth) {
 
+
         if (textWidth <= 0 || text.isEmpty())
             return;
 
         int targetWidth = textWidth - this.getPaddingLeft() - this.getPaddingRight();
+        Log.d("Autofit", "refitting! target width:" + textWidth);
         String[] words = text.split("\\s+");
 
         float textSize = defaultTextSize;
@@ -48,6 +51,7 @@ public class AutoFitTextView extends TextView {
             mTestPaint.set(this.getPaint());
             mTestPaint.setTextSize(defaultTextSize);
             if (mTestPaint.measureText(word) <= targetWidth) {
+                Log.d("Autofit","default fits!");
                 textSize = Math.min(textSize, defaultTextSize);
                 continue;
             }
@@ -55,6 +59,7 @@ public class AutoFitTextView extends TextView {
             float hi = defaultTextSize;
             float lo = SMALLEST_SIZE;
 
+            Log.d("Autofit", defaultTextSize + "px - " + SMALLEST_SIZE + "px");
             // adjust text size using binary search for efficiency
             while (hi - lo > THRESHOLD) {
                 float size = (hi + lo) / 2;
@@ -67,6 +72,8 @@ public class AutoFitTextView extends TextView {
             textSize = Math.min(textSize, lo);
         }
 
+        mTestPaint.setTextSize(textSize);
+        Log.d("Autofit", textSize + "px, text width:" + mTestPaint.measureText(text) + "px");
         this.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
     }
 
@@ -82,6 +89,7 @@ public class AutoFitTextView extends TextView {
     @Override
     protected void onTextChanged(final CharSequence text, final int start,
             final int before, final int after) {
+        Log.d("Autofit", "textChanged! width:" + this.getWidth());
         refitText(text.toString(), this.getWidth());
     }
 

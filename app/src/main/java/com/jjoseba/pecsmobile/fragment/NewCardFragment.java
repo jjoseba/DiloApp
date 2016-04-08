@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -27,6 +28,7 @@ import android.widget.TextView;
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.app.DBHelper;
 import com.jjoseba.pecsmobile.model.Card;
+import com.jjoseba.pecsmobile.ui.EditTextBackEvent;
 import com.jjoseba.pecsmobile.ui.cards.CardPECS;
 import com.jjoseba.pecsmobile.ui.dialog.ImageDialog;
 import com.jjoseba.pecsmobile.ui.NewCardListener;
@@ -55,7 +57,7 @@ public class NewCardFragment extends Fragment {
     private ImageView cardImage;
     private int previousColor = Card.DEFAULT_COLOR;
 
-    private TextView cardTitleTextView;
+    private EditText cardTitleTextView;
     private TextView cardTextImage;
     private Switch switchCategory;
     private Switch switchDisabled;
@@ -76,13 +78,23 @@ public class NewCardFragment extends Fragment {
 
         cardFrame = view.findViewById(R.id.card_frame);
         colorBucket = view.findViewById(R.id.colorBucket);
-        cardTitleTextView = (TextView) view.findViewById(R.id.et_title);
+        cardTitleTextView = (EditText) view.findViewById(R.id.et_title);
         cardTitleTextView.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {  }
             public void afterTextChanged(Editable s) { }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length()>0) cardTextImage.setText(s);
+                if (s.length()>0){
+                    String text = s.toString();
+                    cardTextImage.setText(text.toUpperCase());
+                    if(!text.equals(text.toUpperCase()))
+                    {
+                        text=text.toUpperCase();
+                        cardTitleTextView.setText(text);
+                        cardTitleTextView.setSelection(text.length());
+                    }
+                }
+
             }
         });
         cardTextImage = (TextView) view.findViewById(R.id.card_imageText);
