@@ -28,7 +28,7 @@ dependencies {
     compile 'com.larswerkman:HoloColorPicker:1.5'
     compile 'org.lucasr.twowayview:twowayview:0.1.4'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
+    compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
     compile 'com.github.markushi:circlebutton:1.1'
     compile 'com.soundcloud.android:android-crop:1.0.0@aar'
 }
