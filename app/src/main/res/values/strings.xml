@@ -19,7 +19,7 @@
     <string name="prefTempTextCardSummary">Show a button-card to add a temporal text-based card</string>
     <string name="prefTempTextCard">Temp text cards</string>
 
-    <string name="prefAllowCameraSummary">Allow using the device's cameras to take pictures for card creation</string>
+    <string name="prefAllowCameraSummary">Allow using the device\'s cameras to take pictures for card creation</string>
     <string name="prefTempAllowCamera">Allow camera</string>
     <string name="prefTextCardSummary">Allow creating text based cards</string>
     <string name="prefTextCard">Text based cards</string>
