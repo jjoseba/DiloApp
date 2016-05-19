@@ -22,6 +22,11 @@
             android:key="prefDisplayModeText"
             android:title="@string/prefDisplayModeText" />
 
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="prefDisplayModeTextAdv"
+            android:title="@string/prefDisplayModeTextAdv" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

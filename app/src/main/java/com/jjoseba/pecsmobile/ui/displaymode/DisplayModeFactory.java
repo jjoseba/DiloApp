@@ -16,6 +16,8 @@ public class DisplayModeFactory {
             return new DisplayCardsStrategy();
         else if (prefs.getBoolean(PrefsActivity.DISPLAYMODE_TEXT, true))
             return new DisplayBasicTextStrategy();
+        else if (prefs.getBoolean(PrefsActivity.DISPLAYMODE_TEXTADV, true))
+            return new DisplayTextStrategy();
         else
             return new DisplayBasicStrategy();
     }

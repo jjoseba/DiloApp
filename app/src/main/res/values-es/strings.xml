@@ -23,8 +23,9 @@
     <string name="prefTempAllowCamera">Permitir uso de cámara</string>
     <string name="prefTextCardSummary">Permitir crear tarjetas a partir de texto</string>
     <string name="prefTextCard">Tarjetas de texto</string>
-    <string name="prefDisplayModeText">Modo texto</string>
+    <string name="prefDisplayModeText">Modo texto básico</string>
     <string name="prefDisplayModeCards">Modo tarjetas</string>
+    <string name="prefDisplayModeTextAdv">Modo texto</string>
     <string name="prefCategory_displayMode">Modo de presentación</string>
     <string name="prefCategory_cards">Funcionalidades</string>
     <string name="prefCategory_actions">Creación de tarjetas</string>

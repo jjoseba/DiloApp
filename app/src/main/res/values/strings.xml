@@ -23,7 +23,7 @@
     <string name="prefTempAllowCamera">Allow camera</string>
     <string name="prefTextCardSummary">Allow creating text based cards</string>
     <string name="prefTextCard">Text based cards</string>
-    <string name="prefDisplayModeText">Text mode</string>
+    <string name="prefDisplayModeText">Basic text mode</string>
     <string name="prefDisplayModeCards">Cards mode</string>
     <string name="prefCategory_displayMode">Display mode</string>
     <string name="prefCategory_cards">Features</string>
@@ -36,4 +36,5 @@
     <string name="tts_failed">Ouch! TextToSpeech failed</string>
     <string name="prefCloseDoubleTap">Second tap close</string>
     <string name="prefCloseDoubleTapSummary">Close the results view at second screen tap</string>
+    <string name="prefDisplayModeTextAdv">Text mode</string>
 </resources>
