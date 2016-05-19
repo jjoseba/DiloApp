@@ -24,9 +24,17 @@ public class DBHelper extends SQLiteAssetHelper {
         private static final String COLUMN_PARENT = "parent";
         private static final String COLUMN_IMAGE = "image";
         private static final String COLUMN_DISABLED = "is_disabled";
+        private static DBHelper instance;
 
-        public DBHelper(Context context) {
-            super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        public static DBHelper getInstance(Context ctx){
+            if (instance == null){
+                instance = new DBHelper(ctx);
+            }
+            return instance;
+        }
+
+        private DBHelper(Context context) {
+            super(context.getApplicationContext(), DATABASE_NAME, null, DATABASE_VERSION);
         }
 
         protected ContentValues getRowValuesFromCard(Card card){

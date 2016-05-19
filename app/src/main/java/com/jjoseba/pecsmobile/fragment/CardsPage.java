@@ -128,7 +128,7 @@ public class CardsPage extends Fragment {
     }
 
     public ArrayList<Card> getCards(){
-        DBHelper db = new DBHelper(this.getActivity());
+        DBHelper db = DBHelper.getInstance(this.getActivity());
         ArrayList<Card> pecsList = db.getCards(parentCategory == null? 0 : parentCategory.getCardId());
         for (Card card : pecs){
             if (card.getHexCardColor() == null){

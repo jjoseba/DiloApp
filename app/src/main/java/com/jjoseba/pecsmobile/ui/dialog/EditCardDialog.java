@@ -68,7 +68,7 @@ public class EditCardDialog extends Dialog{
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DBHelper db = new DBHelper(ctx);
+                DBHelper db = DBHelper.getInstance(ctx);
                 if (card.getImagePath() != null){
                     FileUtils.deleteImage(card.getImageFilename());
                 }
@@ -82,7 +82,7 @@ public class EditCardDialog extends Dialog{
         disableBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DBHelper db = new DBHelper(ctx);
+                DBHelper db = DBHelper.getInstance(ctx);
                 card.setDisabled(!card.isDisabled());
                 db.updateCard(card);
                 cardChanged = true;

@@ -124,7 +124,7 @@ public class NewCardFragment extends Fragment {
                             newCard.setImageFilename(FileUtils.copyFileToInternal(cardImagePath));
                         }
 
-                        DBHelper db = new DBHelper(NewCardFragment.this.getActivity());
+                        DBHelper db = DBHelper.getInstance(NewCardFragment.this.getActivity());
                         db.addCard(parentCard, newCard);
 
                         if (listener != null) {
