@@ -75,7 +75,7 @@ public class DisplayCardsStrategy implements DisplayModeStrategy {
 
     @Override
     public void onCardSelected(final BaseActivity activity, Card selectedCard) {
-        if (!selectedCards.contains(selectedCard)){
+        if (!selectedCard.isCategory() && !selectedCards.contains(selectedCard)){
             selectedCards.add(selectedCard);
             selectedCardsAdapter.notifyDataSetChanged();
         }

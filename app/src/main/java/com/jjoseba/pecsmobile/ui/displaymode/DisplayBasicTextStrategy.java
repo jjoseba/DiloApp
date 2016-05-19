@@ -3,20 +3,18 @@ package com.jjoseba.pecsmobile.ui.displaymode;
 
 import android.content.Intent;
 import android.speech.tts.TextToSpeech;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.activity.BaseActivity;
-import com.jjoseba.pecsmobile.activity.ShowCardsActivity;
 import com.jjoseba.pecsmobile.activity.ShowTextActivity;
 import com.jjoseba.pecsmobile.app.PECSMobile;
 import com.jjoseba.pecsmobile.model.Card;
 
 import java.util.ArrayList;
 
-public class DisplayTextStrategy implements DisplayModeStrategy, TextToSpeech.OnInitListener {
+public class DisplayBasicTextStrategy implements DisplayModeStrategy, TextToSpeech.OnInitListener {
 
     private ArrayList<Card> navCards;
     private TextView selectedCardsText;
@@ -73,8 +71,11 @@ public class DisplayTextStrategy implements DisplayModeStrategy, TextToSpeech.On
     @Override
     public void onCardSelected(final BaseActivity activity, Card selectedCard) {
         updateTextDisplay();
-        String newMessage = selectedCardsText.getText().toString() + selectedCard.getLabel();
-        selectedCardsText.setText(newMessage);
+        if (!selectedCard.isCategory()){
+            String newMessage = selectedCardsText.getText().toString() + selectedCard.getLabel();
+            selectedCardsText.setText(newMessage);
+        }
+
     }
 
     @Override

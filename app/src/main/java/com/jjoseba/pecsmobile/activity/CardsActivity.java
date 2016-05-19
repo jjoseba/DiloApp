@@ -146,9 +146,7 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
             mPager.setCurrentItem(target, true);
             mPager.setPagingEnabled(true);
         }
-        else{
-            displayStrategy.onCardSelected(this, clicked);
-        }
+        displayStrategy.onCardSelected(this, clicked);
     }
 
     @Override
