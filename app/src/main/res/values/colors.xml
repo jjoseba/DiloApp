@@ -1,22 +1,19 @@
 <resources>
 
     <color name="black_overlay">#66000000</color>
-    <color name="red">#EE9999</color>
-    <color name="green">#99EE99</color>
-    <color name="blue">#9999EE</color>
     <color name="white">#FFFFFF</color>
     <color name="topbar">#f2f3f4</color>
     <color name="whitetransp">#77eeeeee</color>
     <color name="mainbg">#A2A282</color>
     <color name="transparent">#00000000</color>
-    <color name="button_focus">#03A9F4</color>
+    <color name="button_focus">#9ad84b</color>
     <color name="secondary_bar">#ffa4a4a4</color>
     <color name="gray">#d3d3d3</color>
     <color name="default_card">#FF555555</color>
     <color name="background">#dedede</color>
 
-    <color name="colorPrimary">#339ff4</color>
-    <color name="colorPrimaryDark">#226ead</color>
-    <color name="colorPrimaryLight">#339ff4</color>
-    <color name="colorAccent">#339ff4</color>
+    <color name="colorPrimary">#44b867</color>
+    <color name="colorPrimaryDark">#309c5b</color>
+    <color name="colorPrimaryLight">#44b867</color>
+    <color name="colorAccent">#44b867</color>
 </resources>

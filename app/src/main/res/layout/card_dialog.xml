@@ -25,8 +25,7 @@
                 android:layout_height="fill_parent"
                 android:id="@+id/card_frame"
                 android:padding="5dp"
-                android:orientation="vertical"
-                android:background="@color/green">
+                android:orientation="vertical">
 
                 <com.jjoseba.pecsmobile.ui.SquareImageView
                     android:id="@+id/card_image"
