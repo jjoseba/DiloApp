@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">PECSMobile</string>
-    <string name="title_activity_new_card">NewCardActivity</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">Dime</string>
+    <string name="title_activity_new_card">Nueva tarjeta</string>
+    <string name="action_settings">Ajustes</string>
     <string name="new_card_title">Nueva tarjeta</string>
     <string name="placeholder_label">Nombre (etiqueta)</string>
     <string name="label_category">Es categoría?</string>
@@ -10,7 +10,7 @@
     <string name="color_label">Color de la tarjeta</string>
     <string name="action_accept">Aceptar</string>
     <string name="change_color">Elegir color</string>
-    <string name="title_activity_show_cards">ShowCardsActivity</string>
+    <string name="title_activity_show_cards">Ver tarjetas</string>
     <string name="action_cancel">CANCELAR</string>
     <string name="label_disabled">Deshabilitada</string>
     <string name="config_launcher">Configuración</string>
@@ -29,11 +29,11 @@
     <string name="prefCategory_displayMode">Modo de presentación</string>
     <string name="prefCategory_cards">Funcionalidades</string>
     <string name="prefCategory_actions">Creación de tarjetas</string>
-    <string name="prefDisplayModeSummary">Aquí puedes elegir el modo de presentación de las tarjetas seleccionadas. Cada uno de ellos está orientado a distintos niveles …(//TO-DO: Terminar descripción)</string>
+    <string name="prefDisplayModeSummary">Aquí puedes elegir el modo de presentación de las tarjetas seleccionadas. Cada uno de ellos está orientado a distintos niveles de comunicación</string>
     <string name="prefDisplayModeBasic">Modo básico</string>
     <string name="prefDisableCard">Deshabilitar tarjetas</string>
     <string name="prefDisableCardSummary">Mostrar una opción para poder habilitar/deshabilitar las tarjetas</string>
-    <string name="title_activity_show_text">ShowTextActivity</string>
+    <string name="title_activity_show_text">Vert texto</string>
     <string name="tts_failed">Ouch! TextToSpeech ha fallado</string>
     <string name="prefCloseDoubleTap">Cierre con doble toque</string>
     <string name="prefCloseDoubleTapSummary">Cerrar la vista de resultados al segundo toque en la pantalla</string>
