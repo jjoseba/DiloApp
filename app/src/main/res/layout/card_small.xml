@@ -16,8 +16,6 @@
 
         <com.jjoseba.pecsmobile.ui.SquareImageView
             android:id="@+id/card_image"
-
-            android:src="@drawable/ic_launcher"
             android:layout_width="@dimen/cards_small_width"
             android:layout_height="match_parent"
             android:background="@color/white">
