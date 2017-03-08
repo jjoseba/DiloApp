@@ -39,11 +39,10 @@
         <activity android:name="com.soundcloud.android.crop.CropImageActivity"/>
         <activity
             android:name=".activity.PrefsActivity"
-            android:icon="@drawable/ic_prefs"
+            android:icon="@mipmap/ic_settings"
             android:label="@string/config_launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
