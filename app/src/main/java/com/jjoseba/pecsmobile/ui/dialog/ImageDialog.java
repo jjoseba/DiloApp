@@ -61,12 +61,7 @@ public class ImageDialog extends Dialog{
         cameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(parentFragment.getActivity().getPackageManager()) != null) {
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, FileUtils.getTempImageURI());
-                    parentFragment.startActivityForResult(takePictureIntent, NewCardFragment.REQUEST_CAMERA);
-                    ImageDialog.this.dismiss();
-                }
+                startCamera();
             }
         });
 
@@ -108,8 +103,25 @@ public class ImageDialog extends Dialog{
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        parentFragment.startActivityForResult(intent, NewCardFragment.REQUEST_IMAGE);
-        ImageDialog.this.dismiss();
+        if (intent.resolveActivity(parentFragment.getActivity().getPackageManager()) != null){
+            parentFragment.startActivityForResult(intent, NewCardFragment.REQUEST_IMAGE);
+            ImageDialog.this.dismiss();
+        }
+        else {
+            //TODO: should log this...
+        }
+    }
+
+    private void startCamera(){
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(parentFragment.getActivity().getPackageManager()) != null) {
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, FileUtils.getTempImageURI());
+            parentFragment.startActivityForResult(takePictureIntent, NewCardFragment.REQUEST_CAMERA);
+            ImageDialog.this.dismiss();
+        }
+        else {
+            //TODO: should log this...
+        }
     }
 
     public boolean hasDataChanged(){
