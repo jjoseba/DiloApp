@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="fill_parent"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="vertical" android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:paddingBottom="30dp">
 
@@ -90,7 +91,8 @@
             app:cb_color="#2196F3"
             app:cb_pressedRingWidth="15dip"
             android:layout_gravity="center"
-            android:id="@+id/edit_button" />
+            android:id="@+id/edit_button"
+            android:visibility="gone"/>
 
         <at.markushi.ui.CircleButton
             android:layout_width="110dip"

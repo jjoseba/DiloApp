@@ -62,7 +62,7 @@ public class EditCardDialog extends Dialog{
         });
 
         View deleteBtn =  this.findViewById(R.id.delete_button);
-        View editBtn = this.findViewById(R.id.edit_button);
+        //View editBtn = this.findViewById(R.id.edit_button);
         CircleButton disableBtn = (CircleButton) this.findViewById(R.id.disable_button);
 
         deleteBtn.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +99,7 @@ public class EditCardDialog extends Dialog{
         appearButton2.setStartOffset(150);
         appearButton3.setStartOffset(300);
 
-        editBtn.startAnimation(appearButton1);
+        //editBtn.startAnimation(appearButton1);
         disableBtn.startAnimation(appearButton2);
         deleteBtn.startAnimation(appearButton3);
 
