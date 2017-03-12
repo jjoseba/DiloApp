@@ -1,13 +1,17 @@
 package com.jjoseba.pecsmobile.fragment;
 
+import android.Manifest;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
@@ -28,7 +32,6 @@ import android.widget.TextView;
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.app.DBHelper;
 import com.jjoseba.pecsmobile.model.Card;
-import com.jjoseba.pecsmobile.ui.EditTextBackEvent;
 import com.jjoseba.pecsmobile.ui.cards.CardPECS;
 import com.jjoseba.pecsmobile.ui.dialog.ImageDialog;
 import com.jjoseba.pecsmobile.ui.NewCardListener;
@@ -49,6 +52,7 @@ public class NewCardFragment extends Fragment {
     private static final long ANIM_DURATION = 800;
     public static final int REQUEST_IMAGE = 1;
     public static final int REQUEST_CAMERA = 2;
+    public static final int REQUEST_READ_CONTACTS = 111;
 
     private ColorPicker picker;
     private View colorPickerContainer;
@@ -140,17 +144,7 @@ public class NewCardFragment extends Fragment {
         cardImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ImageDialog dialog = new ImageDialog(NewCardFragment.this);
-                dialog.show();
-                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface d) {
-                        if (dialog.isTextForImage()){
-                            setTextForImage();
-                        }
-                    }
-                });
-
+                changeCardImage();
             }
         });
 
@@ -194,6 +188,42 @@ public class NewCardFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void changeCardImage() {
+        if (ContextCompat.checkSelfPermission(this.getActivity(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            Log.d("Permissions", "Aaagggg");
+            // No explanation needed, we can request the permission.
+            requestPermissions(
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_READ_CONTACTS);
+            /*
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(actContext,
+                    Manifest.permission.READ_CONTACTS)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+            }*/
+        }
+        else{
+            final ImageDialog dialog = new ImageDialog(NewCardFragment.this);
+            dialog.show();
+            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface d) {
+                    if (dialog.isTextForImage()){
+                        setTextForImage();
+                    }
+                }
+            });
+        }
     }
 
     private boolean validateForm() {
@@ -351,5 +381,29 @@ public class NewCardFragment extends Fragment {
         File image = new File(cardImagePath);
         Log.d("Crop", image.exists()?"Exists!":"noooooo");
         Picasso.with(getActivity()).load(image).memoryPolicy(MemoryPolicy.NO_CACHE).error(R.drawable.empty).into(cardImage);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        Log.d("permissions", "Yaaay!");
+        switch (requestCode) {
+            case REQUEST_READ_CONTACTS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    changeCardImage();
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+                    Log.d("Newcard", "Permission denied!");
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                break;
+            }
+
+        }
     }
 }
