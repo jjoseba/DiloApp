@@ -1,29 +1,16 @@
 package com.jjoseba.pecsmobile.fragment;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.activity.PrefsActivity;
 
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link PreferencesFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link PreferencesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class PreferencesFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
 
     ArrayList<CheckBoxPreference> displayModes = new ArrayList<>();
@@ -38,10 +25,8 @@ public class PreferencesFragment extends PreferenceFragment implements Preferenc
      *
      * @return A new instance of fragment PreferencesFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static PreferencesFragment newInstance() {
-        PreferencesFragment fragment = new PreferencesFragment();
-        return fragment;
+        return new PreferencesFragment();
     }
 
     @Override

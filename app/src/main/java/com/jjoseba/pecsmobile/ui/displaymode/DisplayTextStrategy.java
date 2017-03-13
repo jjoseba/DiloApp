@@ -2,20 +2,15 @@ package com.jjoseba.pecsmobile.ui.displaymode;
 
 import android.content.Intent;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.activity.BaseActivity;
-import com.jjoseba.pecsmobile.activity.ShowCardsActivity;
 import com.jjoseba.pecsmobile.activity.ShowTextActivity;
-import com.jjoseba.pecsmobile.adapter.SelectedCardsAdapter;
 import com.jjoseba.pecsmobile.app.PECSMobile;
 import com.jjoseba.pecsmobile.model.Card;
 import com.jjoseba.pecsmobile.ui.cards.CardTempPECS;
-
-import org.lucasr.twowayview.TwoWayView;
 
 import java.util.ArrayList;
 

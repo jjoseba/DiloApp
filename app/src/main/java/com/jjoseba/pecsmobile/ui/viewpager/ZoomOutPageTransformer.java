@@ -3,9 +3,7 @@ package com.jjoseba.pecsmobile.ui.viewpager;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
-/**
- * Created by Joseba on 26/12/2014.
- */
+
 public class ZoomOutPageTransformer implements ViewPager.PageTransformer {
     private static final float MIN_SCALE = 0.05f;
     private static final float MIN_ALPHA = 0.2f;

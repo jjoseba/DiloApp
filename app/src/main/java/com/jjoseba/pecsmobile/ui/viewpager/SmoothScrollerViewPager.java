@@ -8,9 +8,7 @@ import android.widget.Scroller;
 
 import java.lang.reflect.Field;
 
-/**
- * Created by Joseba on 28/12/2014.
- */
+
 public class SmoothScrollerViewPager extends EnableableViewPager {
 
 

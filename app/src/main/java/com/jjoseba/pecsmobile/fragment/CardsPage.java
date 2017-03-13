@@ -13,7 +13,6 @@ import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.activity.PrefsActivity;
 import com.jjoseba.pecsmobile.adapter.CardGridAdapter;
 import com.jjoseba.pecsmobile.app.DBHelper;
-import com.jjoseba.pecsmobile.app.PECSMobile;
 import com.jjoseba.pecsmobile.model.Card;
 import com.jjoseba.pecsmobile.ui.cards.ButtonCard;
 import com.jjoseba.pecsmobile.ui.CardsGridListener;
