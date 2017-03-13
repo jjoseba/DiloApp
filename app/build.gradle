@@ -1,4 +1,10 @@
+
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
 
 android {
     compileSdkVersion 23
@@ -31,4 +37,5 @@ dependencies {
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
     compile 'com.github.markushi:circlebutton:1.1'
     compile 'com.soundcloud.android:android-crop:1.0.0@aar'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {  transitive = true; }
 }
