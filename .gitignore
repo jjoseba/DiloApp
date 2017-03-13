@@ -1,13 +1,21 @@
+# Intellij project files
 *.iml
-.gradle
-/local.properties
+*.ipr
+*.iws
 .idea/
+.idea/**/*
 /.idea/workspace.xml
 /.idea/libraries
 .DS_Store
+
+# Gradle
 /build
+.gradle
 gradle.properties
 gradlew
 gradlew.bat
 gradle/wrapper/gradle-wrapper.jar
 gradle/wrapper/gradle-wrapper.properties
+
+# Local configuration file (sdk path, etc)
+local.properties
