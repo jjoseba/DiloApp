@@ -15,3 +15,16 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+# OkHttp
+-dontwarn okhttp3.**
+-dontwarn com.squareup.okhttp.**
+
+# Crashlytics
+-keepattributes SourceFile,LineNumberTable
+-keep class com.crashlytics.android.** { *; }
+-keep class io.fabric.sdk.android.** { *; }
+
+# Calligraphy
+-keep class uk.co.chrisjenx.calligraphy.* { *; }
+-keep class uk.co.chrisjenx.calligraphy.*$* { *; }
