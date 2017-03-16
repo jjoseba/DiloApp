@@ -53,16 +53,19 @@ public class TTSActivity extends BaseActivity implements TextToSpeech.OnInitList
             }
         }
 
+        // Set it as lowercase to avoid cases where it is spelled as if it were an acronym
+        String lowercaseMsg = text.toLowerCase();
+
         if (myTTS != null && !myTTS.isSpeaking()){
             manuallyActivated = isUserManuallyActivated;
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                myTTS.speak(text, TextToSpeech.QUEUE_FLUSH, null, text);
+                myTTS.speak(lowercaseMsg, TextToSpeech.QUEUE_FLUSH, null, lowercaseMsg);
             }
             else{
                 HashMap<String, String> params = new HashMap<>();
-                params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "pecsmobile");
-                myTTS.speak(text, TextToSpeech.QUEUE_FLUSH, params);
+                params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "dime"+this.hashCode());
+                myTTS.speak(lowercaseMsg, TextToSpeech.QUEUE_FLUSH, params);
             }
         }
 
