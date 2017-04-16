@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">DimeApp</string>
-    <string name="title_activity_new_card">NewCardActivity</string>
+    <string name="app_name">DILO</string>
+    <string name="title_activity_new_card">New card</string>
     <string name="action_settings">Settings</string>
     <string name="new_card_title">New card</string>
     <string name="placeholder_label">Name (label)</string>
@@ -10,7 +10,7 @@
     <string name="color_label">Card color</string>
     <string name="action_accept">Accept</string>
     <string name="change_color">Choose color</string>
-    <string name="title_activity_show_cards">ShowCardsActivity</string>
+    <string name="title_activity_show_cards">View cards</string>
     <string name="action_cancel">CANCEL</string>
     <string name="label_disabled">Disabled</string>
     <string name="config_launcher">Settings</string>
@@ -32,7 +32,7 @@
     <string name="prefDisplayModeBasic">Basic mode</string>
     <string name="prefDisableCard">Disable cards</string>
     <string name="prefDisableCardSummary">Show an option to be able to enable/disable cards</string>
-    <string name="title_activity_show_text">ShowTextActivity</string>
+    <string name="title_activity_show_text">Show text</string>
     <string name="tts_failed">Ouch! TextToSpeech failed</string>
     <string name="prefCloseDoubleTap">Second tap close</string>
     <string name="prefCloseDoubleTapSummary">Close the results view at second screen tap</string>

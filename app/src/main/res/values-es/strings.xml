@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Dime</string>
+    <string name="app_name">DILO</string>
     <string name="title_activity_new_card">Nueva tarjeta</string>
     <string name="action_settings">Ajustes</string>
     <string name="new_card_title">Nueva tarjeta</string>
