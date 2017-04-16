@@ -17,6 +17,10 @@ gradlew.bat
 gradle/wrapper/gradle-wrapper.jar
 gradle/wrapper/gradle-wrapper.properties
 
+# App builds
+app/build/outputs/apk
+app/app-release.apk
+
 # Local configuration file (sdk path, etc)
 local.properties
 
