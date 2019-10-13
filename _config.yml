@@ -1,4 +1,6 @@
 theme: jekyll-theme-minimal
 title: DILO
 description: Sistema alternativo y/o aumentativo de comunicación versátil e intuitivo
-logo: docs/logo.jpg
+logo: docs/icon.png
+show_downloads: true
+

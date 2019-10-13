@@ -1,3 +1,5 @@
+![DimeApp](docs/logo.jpg?raw=true "DiloApp")<br/>
+
 POLÍTICA DE PRIVACIDAD
 
 Última modificación: 24 de Marzo de 2018
