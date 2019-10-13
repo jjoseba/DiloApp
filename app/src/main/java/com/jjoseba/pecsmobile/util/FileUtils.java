@@ -74,7 +74,7 @@ public class FileUtils {
 
         return destination.getPath();
     }
-    
+
 
     public static String copyFileTemp(Context ctx, Uri fileUri){
         String tempPath = "temp.jpg";

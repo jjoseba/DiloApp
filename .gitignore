@@ -26,3 +26,4 @@ local.properties
 
 # Fabric plugin
 fabric.properties
+app/release/
