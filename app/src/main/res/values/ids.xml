@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="new_card_activity" type="id">new_card_activity</item>
-    <item name="cards_activity" type="id">cards_activity</item>
+    <item name="new_card_activity" type="id" />
+    <item name="cards_activity" type="id" />
 </resources>

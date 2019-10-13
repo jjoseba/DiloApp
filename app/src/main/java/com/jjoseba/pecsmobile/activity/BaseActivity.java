@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
-
-import com.jjoseba.pecsmobile.R;
+import androidx.fragment.app.FragmentActivity;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 

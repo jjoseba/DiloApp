@@ -2,8 +2,6 @@ package com.jjoseba.pecsmobile.app;
 
 import android.app.Application;
 
-import io.fabric.sdk.android.Fabric;
-import com.crashlytics.android.Crashlytics;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.util.FileUtils;
@@ -23,7 +21,6 @@ public class PECSMobile extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                         .setDefaultFontPath("fonts/billy.ttf")
