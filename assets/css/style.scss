@@ -1,0 +1,17 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+body{
+    padding:0;
+    margin:0;
+}
+header,section,footer{
+    padding:15px;
+}
+@media print, screen and (max-width: 480px){
+    header,section,footer{
+        padding:40px;
+    }
+}

@@ -1,9 +1,9 @@
-![DimeApp](dilo_banner.jpg?raw=true "DiloApp")<br/>
+![DimeApp](dilo_banner.jpg?raw=true "DiloApp")<br/><br/>
 
 POLÍTICA DE PRIVACIDAD
 =======================
 
-> Última modificación: 24 de Marzo de 2018
+> Última modificación: 14 de octubre de 2019
 
 
 El respeto hacia tu privacidad está totalmente garantizado.
