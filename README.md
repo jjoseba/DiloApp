@@ -1,8 +1,11 @@
 
-![DiloApp](docs/logo.jpg?raw=true "DiloApp")<br/>
-PECS ( [Picture Exchange Communication System](https://en.wikipedia.org/wiki/Picture_Exchange_Communication_System) ) app for Android
+![DiloApp](docs/dilo_banner.jpg?raw=true "DiloApp")<br/>
+App para Android - Sistema alternativo y/o aumentativo de comunicación versátil e intuitivo
 
-## License
+* [Presentación](docs/usage)
+* [Política de privacidad](docs/policy)
+
+## Licencia
 
 	DimeApp is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -14,13 +17,15 @@ PECS ( [Picture Exchange Communication System](https://en.wikipedia.org/wiki/Pic
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
-## Contributing
+## Contribuir
 
-If you would like to contribute code you can do so through GitHub by forking the repository and sending a pull request.
-Also, if you encounter any bug in the app or have a feature request, feel free to open an issue!
+Si quieres contribuir con tu código, puedes hacerlo libremente haciendo un fork del repositorio
+y un pull request posterior. También, si encuentras cualquier bug o tienes una petición de alguna
+funcionalidad que crees que mejoraría la aplicación, anímate a abrir un issue!
+
 
 ## Acknowledgements
-The app uses the following libraries:
+La app usa las siguientes librerías:
 * **Calligraphy**, custom fonts (https://github.com/chrisjenx/Calligraphy) Copyright (c) 2013 Christopher Jenkins - Apache License, Version 2.0
 * **Picasso**, image caching library (http://square.github.io/picasso/) Copyright (c) 2013 Square, Inc. - Apache License, Version 2.0
 * **TwoWayView**, recyclerView for horizontal list (https://github.com/lucasr/twoway-view) Copyright (C) 2013 Lucas Rocha - Apache License, Version 2.0

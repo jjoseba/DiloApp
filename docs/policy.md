@@ -1,4 +1,4 @@
-![DimeApp](docs/logo.jpg?raw=true "DiloApp")<br/>
+![DimeApp](dilo_banner.jpg?raw=true "DiloApp")<br/>
 
 POLÍTICA DE PRIVACIDAD
 =======================
