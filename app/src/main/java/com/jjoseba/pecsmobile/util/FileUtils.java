@@ -5,12 +5,16 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import com.jjoseba.pecsmobile.BuildConfig;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import androidx.core.content.FileProvider;
 
 public class FileUtils {
 
@@ -21,11 +25,29 @@ public class FileUtils {
         return storageBaseLocation + File.separator;
     }
 
-    public static Uri getTempImageURI(){
+    public static Uri getTempImageURI(Context ctx){
         if (cropTempResultURI == null){
-            cropTempResultURI = Uri.fromFile(new File( getImagesPath() + "temp_image.jpg"));
+            String fileImagePath = getImagesPath() + "temp_image.jpg";
+            cropTempResultURI = FileProvider.getUriForFile(ctx, BuildConfig.APPLICATION_ID + ".provider", new File(fileImagePath));
+
         }
         return cropTempResultURI;
+    }
+
+    public static String copyFromUri(Context context, Uri srcUri, File dstFile) {
+        try {
+            InputStream inputStream = context.getContentResolver().openInputStream(srcUri);
+            if (inputStream == null) return null;
+            OutputStream outputStream = new FileOutputStream(dstFile);
+            IOUtils.copy(inputStream, outputStream);
+            inputStream.close();
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dstFile.getPath();
     }
 
     public static String copyFile(String fileSourcePath, String fileDestinationName){
@@ -52,16 +74,14 @@ public class FileUtils {
 
         return destination.getPath();
     }
-
-    public static String copyFileTemp(String filePath){
-        String tempPath = "temp.jpg";
-        return copyFile(filePath, tempPath);
-    }
+    
 
     public static String copyFileTemp(Context ctx, Uri fileUri){
-        String sourcePath = getPath(ctx, fileUri);
-        return copyFileTemp(sourcePath);
+        String tempPath = "temp.jpg";
+        File destination = new File(getImagesPath() + tempPath);
+        return copyFromUri(ctx, fileUri, destination);
     }
+
 
     public static String copyFileToInternal(String filePath){
 
@@ -93,11 +113,16 @@ public class FileUtils {
         String[] projection = { MediaStore.Images.Media.DATA };
         Cursor cursor = ctx.getContentResolver().query(uri, projection, null, null, null);
         if( cursor != null ){
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            String path =  cursor.getString(column_index);
-            cursor.close();
-            return path;
+            try{
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor.moveToFirst();
+                String path =  cursor.getString(column_index);
+                cursor.close();
+                return path;
+            }
+            catch (IllegalArgumentException e){
+
+            }
         }
         // this is our fallback here
         return uri.getPath();

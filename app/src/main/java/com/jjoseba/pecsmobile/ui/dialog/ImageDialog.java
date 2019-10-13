@@ -115,7 +115,8 @@ public class ImageDialog extends Dialog{
     private void startCamera(){
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(parentFragment.getActivity().getPackageManager()) != null) {
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, FileUtils.getTempImageURI());
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, FileUtils.getTempImageURI(this.getContext()));
+            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             parentFragment.startActivityForResult(takePictureIntent, NewCardFragment.REQUEST_CAMERA);
             ImageDialog.this.dismiss();
         }

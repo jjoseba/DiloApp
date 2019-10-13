@@ -325,14 +325,14 @@ public class NewCardFragment extends Fragment {
                      cardImagePath = FileUtils.copyFileTemp(this.getActivity(), selectedImage);
                      Uri cardImageUri = Uri.fromFile(new File(cardImagePath));
 
-                     Crop.of(cardImageUri, FileUtils.getTempImageURI())
+                     Crop.of(cardImageUri, FileUtils.getTempImageURI(this.getContext()))
                          .asSquare()
                          .withMaxSize(300, 300)
                          .start(this.getActivity());
                      break;
 
                  case REQUEST_CAMERA:
-                     Uri tempUri = FileUtils.getTempImageURI();
+                     Uri tempUri = FileUtils.getTempImageURI(this.getContext());
                      cardImagePath = FileUtils.copyFileTemp(this.getActivity(), tempUri);
                      Picasso.with(this.getActivity()).load(tempUri).memoryPolicy(MemoryPolicy.NO_CACHE).into(cardImage);
 
@@ -377,7 +377,7 @@ public class NewCardFragment extends Fragment {
 
     public void notifySuccessfulCrop(){
         Log.d("Crop", "Loading:" + cardImagePath);
-        cardImagePath = FileUtils.copyFileTemp(getActivity(), FileUtils.getTempImageURI());
+        cardImagePath = FileUtils.copyFileTemp(getActivity(), FileUtils.getTempImageURI(this.getContext()));
         File image = new File(cardImagePath);
         Log.d("Crop", image.exists()?"Exists!":"noooooo");
         Picasso.with(getActivity()).load(image).memoryPolicy(MemoryPolicy.NO_CACHE).error(R.drawable.empty).into(cardImage);
