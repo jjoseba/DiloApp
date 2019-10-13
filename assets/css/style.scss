@@ -7,11 +7,18 @@ body{
     padding:0;
     margin:0;
 }
+a{
+    color: #449b5e;
+    &:hover{ color: #39804e; }
+}
+header{
+    background: #eaf3de;
+}
 header,section,footer{
-    padding:15px;
+    padding:40px;
 }
 @media print, screen and (max-width: 480px){
     header,section,footer{
-        padding:40px;
+        padding:15px;
     }
 }
