@@ -13,6 +13,7 @@ a{
 }
 header{
     background: #eaf3de;
+    margin-left: -50px;
 }
 header,section,footer{
     padding:40px;
@@ -20,5 +21,19 @@ header,section,footer{
 @media print, screen and (max-width: 480px){
     header,section,footer{
         padding:15px;
+    }
+}
+
+.wrapper {
+    width: 900px;
+    margin: 0 auto;
+}
+@media print, screen and (max-width: 960px){
+    div.wrapper {
+        width: auto;
+        margin: 0;
+    }
+    header{
+       margin-left: auto;
     }
 }
