@@ -1,4 +1,3 @@
-![DimeApp](dilo_banner.jpg?raw=true "DiloApp")<br/><br/>
 
 POLÍTICA DE PRIVACIDAD
 =======================
@@ -27,5 +26,9 @@ El respeto hacia tu privacidad está totalmente garantizado.
 8. Clasificación por edades: PEGI 3 - Apto para todos los públicos.
 
 9. Cambios en nuestra Política de Privacidad:
-⋅⋅⋅Nuestra Política de Privacidad puede cambiar con nuevas actualizaciones de la aplicación.
-⋅⋅⋅Publicaremos cualquier cambio de política de privacidad en esta página, simultáneamente con nuevas actualizaciones, por lo que debe revisarla periódicamente.
+    Nuestra Política de Privacidad puede cambiar con nuevas actualizaciones de la aplicación.
+    Publicaremos cualquier cambio de política de privacidad en esta página, simultáneamente con nuevas actualizaciones, por lo que debe revisarla periódicamente.
+
+<br/>
+
+![DimeApp](dilo_banner.jpg?raw=true "DiloApp")<br/>
