@@ -23,7 +23,7 @@ con conocimientos de desarrollo puede comprobar en el código fuente que lo expu
 
 7. La aplicación accede a sensores como el acelerómetro del dispositivo en caso de disponer de ello y al estado de apagado o encendido de la pantalla, para poder así proporcionar una experiencia óptima de la aplicación.
 
-8 - La aplicación recopila información sobre propios eventos de botones y pantallas para así poder llevar a cabo una analítica de uso de los usuarios de forma completamente anónima, almacenados por la plataforma Firebase Analytics.
+8. La aplicación recopila información sobre propios eventos de botones y pantallas para así poder llevar a cabo una analítica de uso de los usuarios de forma completamente anónima, almacenados por la plataforma Firebase Analytics.
 
 9. Clasificación por edades: PEGI 3 - Apto para todos los públicos.
 
