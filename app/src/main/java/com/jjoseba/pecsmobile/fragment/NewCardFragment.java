@@ -4,14 +4,18 @@ import android.Manifest;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 import androidx.core.content.ContextCompat;
+
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
@@ -28,7 +32,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.app.DBHelper;
 import com.jjoseba.pecsmobile.model.Card;
@@ -37,6 +43,13 @@ import com.jjoseba.pecsmobile.ui.dialog.ImageDialog;
 import com.jjoseba.pecsmobile.ui.NewCardListener;
 import com.jjoseba.pecsmobile.util.FileUtils;
 import com.jjoseba.pecsmobile.util.ImageUtils;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
+import com.karumi.dexter.listener.single.SnackbarOnDeniedPermissionListener;
 import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.SaturationBar;
 import com.larswerkman.holocolorpicker.ValueBar;
@@ -191,39 +204,50 @@ public class NewCardFragment extends Fragment {
     }
 
     private void changeCardImage() {
-        if (ContextCompat.checkSelfPermission(this.getActivity(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
 
-            Log.d("Permissions", "Aaagggg");
-            // No explanation needed, we can request the permission.
-            requestPermissions(
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    REQUEST_READ_CONTACTS);
-            /*
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(actContext,
-                    Manifest.permission.READ_CONTACTS)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
+        final PermissionListener permissionListener = SnackbarOnDeniedPermissionListener.Builder
+                .with(this.getView(), "Camera access is needed to take pictures of your dog")
+                .withOpenSettingsButton("Settings").build();
 
-            } else {
-
-            }*/
-        }
-        else{
-            final ImageDialog dialog = new ImageDialog(NewCardFragment.this);
-            dialog.show();
-            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface d) {
-                    if (dialog.isTextForImage()){
-                        setTextForImage();
+        Dexter.withActivity(this.getActivity())
+                .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withListener(new PermissionListener(){
+                    @Override public void onPermissionGranted(PermissionGrantedResponse response) {
+                        final ImageDialog dialog = new ImageDialog(NewCardFragment.this);
+                        dialog.show();
+                        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface d) {
+                                if (dialog.isTextForImage()){
+                                    setTextForImage();
+                                }
+                            }
+                        });
                     }
-                }
-            });
-        }
+                    @Override public void onPermissionDenied(PermissionDeniedResponse response) {
+                        showPermissionSnackbar();
+                    }
+                    @Override public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        showPermissionSnackbar();
+                    }
+                }).check();
+
+    }
+
+    private void showPermissionSnackbar(){
+        Snackbar snackbar = Snackbar.make(getView(), R.string.permissionsRationale, Snackbar.LENGTH_LONG);
+        snackbar.setAction("Configuración", new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                Context context = getContext();
+                Intent myAppSettings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                        Uri.parse("package:" + context.getPackageName()));
+                myAppSettings.addCategory(Intent.CATEGORY_DEFAULT);
+                myAppSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(myAppSettings);
+            }
+        });
+        Log.d("Permissions", "Showing snackbar!");
+        snackbar.show();
     }
 
     private boolean validateForm() {
@@ -383,27 +407,4 @@ public class NewCardFragment extends Fragment {
         Picasso.with(getActivity()).load(image).memoryPolicy(MemoryPolicy.NO_CACHE).error(R.drawable.empty).into(cardImage);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        Log.d("permissions", "Yaaay!");
-        switch (requestCode) {
-            case REQUEST_READ_CONTACTS: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    changeCardImage();
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
-                } else {
-                    Log.d("Newcard", "Permission denied!");
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                break;
-            }
-
-        }
-    }
 }

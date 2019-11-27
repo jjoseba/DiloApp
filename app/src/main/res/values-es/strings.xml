@@ -37,4 +37,6 @@
     <string name="tts_failed">Ouch! TextToSpeech ha fallado</string>
     <string name="prefCloseDoubleTap">Cierre con doble toque</string>
     <string name="prefCloseDoubleTapSummary">Cerrar la vista de resultados al segundo toque en la pantalla</string>
+
+    <string name="permissionsRationale">La app necesita permisos para acceder al almacenamiento del dispositivo. Comprueba la configuración</string>
 </resources>

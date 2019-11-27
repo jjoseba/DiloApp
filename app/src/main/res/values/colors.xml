@@ -13,7 +13,7 @@
     <color name="background">#dedede</color>
 
     <color name="colorPrimary">#44b867</color>
-    <color name="colorPrimaryDark">#309c5b</color>
+    <color name="colorPrimaryDark">#309C5B</color>
     <color name="colorPrimaryLight">#44b867</color>
     <color name="colorAccent">#44b867</color>
 </resources>

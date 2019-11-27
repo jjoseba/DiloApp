@@ -16,21 +16,22 @@
         android:visibility="visible">
 
         <Button
+            android:id="@+id/cancelButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/new_card_title"
-            android:id="@+id/cancelButton"
-            android:drawableLeft="@drawable/ic_action_back"
-            android:background="@color/transparent"
-            android:textColor="@color/white"
-            android:paddingRight="20dp"
-            android:textSize="30sp"
-            android:visibility="visible"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/transparent"
+            android:drawableLeft="@drawable/ic_action_back"
+            android:drawablePadding="5dp"
             android:elegantTextHeight="false"
             android:paddingLeft="5dp"
-            android:layout_alignParentTop="true" />
+            android:paddingRight="20dp"
+            android:text="@string/new_card_title"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:visibility="visible" />
 
         <Button
             android:layout_width="wrap_content"
@@ -70,41 +71,41 @@
                 <FrameLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20sp"
-                    android:layout_marginRight="10sp"
-                    android:background="@drawable/card"
-                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="10dp"
                     android:layout_span="3"
-                    android:layout_gravity="center">
+                    android:layout_weight="1"
+                    android:background="@drawable/card">
 
                     <FrameLayout
+                        android:id="@+id/card_frame"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:padding="15sp"
-                        android:id="@+id/card_frame"
-                        android:background="@color/default_card">
+                        android:background="@color/default_card"
+                        android:padding="15sp">
 
                         <ImageView
+                            android:id="@+id/imageView2"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:id="@+id/imageView2"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_action_new_picture"
                             android:background="@color/gray"
-                            android:scaleType="center" />
+                            android:scaleType="center"
+                            android:src="@drawable/ic_action_new_picture" />
 
                         <com.jjoseba.pecsmobile.ui.AutoFitTextView
+                            android:id="@+id/card_imageText"
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:text=""
-                            android:id="@+id/card_imageText"
                             android:layout_gravity="center"
-                            android:maxLines="3"
+                            android:background="@color/white"
                             android:gravity="center"
-                            android:textSize="80sp"
+                            android:maxLines="3"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
-                            android:background="@color/white"
+                            android:text=""
+                            android:textSize="80sp"
                             android:visibility="gone" />
 
                         <com.jjoseba.pecsmobile.ui.SquareImageView
@@ -112,8 +113,7 @@
 
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:scaleType="fitXY">
-                        </com.jjoseba.pecsmobile.ui.SquareImageView>
+                            android:scaleType="fitXY"></com.jjoseba.pecsmobile.ui.SquareImageView>
                     </FrameLayout>
                 </FrameLayout>
 
@@ -146,30 +146,32 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/color_label"
                             android:id="@+id/textView"
-                            android:textSize="25sp"
-                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:gravity="center_vertical|left" />
+                            android:layout_weight="1"
+                            android:gravity="center_vertical|left"
+                            android:text="@string/color_label"
+                            android:textSize="25sp" />
 
                         <FrameLayout
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
                             android:id="@+id/colorBucket"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp">
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp">
 
                         </FrameLayout>
 
                         <ImageButton
+                            android:id="@+id/pickColorButton"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
-                            android:id="@+id/pickColorButton"
-                            android:src="@drawable/ic_action_edit"
-                            android:scaleType="fitCenter" />
+                            android:background="@color/colorPrimaryDark"
+                            android:padding="7dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_action_edit" />
 
                     </LinearLayout>
 

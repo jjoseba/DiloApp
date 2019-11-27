@@ -37,4 +37,6 @@
     <string name="prefCloseDoubleTap">Second tap close</string>
     <string name="prefCloseDoubleTapSummary">Close the results view at second screen tap</string>
     <string name="prefDisplayModeTextAdv">Text mode</string>
+
+    <string name="permissionsRationale">The app needs permissions to access external storage. Please check your app settings</string>
 </resources>
