@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "87719964565",
+    "firebase_url": "https://dilo-c7f6a.firebaseio.com",
+    "project_id": "dilo-c7f6a",
+    "storage_bucket": "dilo-c7f6a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:87719964565:android:14e73bae826b7dc371509c",
+        "android_client_info": {
+          "package_name": "com.abaloo.dilo2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "87719964565-unu1h8of2hr1gh1mmmd2fht871mdckgq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJOgsnzpn_dImUE76BBlfBvE0vMCK5MeM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "87719964565-unu1h8of2hr1gh1mmmd2fht871mdckgq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
