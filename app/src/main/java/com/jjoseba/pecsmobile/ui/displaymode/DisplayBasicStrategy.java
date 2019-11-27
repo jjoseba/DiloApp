@@ -26,8 +26,4 @@ public class DisplayBasicStrategy extends DisplayCardsStrategy {
         }
     }
 
-    @Override
-    public void setResetListener(ResetListener listener) {
-
-    }
 }
