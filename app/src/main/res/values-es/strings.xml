@@ -39,4 +39,6 @@
     <string name="prefCloseDoubleTapSummary">Cerrar la vista de resultados al segundo toque en la pantalla</string>
 
     <string name="permissionsRationale">La app necesita permisos para acceder al almacenamiento del dispositivo. Comprueba la configuración</string>
+    <string name="unableResolveImageRequest">Request galería: no se pudo resolver</string>
+    <string name="unableResolveCameraRequest">Request cámara: no se pudo resolver</string>
 </resources>
