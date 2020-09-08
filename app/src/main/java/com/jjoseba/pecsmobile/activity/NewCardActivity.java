@@ -1,4 +1,4 @@
-package com.jjoseba.pecsmobile.fragment;
+package com.jjoseba.pecsmobile.activity;
 
 import android.Manifest;
 import android.animation.ArgbEvaluator;
@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -15,10 +16,8 @@ import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 import android.text.style.RelativeSizeSpan;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +29,7 @@ import android.widget.TextView;
 import com.google.android.material.snackbar.Snackbar;
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.app.DBHelper;
+import com.jjoseba.pecsmobile.fragment.NewCardFragment;
 import com.jjoseba.pecsmobile.model.Card;
 import com.jjoseba.pecsmobile.ui.NewCardListener;
 import com.jjoseba.pecsmobile.ui.cards.CardPECS;
@@ -42,7 +42,6 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
-import com.karumi.dexter.listener.single.SnackbarOnDeniedPermissionListener;
 import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.SaturationBar;
 import com.larswerkman.holocolorpicker.ValueBar;
@@ -52,15 +51,19 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
-import androidx.fragment.app.Fragment;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class NewCardFragment extends Fragment {
+
+public class NewCardActivity extends Activity {
 
     private static final float EXTRA_TRANSLATION = 300f;
     private static final long ANIM_DURATION = 800;
     public static final int REQUEST_IMAGE = 1;
     public static final int REQUEST_CAMERA = 2;
-    public static final int REQUEST_READ_CONTACTS = 111;
+    public static final int REQUEST = 3;
+
+    public static final String NEW_CARD_RESULT = "new_card";
+    public static final String EXTRA_PARENT_CARD = "parent_card";
 
     private ColorPicker picker;
     private View colorPickerContainer;
@@ -75,8 +78,7 @@ public class NewCardFragment extends Fragment {
     private Switch switchDisabled;
 
     private boolean disableOkButton = false;
-    private NewCardListener listener;
-    private int parentCard;
+    private Card parentCard;
 
     private boolean textAsImage = false;
 
@@ -84,14 +86,19 @@ public class NewCardFragment extends Fragment {
     private ImageDialog dialog;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.activity_new_card, container, false);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+        setContentView(R.layout.activity_new_card);
 
-        cardFrame = view.findViewById(R.id.card_frame);
-        colorBucket = view.findViewById(R.id.colorBucket);
-        cardTitleTextView = (EditText) view.findViewById(R.id.et_title);
+        cardFrame = findViewById(R.id.card_frame);
+        colorBucket = findViewById(R.id.colorBucket);
+        cardTitleTextView = findViewById(R.id.et_title);
         cardTitleTextView.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {  }
             public void afterTextChanged(Editable s) { }
@@ -110,10 +117,10 @@ public class NewCardFragment extends Fragment {
 
             }
         });
-        cardTextImage = (TextView) view.findViewById(R.id.card_imageText);
-        switchCategory = (Switch) view.findViewById(R.id.sw_category);
-        switchDisabled = (Switch) view.findViewById(R.id.sw_disabled);
-        Button saveButton = (Button) view.findViewById(R.id.saveButton);
+        cardTextImage = findViewById(R.id.card_imageText);
+        switchCategory = findViewById(R.id.sw_category);
+        switchDisabled = findViewById(R.id.sw_disabled);
+        Button saveButton = findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,19 +144,21 @@ public class NewCardFragment extends Fragment {
                             newCard.setImageFilename(FileUtils.copyFileToInternal(cardImagePath));
                         }
 
-                        DBHelper db = DBHelper.getInstance(NewCardFragment.this.getActivity());
-                        db.addCard(parentCard, newCard);
+                        DBHelper db = DBHelper.getInstance(getApplicationContext());
+                        db.addCard(parentCard.getCardId(), newCard);
 
-                        if (listener != null) {
-                            listener.onNewCard(newCard);
-                        }
+                        Intent returnIntent = new Intent();
+                        returnIntent.putExtra(NEW_CARD_RESULT, newCard);
+                        setResult(Activity.RESULT_OK,returnIntent);
+                        finish();
+
                     }
 
                 }
             }
         });
 
-        cardImage = (ImageView) view.findViewById(R.id.card_image);
+        cardImage = findViewById(R.id.card_image);
         cardImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,7 +166,7 @@ public class NewCardFragment extends Fragment {
             }
         });
 
-        Button cancelButton = (Button) view.findViewById(R.id.cancelButton);
+        Button cancelButton = findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,11 +174,15 @@ public class NewCardFragment extends Fragment {
                     colorPickerContainer.setVisibility(View.INVISIBLE);
                     hideColorPicker();
                 }
-                if (listener != null){ listener.onCancel(); }
+
+                Intent returnIntent = new Intent();
+                setResult(Activity.RESULT_CANCELED, returnIntent);
+                finish();
+
             }
         });
 
-        colorPickerContainer = view.findViewById(R.id.pickerContainer);
+        colorPickerContainer = findViewById(R.id.pickerContainer);
         colorPickerContainer.setOnTouchListener(new View.OnTouchListener() {
             //Cancelamos la propagación del pulsado cuando colorPickerContainer es visible
             @Override
@@ -178,17 +191,17 @@ public class NewCardFragment extends Fragment {
             }
         });
 
-        picker = (ColorPicker) colorPickerContainer.findViewById(R.id.picker);
+        picker = colorPickerContainer.findViewById(R.id.picker);
         picker.addSaturationBar((SaturationBar) colorPickerContainer.findViewById(R.id.saturationbar) );
         picker.addValueBar((ValueBar) colorPickerContainer.findViewById(R.id.valuebar));
 
-        Button selectColorBtn = (Button) colorPickerContainer.findViewById(R.id.select_color_btn);
+        Button selectColorBtn = colorPickerContainer.findViewById(R.id.select_color_btn);
         selectColorBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { selectColor(); }
         });
 
-        ImageButton pickColor = (ImageButton) view.findViewById(R.id.pickColorButton);
+        ImageButton pickColor = findViewById(R.id.pickColorButton);
         pickColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,16 +209,21 @@ public class NewCardFragment extends Fragment {
             }
         });
 
-        return view;
+        Bundle b = getIntent().getExtras();
+        parentCard = (Card) b.getSerializable(EXTRA_PARENT_CARD);
+        changeColor(parentCard.getCardColor(), false);
+        picker.setColor(parentCard.getCardColor());
+
+
     }
 
     private void changeCardImage() {
 
-        Dexter.withActivity(this.getActivity())
+        Dexter.withActivity(this)
                 .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .withListener(new PermissionListener(){
                     @Override public void onPermissionGranted(PermissionGrantedResponse response) {
-                        dialog = new ImageDialog(NewCardFragment.this);
+                        /*dialog = new ImageDialog(NewCardActivity.this);
                         dialog.show();
                         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                             @Override
@@ -214,7 +232,8 @@ public class NewCardFragment extends Fragment {
                                     setTextForImage();
                                 }
                             }
-                        });
+                        });*/
+                        startImagePicker();
                     }
                     @Override public void onPermissionDenied(PermissionDeniedResponse response) {
                         showPermissionSnackbar();
@@ -223,23 +242,45 @@ public class NewCardFragment extends Fragment {
                         showPermissionSnackbar();
                     }
                 }).check();
-
     }
 
     private void showPermissionSnackbar(){
-        Snackbar snackbar = Snackbar.make(getView(), R.string.permissionsRationale, Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), R.string.permissionsRationale, Snackbar.LENGTH_LONG);
         snackbar.setAction("Configuración", new View.OnClickListener() {
             @Override public void onClick(View v) {
-                Context context = getContext();
+
                 Intent myAppSettings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                        Uri.parse("package:" + context.getPackageName()));
+                        Uri.parse("package:" + NewCardActivity.this.getPackageName()));
                 myAppSettings.addCategory(Intent.CATEGORY_DEFAULT);
                 myAppSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(myAppSettings);
+                NewCardActivity.this.startActivity(myAppSettings);
             }
         });
         Log.d("Permissions", "Showing snackbar!");
         snackbar.show();
+    }
+
+    private void startImagePicker(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        Log.d("Permissions",  "Trying to resolve default ACTION_GET_CONTENT");
+        if (intent.resolveActivity(getPackageManager()) != null){
+            startActivityForResult(intent, REQUEST_IMAGE);
+        }
+        else {
+            Log.d("Permissions", "No activity found. Trying with action picker resolver");
+
+            Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+            getIntent.setType("image/*");
+            Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            pickIntent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+            Intent chooserIntent = Intent.createChooser(getIntent, "Selecciona imagen");
+            Log.d("Permissions", "Launching intent with ACTION_PICK, waiting for result...");
+            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+            startActivityForResult(chooserIntent, REQUEST_IMAGE);
+        }
     }
 
     private boolean validateForm() {
@@ -279,9 +320,6 @@ public class NewCardFragment extends Fragment {
         return colorPickerContainer.getVisibility() == View.VISIBLE;
     }
 
-    public void setNewCardListener(NewCardListener newCardListener){
-        listener = newCardListener;
-    }
 
     protected void changeColor(int colorTo, boolean animate){
         int colorFrom = previousColor;
@@ -327,48 +365,53 @@ public class NewCardFragment extends Fragment {
 
     }
 
-     @Override
-     public void onActivityResult(int requestCode, int resultCode,
-                                  Intent imageReturnedIntent) {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode,
+                                 Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-         if(resultCode == Activity.RESULT_OK){
 
-             if (dialog != null){
-                 if (dialog.isShowing()){
-                     dialog.dismiss();
-                 }
-                 dialog = null;
-             }
+        if(resultCode == Activity.RESULT_OK){
 
-             switch(requestCode) {
+            if (dialog != null){
+                if (dialog.isShowing()){
+                    dialog.dismiss();
+                }
+                dialog = null;
+            }
 
-                 case REQUEST_IMAGE:
-                     Uri selectedImage = imageReturnedIntent.getData();
-                     Picasso.with(this.getActivity()).load(selectedImage).into(cardImage);
-                     hideTextForImage();
-                     cardImagePath = FileUtils.copyFileTemp(this.getActivity(), selectedImage);
-                     Uri cardImageUri = Uri.fromFile(new File(cardImagePath));
+            switch(requestCode) {
 
-                     Crop.of(cardImageUri, FileUtils.getTempImageURI(this.getContext()))
-                         .asSquare()
-                         .withMaxSize(300, 300)
-                         .start(this.getActivity());
-                     break;
+                case Crop.REQUEST_CROP:
+                    notifySuccessfulCrop();
+                    break;
 
-                 case REQUEST_CAMERA:
-                     Uri tempUri = FileUtils.getTempImageURI(this.getContext());
-                     cardImagePath = FileUtils.copyFileTemp(this.getActivity(), tempUri);
-                     Picasso.with(this.getActivity()).load(tempUri).memoryPolicy(MemoryPolicy.NO_CACHE).into(cardImage);
+                case REQUEST_IMAGE:
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    Picasso.with(this.getApplicationContext()).load(selectedImage).into(cardImage);
+                    hideTextForImage();
+                    cardImagePath = FileUtils.copyFileTemp(this, selectedImage);
+                    Uri cardImageUri = Uri.fromFile(new File(cardImagePath));
 
-                     hideTextForImage();
-                     Crop.of(tempUri, tempUri)
-                             .asSquare()
-                             .withMaxSize(300, 300)
-                             .start(this.getActivity());
-                     break;
+                    Crop.of(cardImageUri, FileUtils.getTempImageURI(this))
+                            .asSquare()
+                            .withMaxSize(300, 300)
+                            .start(this);
+                    break;
 
-             }
-         }
+                case REQUEST_CAMERA:
+                    Uri tempUri = FileUtils.getTempImageURI(this);
+                    cardImagePath = FileUtils.copyFileTemp(this, tempUri);
+                    Picasso.with(this.getApplicationContext()).load(tempUri).memoryPolicy(MemoryPolicy.NO_CACHE).into(cardImage);
+
+                    hideTextForImage();
+                    Crop.of(tempUri, tempUri)
+                            .asSquare()
+                            .withMaxSize(300, 300)
+                            .start(this);
+                    break;
+
+            }
+        }
 
     }
 
@@ -386,25 +429,12 @@ public class NewCardFragment extends Fragment {
         textAsImage = false;
     }
 
-    public void resetForm(Card clicked) {
-        changeColor(clicked.getCardColor(), false);
-        textAsImage = false;
-        picker.setColor(clicked.getCardColor());
-        cardTextImage.setVisibility(View.GONE);
-        cardTextImage.setText("");
-        cardTitleTextView.setText("");
-        switchCategory.setChecked(false);
-        switchDisabled.setChecked(false);
-        cardImage.setImageDrawable(null);
-        this.parentCard = clicked.getCardId();
-    }
 
     public void notifySuccessfulCrop(){
         Log.d("Crop", "Loading:" + cardImagePath);
-        cardImagePath = FileUtils.copyFileTemp(getActivity(), FileUtils.getTempImageURI(this.getContext()));
+        cardImagePath = FileUtils.copyFileTemp(this, FileUtils.getTempImageURI(this));
         File image = new File(cardImagePath);
         Log.d("Crop", image.exists()?"Exists!":"noooooo");
-        Picasso.with(getActivity()).load(image).memoryPolicy(MemoryPolicy.NO_CACHE).error(R.drawable.empty).into(cardImage);
+        Picasso.with(this.getApplicationContext()).load(image).memoryPolicy(MemoryPolicy.NO_CACHE).error(R.drawable.empty).into(cardImage);
     }
-
 }

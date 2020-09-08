@@ -39,4 +39,6 @@
     <string name="prefDisplayModeTextAdv">Text mode</string>
 
     <string name="permissionsRationale">The app needs permissions to access external storage. Please check your app settings</string>
+    <string name="unableResolveImageRequest">Gallery request: unable to resolve</string>
+    <string name="unableResolveCameraRequest">Camera request: unable to resolve</string>
 </resources>
