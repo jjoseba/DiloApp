@@ -8,8 +8,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
@@ -25,11 +27,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.app.DBHelper;
-import com.jjoseba.pecsmobile.fragment.NewCardFragment;
 import com.jjoseba.pecsmobile.model.Card;
 import com.jjoseba.pecsmobile.ui.NewCardListener;
 import com.jjoseba.pecsmobile.ui.cards.CardPECS;
@@ -214,7 +216,6 @@ public class NewCardActivity extends Activity {
         changeColor(parentCard.getCardColor(), false);
         picker.setColor(parentCard.getCardColor());
 
-
     }
 
     private void changeCardImage() {
@@ -223,17 +224,25 @@ public class NewCardActivity extends Activity {
                 .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .withListener(new PermissionListener(){
                     @Override public void onPermissionGranted(PermissionGrantedResponse response) {
-                        /*dialog = new ImageDialog(NewCardActivity.this);
+                        dialog = new ImageDialog(NewCardActivity.this);
                         dialog.show();
                         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                             @Override
                             public void onDismiss(DialogInterface d) {
-                                if (dialog!= null && dialog.isTextForImage()){
+                                if (dialog== null){
+                                    return;
+                                }
+                                else if (dialog.isTextForImage()){
                                     setTextForImage();
                                 }
+                                else if (dialog.isCamera()){
+                                    startCamera();
+                                }
+                                else if (dialog.isGalleryPicker()){
+                                    startImagePicker();
+                                }
                             }
-                        });*/
-                        startImagePicker();
+                        });
                     }
                     @Override public void onPermissionDenied(PermissionDeniedResponse response) {
                         showPermissionSnackbar();
@@ -261,25 +270,80 @@ public class NewCardActivity extends Activity {
     }
 
     private void startImagePicker(){
+        boolean success = startSamsungPicker();
+        if (success){
+            return;
+        }
+
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        Log.d("Permissions",  "Trying to resolve default ACTION_GET_CONTENT");
         if (intent.resolveActivity(getPackageManager()) != null){
             startActivityForResult(intent, REQUEST_IMAGE);
         }
         else {
-            Log.d("Permissions", "No activity found. Trying with action picker resolver");
+            //TODO: should log this...
+            Toast.makeText(this, R.string.unableResolveImageRequest, Toast.LENGTH_LONG).show();
+            success = startDocumentPicker();
 
+            if (success){
+                return;
+            }
             Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
             getIntent.setType("image/*");
             Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             pickIntent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
             Intent chooserIntent = Intent.createChooser(getIntent, "Selecciona imagen");
-            Log.d("Permissions", "Launching intent with ACTION_PICK, waiting for result...");
             chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
             startActivityForResult(chooserIntent, REQUEST_IMAGE);
+        }
+
+    }
+
+    private boolean startSamsungPicker(){
+        Log.d("Intent", "Trying to launch Samsung file picker...");
+        Intent intent = new Intent("com.sec.android.app.myfiles.PICK_DATA");
+        intent.putExtra("CONTENT_TYPE", "image/*");
+
+        if (getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
+            startActivityForResult(intent, REQUEST_IMAGE);
+            return true;
+        }
+        else{
+            Log.d("Intent",  "No activity found.");
+            return false;
+        }
+
+    }
+
+    private boolean startDocumentPicker(){
+        Log.d("Intent", "Trying to launch brute file picker...");
+        Intent intent = new Intent("android.intent.action.OPEN_DOCUMENT");
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+
+        if (getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
+            startActivityForResult(intent, REQUEST_IMAGE);
+            return true;
+        }
+        else{
+            Log.d("Intent", "No activity found. ");
+            return false;
+        }
+
+    }
+
+    private void startCamera(){
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, FileUtils.getTempImageURI(this));
+            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivityForResult(takePictureIntent, REQUEST_CAMERA);
+        }
+        else {
+            //TODO: should log this...
+            Toast.makeText(this, R.string.unableResolveCameraRequest, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -394,7 +458,7 @@ public class NewCardActivity extends Activity {
 
                     Crop.of(cardImageUri, FileUtils.getTempImageURI(this))
                             .asSquare()
-                            .withMaxSize(300, 300)
+                            .withMaxSize(600, 600)
                             .start(this);
                     break;
 

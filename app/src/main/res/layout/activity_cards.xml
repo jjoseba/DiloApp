@@ -71,18 +71,4 @@
     </FrameLayout>
 </LinearLayout>
 
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/newCardContainer"
-        android:visibility="gone">
-
-        <fragment android:name="com.jjoseba.pecsmobile.fragment.NewCardFragment"
-            android:id="@+id/new_card_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout="@layout/activity_new_card" />
-    </FrameLayout>
-
-
 </FrameLayout>

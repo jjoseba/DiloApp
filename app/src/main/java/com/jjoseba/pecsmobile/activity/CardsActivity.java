@@ -1,28 +1,16 @@
 package com.jjoseba.pecsmobile.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
 import android.util.Log;
-import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.DecelerateInterpolator;
-import android.view.inputmethod.InputMethodManager;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.app.PECSMobile;
 import com.jjoseba.pecsmobile.fragment.CardsPage;
-import com.jjoseba.pecsmobile.fragment.NewCardFragment;
 import com.jjoseba.pecsmobile.model.Card;
 import com.jjoseba.pecsmobile.ui.CardsGridListener;
 import com.jjoseba.pecsmobile.ui.NewCardListener;
@@ -33,10 +21,14 @@ import com.jjoseba.pecsmobile.ui.displaymode.DisplayModeFactory;
 import com.jjoseba.pecsmobile.ui.displaymode.DisplayModeStrategy;
 import com.jjoseba.pecsmobile.ui.viewpager.EnableableViewPager;
 import com.jjoseba.pecsmobile.ui.viewpager.ZoomOutPageTransformer;
-import com.soundcloud.android.crop.Crop;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitListener, CardsGridListener, NewCardListener, ViewPager.OnPageChangeListener, DisplayModeStrategy.ResetListener {
 
