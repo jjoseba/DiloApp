@@ -22,14 +22,19 @@ import androidx.recyclerview.widget.RecyclerView;
 public class SelectedCardsAdapter  extends RecyclerView.Adapter<SelectedCardsAdapter.CardViewHolder> {
 
     private ArrayList<Card> cards;
+    private OnClickListener listener;
     private Context ctx;
+
+    public interface OnClickListener{
+        void onClick();
+    }
 
     public SelectedCardsAdapter(Context context, ArrayList<Card> cards){
         this.cards = cards;
         this.ctx = context;
     }
 
-    static class CardViewHolder extends RecyclerView.ViewHolder {
+    class CardViewHolder extends RecyclerView.ViewHolder {
 
         private TextView label;
         private ImageView image;
@@ -40,8 +45,10 @@ public class SelectedCardsAdapter  extends RecyclerView.Adapter<SelectedCardsAda
             image = itemView.findViewById(R.id.card_image);
             label = itemView.findViewById(R.id.card_label);
             cardFrame = itemView.findViewById(R.id.card_frame);
+            itemView.setOnClickListener(view -> {
+                if (listener != null) listener.onClick();
+            });
         }
-
     }
 
     @NonNull
@@ -75,6 +82,10 @@ public class SelectedCardsAdapter  extends RecyclerView.Adapter<SelectedCardsAda
     @Override
     public int getItemCount() {
         return cards.size();
+    }
+
+    public void setOnClickListener(OnClickListener listener){
+        this.listener = listener;
     }
 
 }

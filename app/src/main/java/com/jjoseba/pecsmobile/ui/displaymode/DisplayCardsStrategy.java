@@ -20,7 +20,6 @@ public class DisplayCardsStrategy implements DisplayModeStrategy {
 
     private ArrayList<Card> navCards;
     private ArrayList<Card> selectedCards = new ArrayList<>();
-    private RecyclerView selectedCardsList;
     private SelectedCardsAdapter selectedCardsAdapter;
     private ImageButton removeCardBtn;
     private ResetListener listener;
@@ -34,9 +33,9 @@ public class DisplayCardsStrategy implements DisplayModeStrategy {
     public void initialize(BaseActivity activity, ArrayList<Card> navigationCards) {
         this.navCards = navigationCards;
         selectedCardsAdapter = new SelectedCardsAdapter(activity, selectedCards);
-        selectedCardsList = activity.findViewById(R.id.selected_cards_list);
-        selectedCardsList.setAdapter(selectedCardsAdapter);
         removeCardBtn = activity.findViewById(R.id.removeLastCard);
+        RecyclerView selectedCardsList = activity.findViewById(R.id.selected_cards_list);
+        selectedCardsList.setAdapter(selectedCardsAdapter);
     }
 
     @Override
@@ -51,9 +50,7 @@ public class DisplayCardsStrategy implements DisplayModeStrategy {
 
         listener.resetCards();
         selectedCards.clear();
-        selectedCardsAdapter.notifyDataSetChanged();
-
-        selectedCardsList.setOnClickListener(view -> {
+        selectedCardsAdapter.setOnClickListener(() -> {
             Intent i = new Intent(activity, ShowCardsActivity.class);
             i.putExtra("result", selectedCards);
             activity.startActivity(i);
@@ -87,7 +84,7 @@ public class DisplayCardsStrategy implements DisplayModeStrategy {
 
     @Override
     public void onSelectedCardsChanged() {
-
+        selectedCardsAdapter.notifyDataSetChanged();
     }
 
     @Override

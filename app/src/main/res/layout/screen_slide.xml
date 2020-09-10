@@ -7,8 +7,8 @@
         android:orientation="vertical">
 
     <GridView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:id="@+id/cards_gridview"
             android:numColumns="@integer/grid_columns"
             android:horizontalSpacing="10dp"
@@ -16,6 +16,7 @@
             android:background="@color/whitetransp"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
+            android:listSelector="@drawable/grid_selector"
             tools:listitem="@layout/card_gridview"
             android:layout_margin="0dp"
             android:paddingTop="10dp"

@@ -85,7 +85,7 @@
                         android:background="@color/default_card"
                         android:padding="15sp">
 
-                        <ImageView
+                        <com.jjoseba.pecsmobile.ui.SquareImageView
                             android:id="@+id/imageView2"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -113,7 +113,7 @@
 
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:scaleType="fitXY"></com.jjoseba.pecsmobile.ui.SquareImageView>
+                            android:scaleType="fitXY" />
                     </FrameLayout>
                 </FrameLayout>
 
