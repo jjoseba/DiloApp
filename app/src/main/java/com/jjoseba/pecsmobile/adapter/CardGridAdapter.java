@@ -65,10 +65,10 @@ public class CardGridAdapter extends ArrayAdapter<Card> {
 
             // Set up the ViewHolder
             holder = new CardViewHolder();
-            holder.label = (TextView) convertView.findViewById(R.id.card_label);
-            holder.image = (ImageView) convertView.findViewById(R.id.card_image);
+            holder.label = convertView.findViewById(R.id.card_label);
+            holder.image = convertView.findViewById(R.id.card_image);
             holder.cardFrame = convertView.findViewById(R.id.card_frame);
-            holder.buttonImage = (ImageView) convertView.findViewById(R.id.button_image);
+            holder.buttonImage = convertView.findViewById(R.id.button_image);
 
             convertView.setTag(holder);
         } else {

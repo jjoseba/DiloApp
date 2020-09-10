@@ -2,11 +2,9 @@ package com.jjoseba.pecsmobile.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.jjoseba.pecsmobile.R;
@@ -14,11 +12,13 @@ import com.jjoseba.pecsmobile.activity.PrefsActivity;
 import com.jjoseba.pecsmobile.adapter.CardGridAdapter;
 import com.jjoseba.pecsmobile.app.DBHelper;
 import com.jjoseba.pecsmobile.model.Card;
-import com.jjoseba.pecsmobile.ui.cards.ButtonCard;
 import com.jjoseba.pecsmobile.ui.CardsGridListener;
+import com.jjoseba.pecsmobile.ui.cards.ButtonCard;
 import com.jjoseba.pecsmobile.ui.cards.TempButtonCard;
 
 import java.util.ArrayList;
+
+import androidx.fragment.app.Fragment;
 
 public class CardsPage extends Fragment {
 
@@ -86,36 +86,31 @@ public class CardsPage extends Fragment {
 
         rootView.setBackgroundColor(parentCategory.getCardColor());
 
-        GridView gridView = (GridView) rootView.findViewById(R.id.cards_gridview);
+        GridView gridView = rootView.findViewById(R.id.cards_gridview);
         cardsAdapter = new CardGridAdapter(this.getActivity(), R.layout.card_gridview, pecs);
         gridView.setAdapter(cardsAdapter);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                if (clickListener != null) {
-                    Card clicked = pecs.get(position);
-                    if (clicked instanceof ButtonCard) {
-                        if (clicked instanceof TempButtonCard)
-                            clickListener.onTempCardButton();
-                        else
-                            clickListener.onAddCardButton(parentCategory);
-                    } else if (!clicked.isDisabled()){
-                        clickListener.onCardSelected(clicked);
-                    }
+        gridView.setOnItemClickListener((parent, v, position, id) -> {
+            if (clickListener != null) {
+                Card clicked = pecs.get(position);
+                if (clicked instanceof ButtonCard) {
+                    if (clicked instanceof TempButtonCard)
+                        clickListener.onTempCardButton();
+                    else
+                        clickListener.onAddCardButton(parentCategory);
+                } else if (!clicked.isDisabled()){
+                    clickListener.onCardSelected(clicked);
                 }
             }
         });
 
-        gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                if (clickListener != null) {
-                    Card clicked = pecs.get(position);
-                    if (!(clicked instanceof ButtonCard)) {
-                        clickListener.onCardLongClick(clicked);
-                    }
+        gridView.setOnItemLongClickListener((parent, view, position, id) -> {
+            if (clickListener != null) {
+                Card clicked = pecs.get(position);
+                if (!(clicked instanceof ButtonCard)) {
+                    clickListener.onCardLongClick(clicked);
                 }
-                return true;
             }
+            return true;
         });
         return rootView;
     }

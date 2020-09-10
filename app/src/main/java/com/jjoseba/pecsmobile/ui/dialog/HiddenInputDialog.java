@@ -36,12 +36,9 @@ public class HiddenInputDialog extends DialogFragment{
         Dialog d = super.onCreateDialog(savedInstance);
 
         final InputMethodManager lManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        d.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(final DialogInterface dialog) {
-                input.requestFocusFromTouch();
-                lManager.showSoftInput(input, 0);
-            }
+        d.setOnShowListener(dialog -> {
+            input.requestFocusFromTouch();
+            lManager.showSoftInput(input, 0);
         });
         return d;
     }
@@ -83,23 +80,15 @@ public class HiddenInputDialog extends DialogFragment{
 
         window.setAttributes(attrs);
 
-        input.setOnEditTextImeBackListener(new EditTextBackEvent.EditTextImeBackListener() {
-            @Override
-            public void onImeBack(EditTextBackEvent ctrl, String text) {
-                getDialog().dismiss();
-            }
-        });
+        input.setOnEditTextImeBackListener((ctrl, text) -> getDialog().dismiss());
 
-        input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                String tempCardLabel = input.getText().toString();
-                if (!tempCardLabel.equals("")) {
-                    if (listener != null) listener.onText(tempCardLabel);
-                }
-                getDialog().dismiss();
-                return true;
+        input.setOnEditorActionListener((v, actionId, event) -> {
+            String tempCardLabel = input.getText().toString();
+            if (!tempCardLabel.equals("")) {
+                if (listener != null) listener.onText(tempCardLabel);
             }
+            getDialog().dismiss();
+            return true;
         });
 
         super.onResume();

@@ -9,10 +9,12 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.activity.PrefsActivity;
 
@@ -34,46 +36,33 @@ public class ImageDialog extends Dialog{
     @Override
     public void show(){
 
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
-            this.requestWindowFeature(Window.FEATURE_SWIPE_TO_DISMISS);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.image_dialog);
+        Window window = this.getWindow();
+        if (window != null){
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         }
-        this.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        this.setContentView(R.layout.image_dialog);
 
-        this.findViewById(R.id.cancelButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ImageDialog.this.dismiss();
-            }
+        findViewById(R.id.cancelButton).setOnClickListener(v -> ImageDialog.this.dismiss());
+
+        FloatingActionButton galleryBtn =  this.findViewById(R.id.gallery_button);
+        FloatingActionButton cameraBtn = this.findViewById(R.id.camera_button);
+        FloatingActionButton textBtn = this.findViewById(R.id.text_button);
+
+        galleryBtn.setOnClickListener(v -> {
+            result = IMAGE_PICKER;
+            ImageDialog.this.dismiss();
         });
 
-        View galleryBtn =  this.findViewById(R.id.gallery_button);
-        View cameraBtn = this.findViewById(R.id.camera_button);
-        View textBtn = this.findViewById(R.id.text_button);
-
-        galleryBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                result = IMAGE_PICKER;
-                ImageDialog.this.dismiss();
-            }
+        cameraBtn.setOnClickListener(v -> {
+            result = IMAGE_CAMERA;
+            ImageDialog.this.dismiss();
         });
 
-        cameraBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                result = IMAGE_CAMERA;
-                ImageDialog.this.dismiss();
-            }
-        });
-
-        textBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                result = IMAGE_TEXT;
-                ImageDialog.this.dismiss();
-            }
+        textBtn.setOnClickListener(v -> {
+            result = IMAGE_TEXT;
+            ImageDialog.this.dismiss();
         });
 
         Animation appearButton1 = AnimationUtils.loadAnimation(ctx, R.anim.button_appear);
@@ -95,14 +84,13 @@ public class ImageDialog extends Dialog{
             dismiss();
         }
         else{
-            cameraBtn.setVisibility(cameraEnabled ? View.VISIBLE : View.GONE);
-            textBtn.setVisibility(textcardEnabled ? View.VISIBLE : View.GONE);
             super.show();
+            if (!textcardEnabled) { textBtn.hide(); }
+            if (!cameraEnabled){ cameraBtn.hide(); }
         }
-
     }
 
-    public boolean isCamera(){ return TextUtils.equals(result, IMAGE_CAMERA); }
-    public boolean isGalleryPicker(){ return TextUtils.equals(result, IMAGE_PICKER); }
-    public boolean isTextForImage(){ return TextUtils.equals(result, IMAGE_TEXT); }
+    public boolean resultIsCamera(){ return TextUtils.equals(result, IMAGE_CAMERA); }
+    public boolean resultIsGalleryPicker(){ return TextUtils.equals(result, IMAGE_PICKER); }
+    public boolean resultIsTextForImage(){ return TextUtils.equals(result, IMAGE_TEXT); }
 }

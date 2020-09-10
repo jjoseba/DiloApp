@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.DisplayMetrics;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.jjoseba.pecsmobile.R;
@@ -29,7 +27,7 @@ public class ShowCardsActivity extends TTSActivity {
         title = "";
         for (Card card : selectedCards){ title += card.getLabel() + ", ";  }
 
-        GridView cardsList = (GridView) findViewById(R.id.selectedCards);
+        GridView cardsList = findViewById(R.id.selectedCards);
         if (selectedCards.size() == 2){
             cardsList.setNumColumns(2);
         }
@@ -43,23 +41,15 @@ public class ShowCardsActivity extends TTSActivity {
         CardGridAdapter adapter = new CardGridAdapter(this, R.layout.card_gridview, selectedCards);
         cardsList.setAdapter(adapter);
         final String finalTitle = title;
-        cardsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                speak(finalTitle);
-            }
-        });
+        cardsList.setOnItemClickListener((parent, view, position, id) -> speak(finalTitle));
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            public void run() {
-                speak(title, false);
-            }
-        }, 100);
+        new Handler(Looper.getMainLooper()).postDelayed(() ->
+                speak(title, false), 100);
     }
 
 }

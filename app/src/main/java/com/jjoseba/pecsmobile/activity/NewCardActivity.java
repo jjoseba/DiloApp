@@ -5,7 +5,6 @@ import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -18,7 +17,6 @@ import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 import android.text.style.RelativeSizeSpan;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
@@ -33,7 +31,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.app.DBHelper;
 import com.jjoseba.pecsmobile.model.Card;
-import com.jjoseba.pecsmobile.ui.NewCardListener;
 import com.jjoseba.pecsmobile.ui.cards.CardPECS;
 import com.jjoseba.pecsmobile.ui.dialog.ImageDialog;
 import com.jjoseba.pecsmobile.util.FileUtils;
@@ -53,7 +50,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 
 public class NewCardActivity extends Activity {
@@ -89,7 +86,7 @@ public class NewCardActivity extends Activity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
     }
 
     @Override
@@ -169,47 +166,31 @@ public class NewCardActivity extends Activity {
         });
 
         Button cancelButton = findViewById(R.id.cancelButton);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isColorPickerVisible()){
-                    colorPickerContainer.setVisibility(View.INVISIBLE);
-                    hideColorPicker();
-                }
-
-                Intent returnIntent = new Intent();
-                setResult(Activity.RESULT_CANCELED, returnIntent);
-                finish();
-
+        cancelButton.setOnClickListener(v -> {
+            if (isColorPickerVisible()){
+                colorPickerContainer.setVisibility(View.INVISIBLE);
+                hideColorPicker();
             }
+
+            Intent returnIntent = new Intent();
+            setResult(Activity.RESULT_CANCELED, returnIntent);
+            finish();
+
         });
 
         colorPickerContainer = findViewById(R.id.pickerContainer);
-        colorPickerContainer.setOnTouchListener(new View.OnTouchListener() {
-            //Cancelamos la propagación del pulsado cuando colorPickerContainer es visible
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return (colorPickerContainer.getVisibility() == View.VISIBLE);
-            }
-        });
+        //Cancelamos la propagación del pulsado cuando colorPickerContainer es visible
+        colorPickerContainer.setOnTouchListener((view, motionEvent) -> (colorPickerContainer.getVisibility() == View.VISIBLE));
 
         picker = colorPickerContainer.findViewById(R.id.picker);
         picker.addSaturationBar((SaturationBar) colorPickerContainer.findViewById(R.id.saturationbar) );
         picker.addValueBar((ValueBar) colorPickerContainer.findViewById(R.id.valuebar));
 
         Button selectColorBtn = colorPickerContainer.findViewById(R.id.select_color_btn);
-        selectColorBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { selectColor(); }
-        });
+        selectColorBtn.setOnClickListener(v -> selectColor());
 
         ImageButton pickColor = findViewById(R.id.pickColorButton);
-        pickColor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showColorPicker();
-            }
-        });
+        pickColor.setOnClickListener(v -> showColorPicker());
 
         Bundle b = getIntent().getExtras();
         parentCard = (Card) b.getSerializable(EXTRA_PARENT_CARD);
@@ -226,21 +207,18 @@ public class NewCardActivity extends Activity {
                     @Override public void onPermissionGranted(PermissionGrantedResponse response) {
                         dialog = new ImageDialog(NewCardActivity.this);
                         dialog.show();
-                        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface d) {
-                                if (dialog== null){
-                                    return;
-                                }
-                                else if (dialog.isTextForImage()){
-                                    setTextForImage();
-                                }
-                                else if (dialog.isCamera()){
-                                    startCamera();
-                                }
-                                else if (dialog.isGalleryPicker()){
-                                    startImagePicker();
-                                }
+                        dialog.setOnDismissListener(d -> {
+                            if (dialog== null){
+                                return;
+                            }
+                            else if (dialog.resultIsTextForImage()){
+                                setTextForImage();
+                            }
+                            else if (dialog.resultIsCamera()){
+                                startCamera();
+                            }
+                            else if (dialog.resultIsGalleryPicker()){
+                                startImagePicker();
                             }
                         });
                     }
@@ -255,15 +233,13 @@ public class NewCardActivity extends Activity {
 
     private void showPermissionSnackbar(){
         Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), R.string.permissionsRationale, Snackbar.LENGTH_LONG);
-        snackbar.setAction("Configuración", new View.OnClickListener() {
-            @Override public void onClick(View v) {
+        snackbar.setAction("Configuración", v -> {
 
-                Intent myAppSettings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                        Uri.parse("package:" + NewCardActivity.this.getPackageName()));
-                myAppSettings.addCategory(Intent.CATEGORY_DEFAULT);
-                myAppSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                NewCardActivity.this.startActivity(myAppSettings);
-            }
+            Intent myAppSettings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.parse("package:" + NewCardActivity.this.getPackageName()));
+            myAppSettings.addCategory(Intent.CATEGORY_DEFAULT);
+            myAppSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            NewCardActivity.this.startActivity(myAppSettings);
         });
         Log.d("Permissions", "Showing snackbar!");
         snackbar.show();
@@ -389,15 +365,11 @@ public class NewCardActivity extends Activity {
         int colorFrom = previousColor;
         if (animate){
             ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
-                @Override
-                public void onAnimationUpdate(ValueAnimator animator) {
-                    int animColor = (Integer)animator.getAnimatedValue();
-                    cardFrame.setBackgroundColor(animColor);
-                    colorBucket.setBackgroundColor(animColor);
-                    cardTextImage.setTextColor(animColor);
-                }
+            colorAnimation.addUpdateListener(animator -> {
+                int animColor = (Integer)animator.getAnimatedValue();
+                cardFrame.setBackgroundColor(animColor);
+                colorBucket.setBackgroundColor(animColor);
+                cardTextImage.setTextColor(animColor);
             });
             colorAnimation.setDuration(ANIM_DURATION).start();
         }

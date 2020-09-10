@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,8 +15,11 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class SelectedCardsAdapter  extends BaseAdapter {
+
+public class SelectedCardsAdapter  extends RecyclerView.Adapter<SelectedCardsAdapter.CardViewHolder> {
 
     private ArrayList<Card> cards;
     private Context ctx;
@@ -27,63 +29,52 @@ public class SelectedCardsAdapter  extends BaseAdapter {
         this.ctx = context;
     }
 
+    static class CardViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView label;
+        private ImageView image;
+        private View cardFrame;
+
+        CardViewHolder(View itemView) {
+            super(itemView);
+            image = itemView.findViewById(R.id.card_image);
+            label = itemView.findViewById(R.id.card_label);
+            cardFrame = itemView.findViewById(R.id.card_frame);
+        }
+
+    }
+
+    @NonNull
     @Override
-    public int getCount() {
+    public CardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View contactView = LayoutInflater.from(ctx).inflate(R.layout.card_small, parent, false);
+        return new CardViewHolder(contactView);
+    }
+
+    @Override
+    public void onBindViewHolder(final CardViewHolder viewHolder, final int position) {
+        Card card = cards.get(position);
+
+        viewHolder.cardFrame.setBackgroundColor(card.getCardColor());
+        viewHolder.cardFrame.setVisibility(View.VISIBLE);
+        if (card instanceof CardTempPECS){
+            //holder.image.setVisibility(View.INVISIBLE);
+            viewHolder.image.setImageDrawable(null);
+            viewHolder.label.setVisibility(View.VISIBLE);
+            viewHolder.label.setTextColor(card.getCardColor());
+            viewHolder.label.setText(card.getLabel());
+        }
+        else{
+            viewHolder.image.setVisibility(View.VISIBLE);
+            viewHolder.label.setVisibility(View.GONE);
+            File imageFile = new File(card.getImagePath());
+            Picasso.with(ctx).load(imageFile).placeholder(R.drawable.empty).error(R.drawable.empty).into(viewHolder.image);
+        }
+    }
+
+    @Override
+    public int getItemCount() {
         return cards.size();
     }
 
-    @Override
-    public Object getItem(int position) {
-        return cards.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    protected class CardViewHolder{
-        TextView label;
-        ImageView image;
-        View cardFrame;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        CardViewHolder holder;
-        Card card = cards.get(position);
-
-        if (convertView == null) {
-            convertView = LayoutInflater.from(ctx).inflate(R.layout.card_small, parent, false);
-
-            // Set up the ViewHolder
-            holder = new CardViewHolder();
-            holder.image = (ImageView) convertView.findViewById(R.id.card_image);
-            holder.label = (TextView) convertView.findViewById(R.id.card_label);
-            holder.cardFrame = convertView.findViewById(R.id.card_frame);
-
-            convertView.setTag(holder);
-        } else {
-            holder = (CardViewHolder) convertView.getTag();
-        }
-
-        holder.cardFrame.setBackgroundColor(card.getCardColor());
-        holder.cardFrame.setVisibility(View.VISIBLE);
-        if (card instanceof CardTempPECS){
-            //holder.image.setVisibility(View.INVISIBLE);
-            holder.image.setImageDrawable(null);
-            holder.label.setVisibility(View.VISIBLE);
-            holder.label.setTextColor(card.getCardColor());
-            holder.label.setText(card.getLabel());
-        }
-        else{
-            holder.image.setVisibility(View.VISIBLE);
-            holder.label.setVisibility(View.GONE);
-            File imageFile = new File(card.getImagePath());
-            Picasso.with(ctx).load(imageFile).placeholder(R.drawable.empty).error(R.drawable.empty).into(holder.image);
-        }
-
-        return convertView;
-
-    }
 }
