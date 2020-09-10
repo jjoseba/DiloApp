@@ -22,8 +22,10 @@ import com.jjoseba.pecsmobile.util.FileUtils;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 
-public class EditCardDialog extends Dialog{
+public class EditCardDialog extends FABAnimatedDialog{
 
     private Context ctx;
     private Card card;
@@ -38,11 +40,7 @@ public class EditCardDialog extends Dialog{
 
     @Override
     public void show(){
-
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         this.setContentView(R.layout.card_dialog);
-
         this.findViewById(R.id.card_frame).setBackgroundColor(card.getCardColor());
 
         File imageFile = new File(card.getImagePath());
@@ -57,8 +55,8 @@ public class EditCardDialog extends Dialog{
         });
 
         FloatingActionButton deleteBtn =  this.findViewById(R.id.delete_button);
-        //View editBtn = this.findViewById(R.id.edit_button);
         FloatingActionButton disableBtn = this.findViewById(R.id.disable_button);
+        animatableButtons = new ArrayList<>(Arrays.asList(deleteBtn, disableBtn));
 
         deleteBtn.setOnClickListener(v -> {
             DBHelper db = DBHelper.getInstance(ctx);
@@ -81,13 +79,6 @@ public class EditCardDialog extends Dialog{
         if (card.isDisabled()){
             disableBtn.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_lock_open));
         }
-
-        Animation appearButton1 = AnimationUtils.loadAnimation(ctx, R.anim.button_appear);
-        Animation appearButton2 = AnimationUtils.loadAnimation(ctx, R.anim.button_appear);
-        appearButton2.setStartOffset(150);
-
-        disableBtn.startAnimation(appearButton1);
-        deleteBtn.startAnimation(appearButton2);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
         if (!prefs.getBoolean(PrefsActivity.SHOW_DISABLE_CARD, true)){
