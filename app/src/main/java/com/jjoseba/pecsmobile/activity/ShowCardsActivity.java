@@ -38,7 +38,7 @@ public class ShowCardsActivity extends TTSActivity {
             cardsList.setPadding(metrics.widthPixels / 4, 0, metrics.widthPixels / 4, 0);
             cardsList.setColumnWidth(metrics.widthPixels / 2);
         }
-        CardGridAdapter adapter = new CardGridAdapter(this, R.layout.card_gridview, selectedCards);
+        CardGridAdapter adapter = new CardGridAdapter(this, R.layout.griditem_card, selectedCards);
         cardsList.setAdapter(adapter);
         final String finalTitle = title;
         cardsList.setOnItemClickListener((parent, view, position, id) -> speak(finalTitle));

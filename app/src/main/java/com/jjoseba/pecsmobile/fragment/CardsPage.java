@@ -82,12 +82,12 @@ public class CardsPage extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
-                R.layout.screen_slide, container, false);
+                R.layout.fragment_card_slide, container, false);
 
         rootView.setBackgroundColor(parentCategory.getCardColor());
 
         GridView gridView = rootView.findViewById(R.id.cards_gridview);
-        cardsAdapter = new CardGridAdapter(this.getActivity(), R.layout.card_gridview, pecs);
+        cardsAdapter = new CardGridAdapter(this.getActivity(), R.layout.griditem_card, pecs);
         gridView.setAdapter(cardsAdapter);
         gridView.setOnItemClickListener((parent, v, position, id) -> {
             if (clickListener != null) {

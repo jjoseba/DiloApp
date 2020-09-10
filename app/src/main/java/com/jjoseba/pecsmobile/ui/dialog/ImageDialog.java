@@ -29,7 +29,7 @@ public class ImageDialog extends FABAnimatedDialog{
 
     @Override
     public void show(){
-        setContentView(R.layout.image_dialog);
+        setContentView(R.layout.dialog_image);
 
         FloatingActionButton galleryBtn =  this.findViewById(R.id.gallery_button);
         FloatingActionButton cameraBtn = this.findViewById(R.id.camera_button);

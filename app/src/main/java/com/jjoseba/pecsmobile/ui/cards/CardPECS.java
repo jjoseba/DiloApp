@@ -14,7 +14,7 @@ public class CardPECS extends Card {
 
     @Override
     public int getLayoutResource() {
-        return R.layout.card_gridview;
+        return R.layout.griditem_card;
     }
 
     @Override

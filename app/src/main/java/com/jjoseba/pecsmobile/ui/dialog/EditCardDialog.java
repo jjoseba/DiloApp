@@ -1,15 +1,9 @@
 package com.jjoseba.pecsmobile.ui.dialog;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,7 +34,7 @@ public class EditCardDialog extends FABAnimatedDialog{
 
     @Override
     public void show(){
-        this.setContentView(R.layout.card_dialog);
+        this.setContentView(R.layout.dialog_card);
         this.findViewById(R.id.card_frame).setBackgroundColor(card.getCardColor());
 
         File imageFile = new File(card.getImagePath());

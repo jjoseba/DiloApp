@@ -1,14 +1,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:baselineAligned="false"
-              android:background="@color/background">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:background="@color/background">
 
     <RelativeLayout
         android:orientation="horizontal"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/secondary_bar"
         android:weightSum="2"
@@ -53,35 +54,30 @@
     </RelativeLayout>
 
     <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:visibility="visible">
 
-        <TableLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:measureWithLargestChild="false"
+            android:orientation="horizontal"
             android:baselineAligned="false">
 
-            <TableRow
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <FrameLayout
-                    android:layout_width="fill_parent"
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="320dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_span="3"
-                    android:layout_weight="1"
-                    android:background="@drawable/card">
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="10dp"
+                    app:cardElevation="4dp"
+                    app:cardUseCompatPadding="true">
 
                     <FrameLayout
                         android:id="@+id/card_frame"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:background="@color/default_card"
                         android:padding="15sp">
 
@@ -110,19 +106,17 @@
 
                         <com.jjoseba.pecsmobile.ui.SquareImageView
                             android:id="@+id/card_image"
-
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="fitXY" />
                     </FrameLayout>
-                </FrameLayout>
+                </com.google.android.material.card.MaterialCardView>
 
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="30dp"
-                    android:layout_weight="1"
                     android:layout_span="1"
                     android:layout_gravity="center_vertical">
 
@@ -194,8 +188,7 @@
                         android:textSize="28sp" />
 
                 </LinearLayout>
-            </TableRow>
-        </TableLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

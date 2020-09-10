@@ -10,10 +10,6 @@ public class TempButtonCard extends ButtonCard{
 
     @Override
     public void inflateCard(CardGridAdapter.CardViewHolder holder, Context ctx) {
-
-        holder.cardFrame.setVisibility(View.INVISIBLE);
-        holder.buttonImage.setImageResource(R.drawable.keyboard);
-        holder.buttonImage.setVisibility(View.VISIBLE);
-        holder.buttonImage.setBackgroundColor(CardGridAdapter.bgOverlayColor);
+        holder.buttonImage.setImageResource(R.drawable.ic_keyboard);
     }
 }

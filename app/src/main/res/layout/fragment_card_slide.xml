@@ -17,7 +17,7 @@
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:listSelector="@drawable/grid_selector"
-            tools:listitem="@layout/card_gridview"
+            tools:listitem="@layout/griditem_card"
             android:layout_margin="0dp"
             android:paddingTop="10dp"
             android:clipToPadding="false"/>
