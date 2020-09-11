@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.app.PECSMobile;
-import com.jjoseba.pecsmobile.fragment.CardsPage;
+import com.jjoseba.pecsmobile.fragment.CardsPageFragment;
 import com.jjoseba.pecsmobile.model.Card;
 import com.jjoseba.pecsmobile.ui.CardsGridListener;
 import com.jjoseba.pecsmobile.ui.cards.CardPECS;
@@ -34,7 +34,7 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
     protected ArrayList<Card> navigationCards = new ArrayList<>();
     private EnableableViewPager mPager;
     private ScreenSlidePagerAdapter mPagerAdapter;
-    private HashMap<Card, CardsPage> cardPages = new HashMap<>();
+    private HashMap<Card, CardsPageFragment> cardPages = new HashMap<>();
     private int mLastPage;
 
     private boolean newCardButton = PECSMobile.DEFAULT_SHOW_NEWCARD_BUTTON;
@@ -147,7 +147,7 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
         dialog.setOnDismissListener(d -> {
             if (dialog.hasDataChanged()){
                 Card currentCard = navigationCards.get(mLastPage);
-                CardsPage currentPage = cardPages.get(currentCard);
+                CardsPageFragment currentPage = cardPages.get(currentCard);
                 currentPage.notifyCardChanged(cardPressed, dialog.isCardDeleted());
             }
         });
@@ -182,7 +182,7 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
 
     public void onNewCard(Card card) {
         Card currentCard = navigationCards.get(mLastPage);
-        CardsPage currentPage = cardPages.get(currentCard);
+        CardsPageFragment currentPage = cardPages.get(currentCard);
         if (currentPage != null){
             currentPage.addCard(card);
         }
@@ -211,9 +211,9 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
         @Override
         public Fragment getItem(int position) {
             Card card = navigationCards.get(position);
-            CardsPage page = cardPages.get(card);
+            CardsPageFragment page = cardPages.get(card);
             if (page == null){
-                page = CardsPage.newInstance(card, newCardButton, tempCardButton);
+                page = CardsPageFragment.newInstance(card, newCardButton, tempCardButton);
                 cardPages.put(card, page);
             }
             return page;
@@ -225,7 +225,7 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
         }
 
         public void removeFragment(Card cardToRemove){
-            CardsPage page = cardPages.get(cardToRemove);
+            CardsPageFragment page = cardPages.get(cardToRemove);
             cardPages.remove(cardToRemove);
             if (page != null){
                 mFragmentManager.beginTransaction().remove(page).commit();
