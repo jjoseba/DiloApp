@@ -21,12 +21,12 @@ import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.app.DBHelper;
@@ -120,82 +120,85 @@ public class NewCardActivity extends Activity {
         switchCategory = findViewById(R.id.sw_category);
         switchDisabled = findViewById(R.id.sw_disabled);
         Button saveButton = findViewById(R.id.saveButton);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (disableOkButton) {
-                    //the colorPicker is visible, so we select the current color
-                    selectColor();
-                } else {
-                    if (validateForm()) {
-                        CardPECS newCard = new CardPECS();
-                        newCard.setCardColor(String.format("#%06X", (0xFFFFFF & previousColor)));
-                        newCard.animateOnAppear = true;
-                        newCard.setLabel(cardTitleTextView.getText().toString());
-                        newCard.setAsCategory(switchCategory.isChecked());
-                        newCard.setDisabled(switchDisabled.isChecked());
-                        if (textAsImage){
-                            cardTextImage.setTextColor(previousColor);
-                            newCard.setImageFilename(ImageUtils.saveViewImage(cardTextImage));
-                            cardTextImage.setTextColor(0x000000);
-                        }
-                        else if (cardImagePath != null){
-                            newCard.setImageFilename(FileUtils.copyFileToInternal(cardImagePath));
-                        }
-
-                        DBHelper db = DBHelper.getInstance(getApplicationContext());
-                        db.addCard(parentCard.getCardId(), newCard);
-
-                        Intent returnIntent = new Intent();
-                        returnIntent.putExtra(NEW_CARD_RESULT, newCard);
-                        setResult(Activity.RESULT_OK,returnIntent);
-                        finish();
-
+        saveButton.setOnClickListener(v -> {
+            if (disableOkButton) {
+                //the colorPicker is visible, so we select the current color
+                selectColor();
+            } else {
+                if (validateForm()) {
+                    CardPECS newCard = new CardPECS();
+                    newCard.setCardColor(String.format("#%06X", (0xFFFFFF & previousColor)));
+                    newCard.animateOnAppear = true;
+                    newCard.setLabel(cardTitleTextView.getText().toString());
+                    newCard.setAsCategory(switchCategory.isChecked());
+                    newCard.setDisabled(switchDisabled.isChecked());
+                    if (textAsImage){
+                        cardTextImage.setTextColor(previousColor);
+                        newCard.setImageFilename(ImageUtils.saveViewImage(cardTextImage));
+                        cardTextImage.setTextColor(0x000000);
+                    }
+                    else if (cardImagePath != null){
+                        newCard.setImageFilename(FileUtils.copyFileToInternal(cardImagePath));
                     }
 
+                    DBHelper db = DBHelper.getInstance(getApplicationContext());
+                    db.addCard(parentCard.getCardId(), newCard);
+
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra(NEW_CARD_RESULT, newCard);
+                    setResult(Activity.RESULT_OK,returnIntent);
+                    finish();
+
                 }
+
             }
         });
 
         cardImage = findViewById(R.id.card_image);
-        cardImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeCardImage();
-            }
-        });
+        cardImage.setOnClickListener(v -> changeCardImage());
 
         Button cancelButton = findViewById(R.id.cancelButton);
-        cancelButton.setOnClickListener(v -> {
-            if (isColorPickerVisible()){
-                colorPickerContainer.setVisibility(View.INVISIBLE);
-                hideColorPicker();
-            }
-
-            Intent returnIntent = new Intent();
-            setResult(Activity.RESULT_CANCELED, returnIntent);
-            finish();
-
-        });
+        cancelButton.setOnClickListener(v -> onBackPressed());
 
         colorPickerContainer = findViewById(R.id.pickerContainer);
         //Cancelamos la propagación del pulsado cuando colorPickerContainer es visible
         colorPickerContainer.setOnTouchListener((view, motionEvent) -> (colorPickerContainer.getVisibility() == View.VISIBLE));
-
         picker = colorPickerContainer.findViewById(R.id.picker);
-        picker.addSaturationBar((SaturationBar) colorPickerContainer.findViewById(R.id.saturationbar) );
-        picker.addValueBar((ValueBar) colorPickerContainer.findViewById(R.id.valuebar));
+
+        SaturationBar saturationBar = colorPickerContainer.findViewById(R.id.saturationbar);
+        ValueBar valueBar = colorPickerContainer.findViewById(R.id.valuebar);
+        picker.addSaturationBar(saturationBar);
+        picker.addValueBar(valueBar);
 
         Button selectColorBtn = colorPickerContainer.findViewById(R.id.select_color_btn);
         selectColorBtn.setOnClickListener(v -> selectColor());
 
-        ImageButton pickColor = findViewById(R.id.pickColorButton);
+        FloatingActionButton pickColor = findViewById(R.id.pickColorButton);
         pickColor.setOnClickListener(v -> showColorPicker());
 
         Bundle b = getIntent().getExtras();
         parentCard = (Card) b.getSerializable(EXTRA_PARENT_CARD);
         changeColor(parentCard.getCardColor(), false);
+        picker.setOldCenterColor(parentCard.getCardColor());
         picker.setColor(parentCard.getCardColor());
+
+        if (parentCard.getCardColor() == Card.DEFAULT_COLOR){
+            saturationBar.setSaturation(0.75f);
+            valueBar.setValue(0.85f);
+        }
+
+    }
+
+    @Override
+    public void onBackPressed(){
+        if (isColorPickerVisible()){
+            hideColorPicker();
+        }
+        else{
+            Intent returnIntent = new Intent();
+            setResult(Activity.RESULT_CANCELED, returnIntent);
+            finish();
+        }
 
     }
 

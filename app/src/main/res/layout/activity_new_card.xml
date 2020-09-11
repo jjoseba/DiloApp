@@ -11,7 +11,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/secondary_bar"
+        android:background="@color/colorPrimary"
         android:weightSum="2"
         android:padding="3dp"
         android:visibility="visible">
@@ -158,14 +158,14 @@
 
                         </FrameLayout>
 
-                        <ImageButton
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
                             android:id="@+id/pickColorButton"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:background="@color/colorPrimaryDark"
-                            android:padding="7dp"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/ic_action_edit" />
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_action_edit"
+                            android:tint="@color/white"
+                            app:backgroundTint="@color/colorPrimary"
+                            app:fabCustomSize="50dp" />
 
                     </LinearLayout>
 
@@ -193,7 +193,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#222"
+            android:background="#555"
             android:orientation="horizontal"
             android:visibility="gone"
             android:id="@+id/pickerContainer">
@@ -230,7 +230,11 @@
                     android:id="@+id/select_color_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/dialog_btn_spacing"
+                    android:paddingEnd="@dimen/dialog_btn_spacing"
                     android:text="@string/change_color"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/colorPrimary"
                     android:textSize="28sp" />
             </LinearLayout>
 
