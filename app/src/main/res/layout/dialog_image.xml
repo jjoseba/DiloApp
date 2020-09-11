@@ -51,8 +51,9 @@
             android:layout_marginEnd="@dimen/dialog_btn_spacing"
             android:src="@drawable/ic_image"
             android:tint="@color/white"
-            app:backgroundTint="#FF5252"
+            app:backgroundTint="#4CAF50"
             app:fabCustomSize="80dp" />
+
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/camera_button"
@@ -62,7 +63,7 @@
             android:layout_marginEnd="@dimen/dialog_btn_spacing"
             android:src="@drawable/ic_photo_camera"
             android:tint="@color/white"
-            app:backgroundTint="#4CAF50"
+            app:backgroundTint="#7B1FA2"
             app:fabCustomSize="80dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -73,7 +74,7 @@
             android:layout_marginEnd="@dimen/dialog_btn_spacing"
             android:src="@drawable/ic_spellcheck"
             android:tint="@color/white"
-            app:backgroundTint="#21BFF3"
+            app:backgroundTint="#2196F3"
             app:fabCustomSize="80dp" />
 
     </LinearLayout>
