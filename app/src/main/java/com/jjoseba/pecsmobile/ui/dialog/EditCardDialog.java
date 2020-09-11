@@ -40,12 +40,9 @@ public class EditCardDialog extends FABAnimatedDialog{
         File imageFile = new File(card.getImagePath());
         Picasso.with(ctx).load(imageFile).placeholder(R.drawable.empty).error(R.drawable.empty).into((ImageView) findViewById(R.id.card_image));
         ((TextView) this.findViewById(R.id.cardLabel)).setText(card.getLabel());
-        this.findViewById(R.id.cancelButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cardChanged = false;
-                EditCardDialog.this.dismiss();
-            }
+        this.findViewById(R.id.cancelButton).setOnClickListener(v -> {
+            cardChanged = false;
+            EditCardDialog.this.dismiss();
         });
 
         FloatingActionButton deleteBtn =  this.findViewById(R.id.delete_button);

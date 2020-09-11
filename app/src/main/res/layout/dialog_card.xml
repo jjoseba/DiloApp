@@ -16,9 +16,6 @@
             android:background="@drawable/gridcard"
             android:clickable="false"
             android:layout_gravity="center"
-            android:layout_alignParentEnd="false"
-            android:layout_alignParentStart="false"
-            android:layout_centerInParent="true"
             android:layout_marginBottom="100dp">
 
             <LinearLayout
@@ -55,8 +52,8 @@
         android:visibility="gone" />
 
     <Button
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="@dimen/dialog_cancel_size"
+        android:layout_height="@dimen/dialog_cancel_size"
         android:text="@string/action_cancel"
         android:id="@+id/cancelButton"
         android:layout_gravity="bottom"
@@ -82,10 +79,10 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/edit_button"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/ic_action_edit"
-            app:fabCustomSize="80dp"
+            app:fabCustomSize="@dimen/dialog_fab_size"
             android:tint="@color/white"
             app:backgroundTint="#2196F3"
             android:layout_margin="16dp"
@@ -93,10 +90,10 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/disable_button"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/ic_lock"
-            app:fabCustomSize="80dp"
+            app:fabCustomSize="@dimen/dialog_fab_size"
             app:backgroundTint="#7B1FA2"
             android:tint="@color/white"
             app:pressedTranslationZ="12dp"
@@ -105,11 +102,11 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/delete_button"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/ic_delete"
             android:tint="@color/white"
-            app:fabCustomSize="80dp"
+            app:fabCustomSize="@dimen/dialog_fab_size"
             app:backgroundTint="#FF5252"
             app:pressedTranslationZ="12dp"
             android:layout_marginStart="@dimen/dialog_btn_spacing"

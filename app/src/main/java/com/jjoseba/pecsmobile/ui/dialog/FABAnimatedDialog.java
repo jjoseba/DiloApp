@@ -23,7 +23,7 @@ public class FABAnimatedDialog extends Dialog {
     protected Context ctx;
     protected List<View> animatableButtons;
 
-    private static int ANIMATION_DELAY = 150;
+    private static final int ANIMATION_DELAY = 150;
 
     FABAnimatedDialog(@NonNull Context context) {
         super(context);

@@ -92,7 +92,7 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable("cards", navigationCards);
         //outState.putSerializable("fragments", cardPages);
@@ -207,6 +207,7 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
             this.mFragmentManager = fm;
         }
 
+        @NonNull
         @Override
         public Fragment getItem(int position) {
             Card card = navigationCards.get(position);

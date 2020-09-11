@@ -1,7 +1,6 @@
 package com.jjoseba.pecsmobile.ui.cards;
 
 import android.content.Context;
-import android.view.View;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.adapter.CardGridAdapter;

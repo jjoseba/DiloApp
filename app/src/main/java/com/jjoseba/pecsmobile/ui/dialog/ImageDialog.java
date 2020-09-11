@@ -14,17 +14,14 @@ import java.util.Arrays;
 
 public class ImageDialog extends FABAnimatedDialog{
 
-    private Context ctx;
-
-    public static String IMAGE_TEXT = "text";
-    public static String IMAGE_PICKER = "picker";
-    public static String IMAGE_CAMERA = "camera";
+    public static final String IMAGE_TEXT = "text";
+    public static final String IMAGE_PICKER = "picker";
+    public static final String IMAGE_CAMERA = "camera";
 
     private String result;
 
     public ImageDialog(Context context){
         super(context);
-        ctx = context;
     }
 
     @Override

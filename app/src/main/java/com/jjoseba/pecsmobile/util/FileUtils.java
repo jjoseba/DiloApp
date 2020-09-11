@@ -121,7 +121,7 @@ public class FileUtils {
                 return path;
             }
             catch (IllegalArgumentException e){
-
+                e.printStackTrace();
             }
         }
         // this is our fallback here

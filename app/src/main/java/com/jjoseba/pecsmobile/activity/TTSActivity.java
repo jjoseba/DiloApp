@@ -79,21 +79,27 @@ public class TTSActivity extends BaseActivity implements TextToSpeech.OnInitList
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CHECK_TTS_DATA) {
             if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
                 myTTS = new TextToSpeech(this, this);
                 myTTS.setOnUtteranceProgressListener(new UtteranceProgressListener() {
-                    @Override public void onStart(String utteranceId) {}
-                    @Override public void onDone(String utteranceId) {
-                        spoken = spoken || manuallyActivated;
-                        Log.d("TTS","spoken:"+spoken);
+                    @Override
+                    public void onStart(String utteranceId) {
                     }
-                    @Override public void onError(String utteranceId) {
+
+                    @Override
+                    public void onDone(String utteranceId) {
+                        spoken = spoken || manuallyActivated;
+                        Log.d("TTS", "spoken:" + spoken);
+                    }
+
+                    @Override
+                    public void onError(String utteranceId) {
                         Toast.makeText(TTSActivity.this, R.string.tts_failed, Toast.LENGTH_SHORT).show();
                     }
                 });
-            }
-            else {
+            } else {
                 Intent installTTSIntent = new Intent();
                 installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
                 startActivity(installTTSIntent);

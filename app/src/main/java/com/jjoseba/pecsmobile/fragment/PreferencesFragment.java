@@ -15,10 +15,6 @@ public class PreferencesFragment extends PreferenceFragment implements Preferenc
 
     ArrayList<CheckBoxPreference> displayModes = new ArrayList<>();
 
-    public PreferencesFragment() {
-        // Required empty public constructor
-    }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.

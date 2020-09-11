@@ -21,8 +21,6 @@ public class PrefsActivity extends FragmentActivity {
     public static final String CREATE_TEXTCARD = "prefTextCard";
     public static final String CLOSE_DOUBLETAP = "prefCloseDoubleTap";
 
-    private PreferencesFragment mPrefsFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +34,7 @@ public class PrefsActivity extends FragmentActivity {
 
         FragmentManager mFragmentManager = getFragmentManager();
         FragmentTransaction mFragmentTransaction = mFragmentManager.beginTransaction();
-        mPrefsFragment = PreferencesFragment.newInstance();
+        PreferencesFragment mPrefsFragment = PreferencesFragment.newInstance();
         mFragmentTransaction.replace(android.R.id.content, mPrefsFragment);
         mFragmentTransaction.commit();
     }

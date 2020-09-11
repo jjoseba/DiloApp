@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 public abstract class Card implements Serializable{
 
-    public static int DEFAULT_COLOR = 0xFF555555;
+    public static final int DEFAULT_COLOR = 0xFF555555;
 
     private String label;
     private String imagePath;

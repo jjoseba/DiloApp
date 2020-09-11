@@ -21,8 +21,8 @@
         android:visibility="gone" />
 
     <Button
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="@dimen/dialog_cancel_size"
+        android:layout_height="@dimen/dialog_cancel_size"
         android:text="@string/action_cancel"
         android:id="@+id/cancelButton"
         android:layout_gravity="bottom"
@@ -52,7 +52,7 @@
             android:src="@drawable/ic_image"
             android:tint="@color/white"
             app:backgroundTint="#4CAF50"
-            app:fabCustomSize="80dp" />
+            app:fabCustomSize="@dimen/dialog_fab_size" />
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -64,7 +64,7 @@
             android:src="@drawable/ic_photo_camera"
             android:tint="@color/white"
             app:backgroundTint="#7B1FA2"
-            app:fabCustomSize="80dp" />
+            app:fabCustomSize="@dimen/dialog_fab_size" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/text_button"
@@ -75,7 +75,7 @@
             android:src="@drawable/ic_spellcheck"
             android:tint="@color/white"
             app:backgroundTint="#2196F3"
-            app:fabCustomSize="80dp" />
+            app:fabCustomSize="@dimen/dialog_fab_size" />
 
     </LinearLayout>
 

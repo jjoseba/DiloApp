@@ -18,6 +18,8 @@ import com.jjoseba.pecsmobile.util.ReverseInterpolator;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+
 public class CardGridAdapter extends ArrayAdapter<Card> {
 
     private List<Card> cards;
@@ -47,7 +49,8 @@ public class CardGridAdapter extends ArrayAdapter<Card> {
         public ImageView buttonImage;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @NonNull
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
         CardViewHolder holder;
         final Card card = cards.get(position);

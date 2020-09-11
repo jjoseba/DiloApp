@@ -18,11 +18,12 @@ import com.jjoseba.pecsmobile.ui.cards.TempButtonCard;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 public class CardsPage extends Fragment {
 
-    public static String PARENT_CATEGORY = "parentCategory";
+    public static final String PARENT_CATEGORY = "parentCategory";
 
     private Card parentCategory;
     private ArrayList<Card> pecs = new ArrayList<>();
@@ -64,7 +65,7 @@ public class CardsPage extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         try {
             this.clickListener = (CardsGridListener) activity;

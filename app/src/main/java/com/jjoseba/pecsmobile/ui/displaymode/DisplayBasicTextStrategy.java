@@ -3,6 +3,7 @@ package com.jjoseba.pecsmobile.ui.displaymode;
 
 import android.content.Intent;
 import android.speech.tts.TextToSpeech;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,7 +30,7 @@ public class DisplayBasicTextStrategy implements DisplayModeStrategy, TextToSpee
     @Override
     public void initialize(BaseActivity activity, ArrayList<Card> navigationCards) {
         this.navCards = navigationCards;
-        selectedCardsText = (TextView) activity.findViewById(R.id.selected_cards_text);
+        selectedCardsText = activity.findViewById(R.id.selected_cards_text);
         myTTS = new TextToSpeech(activity, this);
     }
 
@@ -57,7 +58,7 @@ public class DisplayBasicTextStrategy implements DisplayModeStrategy, TextToSpee
         selectedCardsText.setText("");
         selectedCardsText.setOnClickListener(v -> {
             String text = selectedCardsText.getText().toString();
-            if (text.trim()!=""){
+            if (!TextUtils.isEmpty(text)){
                 Intent i = new Intent(activity, ShowTextActivity.class);
                 i.putExtra("text", text);
                 activity.startActivity(i);

@@ -50,6 +50,7 @@ public class DisplayCardsStrategy implements DisplayModeStrategy {
 
         listener.resetCards();
         selectedCards.clear();
+        selectedCardsAdapter.notifyDataSetChanged();
         selectedCardsAdapter.setOnClickListener(() -> {
             Intent i = new Intent(activity, ShowCardsActivity.class);
             i.putExtra("result", selectedCards);
