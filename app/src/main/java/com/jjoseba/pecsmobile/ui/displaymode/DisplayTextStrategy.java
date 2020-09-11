@@ -51,7 +51,7 @@ public class DisplayTextStrategy implements DisplayModeStrategy {
 
         selectedCardsText.setOnClickListener(v -> {
             String text = selectedCardsText.getText().toString();
-            if (TextUtils.isEmpty(text)){
+            if (!TextUtils.isEmpty(text)){
                 Intent i = new Intent(activity, ShowTextActivity.class);
                 i.putExtra("text", text);
                 activity.startActivity(i);

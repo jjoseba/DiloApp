@@ -50,6 +50,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
+import androidx.cardview.widget.CardView;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 
@@ -67,7 +68,7 @@ public class NewCardActivity extends Activity {
     private ColorPicker picker;
     private View colorPickerContainer;
     private View cardFrame;
-    private View colorBucket;
+    private CardView colorBucket;
     private ImageView cardImage;
     private int previousColor = Card.DEFAULT_COLOR;
 
@@ -371,14 +372,14 @@ public class NewCardActivity extends Activity {
             colorAnimation.addUpdateListener(animator -> {
                 int animColor = (Integer)animator.getAnimatedValue();
                 cardFrame.setBackgroundColor(animColor);
-                colorBucket.setBackgroundColor(animColor);
+                colorBucket.setCardBackgroundColor(animColor);
                 cardTextImage.setTextColor(animColor);
             });
             colorAnimation.setDuration(ANIM_DURATION).start();
         }
         else{
             cardFrame.setBackgroundColor(colorTo);
-            colorBucket.setBackgroundColor(colorTo);
+            colorBucket.setCardBackgroundColor(colorTo);
             cardTextImage.setTextColor(colorTo);
         }
 
@@ -458,7 +459,7 @@ public class NewCardActivity extends Activity {
         textAsImage = true;
         cardTextImage.setVisibility(View.VISIBLE);
         cardTextImage.setAllCaps(true);
-        cardTextImage.setTextColor(picker.getColor());
+        cardTextImage.setTextColor(picker.getOldCenterColor());
         cardTextImage.setText(cardTitleTextView.getText());
         cardImage.setImageDrawable(null);
     }

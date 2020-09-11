@@ -66,7 +66,7 @@
             android:baselineAligned="false">
 
                 <com.google.android.material.card.MaterialCardView
-                    android:layout_width="320dp"
+                    android:layout_width="280dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="20dp"
@@ -147,16 +147,18 @@
                             android:layout_weight="1"
                             android:gravity="center_vertical|left"
                             android:text="@string/color_label"
-                            android:textSize="25sp" />
+                            android:textSize="32sp" />
 
-                        <FrameLayout
+                        <androidx.cardview.widget.CardView
                             android:id="@+id/colorBucket"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp">
+                            android:layout_marginRight="9dp"
+                            app:cardBackgroundColor="@color/default_card"
+                            app:cardCornerRadius="8dp">
 
-                        </FrameLayout>
+                        </androidx.cardview.widget.CardView>
 
                         <com.google.android.material.floatingactionbutton.FloatingActionButton
                             android:id="@+id/pickColorButton"
@@ -177,12 +179,14 @@
                         android:textSize="28sp"
                         android:hint="@string/placeholder_label"
                         android:textStyle="normal"
+                        android:layout_marginTop="8dp"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp" />
 
                     <Switch
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:text="@string/label_disabled"
                         android:id="@+id/sw_disabled"
                         android:textSize="28sp" />
