@@ -88,6 +88,7 @@ public class CardsPageFragment extends Fragment {
 
         rootView.setBackgroundColor(parentCategory.getCardColor());
         RecyclerView gridView = rootView.findViewById(R.id.cards_gridview);
+        gridView.setHasFixedSize(true);
         gridView.setLayoutManager(new GridLayoutManager(this.getContext(), getResources().getInteger(R.integer.grid_columns)));
         cardsAdapter = new CardsAdapter(this.getActivity(), pecs);
         gridView.setAdapter(cardsAdapter);
