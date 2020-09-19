@@ -1,5 +1,6 @@
 package com.jjoseba.pecsmobile.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -42,6 +43,7 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
     private DisplayModeStrategy displayStrategy;
 
     @Override
+    @SuppressLint("SourceLockedOrientationActivity")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);

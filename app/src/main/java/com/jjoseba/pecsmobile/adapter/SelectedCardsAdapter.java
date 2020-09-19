@@ -75,7 +75,7 @@ public class SelectedCardsAdapter  extends RecyclerView.Adapter<SelectedCardsAda
             viewHolder.image.setVisibility(View.VISIBLE);
             viewHolder.label.setVisibility(View.GONE);
             File imageFile = new File(card.getImagePath());
-            Picasso.with(ctx).load(imageFile).placeholder(R.drawable.empty).error(R.drawable.empty).into(viewHolder.image);
+            Picasso.get().load(imageFile).placeholder(R.drawable.empty).error(R.drawable.empty).into(viewHolder.image);
         }
     }
 

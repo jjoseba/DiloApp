@@ -3,6 +3,7 @@ package com.jjoseba.pecsmobile.activity;
 import android.Manifest;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -54,7 +55,7 @@ import androidx.cardview.widget.CardView;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 
-public class NewCardActivity extends Activity {
+public class NewCardActivity extends BaseActivity {
 
     private static final float EXTRA_TRANSLATION = 300f;
     private static final long ANIM_DURATION = 800;
@@ -91,6 +92,7 @@ public class NewCardActivity extends Activity {
     }
 
     @Override
+    @SuppressLint("SourceLockedOrientationActivity")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
@@ -427,7 +429,7 @@ public class NewCardActivity extends Activity {
 
                 case REQUEST_IMAGE:
                     Uri selectedImage = imageReturnedIntent.getData();
-                    Picasso.with(this.getApplicationContext()).load(selectedImage).into(cardImage);
+                    Picasso.get().load(selectedImage).into(cardImage);
                     hideTextForImage();
                     cardImagePath = FileUtils.copyFileTemp(this, selectedImage);
                     Uri cardImageUri = Uri.fromFile(new File(cardImagePath));
@@ -441,7 +443,7 @@ public class NewCardActivity extends Activity {
                 case REQUEST_CAMERA:
                     Uri tempUri = FileUtils.getTempImageURI(this);
                     cardImagePath = FileUtils.copyFileTemp(this, tempUri);
-                    Picasso.with(this.getApplicationContext()).load(tempUri).memoryPolicy(MemoryPolicy.NO_CACHE).into(cardImage);
+                    Picasso.get().load(tempUri).memoryPolicy(MemoryPolicy.NO_CACHE).into(cardImage);
 
                     hideTextForImage();
                     Crop.of(tempUri, tempUri)
@@ -475,6 +477,6 @@ public class NewCardActivity extends Activity {
         cardImagePath = FileUtils.copyFileTemp(this, FileUtils.getTempImageURI(this));
         File image = new File(cardImagePath);
         Log.d("Crop", image.exists()?"Exists!":"noooooo");
-        Picasso.with(this.getApplicationContext()).load(image).memoryPolicy(MemoryPolicy.NO_CACHE).error(R.drawable.empty).into(cardImage);
+        Picasso.get().load(image).memoryPolicy(MemoryPolicy.NO_CACHE).error(R.drawable.empty).into(cardImage);
     }
 }

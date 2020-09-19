@@ -1,5 +1,6 @@
 package com.jjoseba.pecsmobile.activity;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -25,6 +26,7 @@ public class TTSActivity extends BaseActivity implements TextToSpeech.OnInitList
     private boolean manuallyActivated = false;
 
     @Override
+    @SuppressLint("SourceLockedOrientationActivity")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);

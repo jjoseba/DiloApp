@@ -3,7 +3,6 @@ package com.jjoseba.pecsmobile.ui.dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,7 +37,7 @@ public class EditCardDialog extends FABAnimatedDialog{
         this.findViewById(R.id.card_frame).setBackgroundColor(card.getCardColor());
 
         File imageFile = new File(card.getImagePath());
-        Picasso.with(ctx).load(imageFile).placeholder(R.drawable.empty).error(R.drawable.empty).into((ImageView) findViewById(R.id.card_image));
+        Picasso.get().load(imageFile).placeholder(R.drawable.empty).error(R.drawable.empty).into((ImageView) findViewById(R.id.card_image));
         ((TextView) this.findViewById(R.id.cardLabel)).setText(card.getLabel());
         this.findViewById(R.id.cancelButton).setOnClickListener(v -> {
             cardChanged = false;

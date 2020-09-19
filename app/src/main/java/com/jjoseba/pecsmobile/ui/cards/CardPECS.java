@@ -27,7 +27,7 @@ public class CardPECS extends Card {
         holder.imageText.setVisibility(View.GONE);
         holder.image.setVisibility(View.VISIBLE);
         File imageFile = new File( this.getImagePath());
-        Picasso.with(ctx).load(imageFile).placeholder(R.drawable.empty).error(R.drawable.empty).into(holder.image);
+        Picasso.get().load(imageFile).placeholder(R.drawable.empty).error(R.drawable.empty).into(holder.image);
 
         if (this.isDisabled()){
             holder.buttonImage.setVisibility(View.VISIBLE);
