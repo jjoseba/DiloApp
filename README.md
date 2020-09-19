@@ -4,6 +4,7 @@ App para Android - Sistema alternativo y/o aumentativo de comunicación versáti
 
 * [Presentación](docs/usage)
 * [Política de privacidad](docs/policy)
+* [Changelog](docs/changelog)
 
 ## Licencia
 
@@ -30,9 +31,7 @@ funcionalidad que crees que mejoraría la aplicación, anímate a abrir un issue
 La app usa las siguientes librerías:
 * **Calligraphy**, custom fonts (https://github.com/chrisjenx/Calligraphy) Copyright (c) 2013 Christopher Jenkins - Apache License, Version 2.0
 * **Picasso**, image caching library (http://square.github.io/picasso/) Copyright (c) 2013 Square, Inc. - Apache License, Version 2.0
-* **TwoWayView**, recyclerView for horizontal list (https://github.com/lucasr/twoway-view) Copyright (C) 2013 Lucas Rocha - Apache License, Version 2.0
 * **HoloColorPicker**, a beautiful Android color picker (https://github.com/LarsWerkman/HoloColorPicker) Copyright 2012 Lars Werkman - Apache License, Version 2.0
-* **android-circlebutton**, (https://github.com/markushi/android-circlebutton) - Apache License, Version 2.0
 * **android.crop**, image cropping Activity (https://github.com/jdamcd/android-crop) Copyright 2015 SoundCloud - Apache License, Version 2.0
 * **Dexter**, permissions request (https://github.com/Karumi/Dexter) Copyright (C) 2015 Karumi - Apache License, Version 2.0
 * **SQLiteAssetHelper**, database version management (https://github.com/jgilfelt/android-sqlite-asset-helper) Copyright (C) 2011 readyState Software Ltd - Apache License, Version 2.0
