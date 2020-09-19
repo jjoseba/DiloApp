@@ -3,35 +3,35 @@ package com.jjoseba.pecsmobile.activity;
 import android.Manifest;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 import android.text.style.RelativeSizeSpan;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.app.DBHelper;
-import com.jjoseba.pecsmobile.fragment.NewCardFragment;
 import com.jjoseba.pecsmobile.model.Card;
-import com.jjoseba.pecsmobile.ui.NewCardListener;
 import com.jjoseba.pecsmobile.ui.cards.CardPECS;
 import com.jjoseba.pecsmobile.ui.dialog.ImageDialog;
 import com.jjoseba.pecsmobile.util.FileUtils;
@@ -51,10 +51,11 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+import androidx.cardview.widget.CardView;
+import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 
-public class NewCardActivity extends Activity {
+public class NewCardActivity extends BaseActivity {
 
     private static final float EXTRA_TRANSLATION = 300f;
     private static final long ANIM_DURATION = 800;
@@ -68,7 +69,7 @@ public class NewCardActivity extends Activity {
     private ColorPicker picker;
     private View colorPickerContainer;
     private View cardFrame;
-    private View colorBucket;
+    private CardView colorBucket;
     private ImageView cardImage;
     private int previousColor = Card.DEFAULT_COLOR;
 
@@ -87,10 +88,11 @@ public class NewCardActivity extends Activity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
     }
 
     @Override
+    @SuppressLint("SourceLockedOrientationActivity")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
@@ -121,99 +123,85 @@ public class NewCardActivity extends Activity {
         switchCategory = findViewById(R.id.sw_category);
         switchDisabled = findViewById(R.id.sw_disabled);
         Button saveButton = findViewById(R.id.saveButton);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (disableOkButton) {
-                    //the colorPicker is visible, so we select the current color
-                    selectColor();
-                } else {
-                    if (validateForm()) {
-                        CardPECS newCard = new CardPECS();
-                        newCard.setCardColor(String.format("#%06X", (0xFFFFFF & previousColor)));
-                        newCard.animateOnAppear = true;
-                        newCard.setLabel(cardTitleTextView.getText().toString());
-                        newCard.setAsCategory(switchCategory.isChecked());
-                        newCard.setDisabled(switchDisabled.isChecked());
-                        if (textAsImage){
-                            cardTextImage.setTextColor(previousColor);
-                            newCard.setImageFilename(ImageUtils.saveViewImage(cardTextImage));
-                            cardTextImage.setTextColor(0x000000);
-                        }
-                        else if (cardImagePath != null){
-                            newCard.setImageFilename(FileUtils.copyFileToInternal(cardImagePath));
-                        }
-
-                        DBHelper db = DBHelper.getInstance(getApplicationContext());
-                        db.addCard(parentCard.getCardId(), newCard);
-
-                        Intent returnIntent = new Intent();
-                        returnIntent.putExtra(NEW_CARD_RESULT, newCard);
-                        setResult(Activity.RESULT_OK,returnIntent);
-                        finish();
-
+        saveButton.setOnClickListener(v -> {
+            if (disableOkButton) {
+                //the colorPicker is visible, so we select the current color
+                selectColor();
+            } else {
+                if (validateForm()) {
+                    CardPECS newCard = new CardPECS();
+                    newCard.setCardColor(String.format("#%06X", (0xFFFFFF & previousColor)));
+                    newCard.animateOnAppear = true;
+                    newCard.setLabel(cardTitleTextView.getText().toString());
+                    newCard.setAsCategory(switchCategory.isChecked());
+                    newCard.setDisabled(switchDisabled.isChecked());
+                    if (textAsImage){
+                        cardTextImage.setTextColor(previousColor);
+                        newCard.setImageFilename(ImageUtils.saveViewImage(cardTextImage));
+                        cardTextImage.setTextColor(0x000000);
+                    }
+                    else if (cardImagePath != null){
+                        newCard.setImageFilename(FileUtils.copyFileToInternal(cardImagePath));
                     }
 
+                    DBHelper db = DBHelper.getInstance(getApplicationContext());
+                    db.addCard(parentCard.getCardId(), newCard);
+
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra(NEW_CARD_RESULT, newCard);
+                    setResult(Activity.RESULT_OK,returnIntent);
+                    finish();
+
                 }
+
             }
         });
 
         cardImage = findViewById(R.id.card_image);
-        cardImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeCardImage();
-            }
-        });
+        cardImage.setOnClickListener(v -> changeCardImage());
 
         Button cancelButton = findViewById(R.id.cancelButton);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isColorPickerVisible()){
-                    colorPickerContainer.setVisibility(View.INVISIBLE);
-                    hideColorPicker();
-                }
-
-                Intent returnIntent = new Intent();
-                setResult(Activity.RESULT_CANCELED, returnIntent);
-                finish();
-
-            }
-        });
+        cancelButton.setOnClickListener(v -> onBackPressed());
 
         colorPickerContainer = findViewById(R.id.pickerContainer);
-        colorPickerContainer.setOnTouchListener(new View.OnTouchListener() {
-            //Cancelamos la propagación del pulsado cuando colorPickerContainer es visible
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return (colorPickerContainer.getVisibility() == View.VISIBLE);
-            }
-        });
-
+        //Cancelamos la propagación del pulsado cuando colorPickerContainer es visible
+        colorPickerContainer.setOnTouchListener((view, motionEvent) -> (colorPickerContainer.getVisibility() == View.VISIBLE));
         picker = colorPickerContainer.findViewById(R.id.picker);
-        picker.addSaturationBar((SaturationBar) colorPickerContainer.findViewById(R.id.saturationbar) );
-        picker.addValueBar((ValueBar) colorPickerContainer.findViewById(R.id.valuebar));
+
+        SaturationBar saturationBar = colorPickerContainer.findViewById(R.id.saturationbar);
+        ValueBar valueBar = colorPickerContainer.findViewById(R.id.valuebar);
+        picker.addSaturationBar(saturationBar);
+        picker.addValueBar(valueBar);
 
         Button selectColorBtn = colorPickerContainer.findViewById(R.id.select_color_btn);
-        selectColorBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { selectColor(); }
-        });
+        selectColorBtn.setOnClickListener(v -> selectColor());
 
-        ImageButton pickColor = findViewById(R.id.pickColorButton);
-        pickColor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showColorPicker();
-            }
-        });
+        FloatingActionButton pickColor = findViewById(R.id.pickColorButton);
+        pickColor.setOnClickListener(v -> showColorPicker());
 
         Bundle b = getIntent().getExtras();
         parentCard = (Card) b.getSerializable(EXTRA_PARENT_CARD);
         changeColor(parentCard.getCardColor(), false);
+        picker.setOldCenterColor(parentCard.getCardColor());
         picker.setColor(parentCard.getCardColor());
 
+        if (parentCard.getCardColor() == Card.DEFAULT_COLOR){
+            saturationBar.setSaturation(0.75f);
+            valueBar.setValue(0.85f);
+        }
+
+    }
+
+    @Override
+    public void onBackPressed(){
+        if (isColorPickerVisible()){
+            hideColorPicker();
+        }
+        else{
+            Intent returnIntent = new Intent();
+            setResult(Activity.RESULT_CANCELED, returnIntent);
+            finish();
+        }
 
     }
 
@@ -223,17 +211,22 @@ public class NewCardActivity extends Activity {
                 .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .withListener(new PermissionListener(){
                     @Override public void onPermissionGranted(PermissionGrantedResponse response) {
-                        /*dialog = new ImageDialog(NewCardActivity.this);
+                        dialog = new ImageDialog(NewCardActivity.this);
                         dialog.show();
-                        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface d) {
-                                if (dialog!= null && dialog.isTextForImage()){
-                                    setTextForImage();
-                                }
+                        dialog.setOnDismissListener(d -> {
+                            if (dialog== null){
+                                return;
                             }
-                        });*/
-                        startImagePicker();
+                            else if (dialog.resultIsTextForImage()){
+                                setTextForImage();
+                            }
+                            else if (dialog.resultIsCamera()){
+                                startCamera();
+                            }
+                            else if (dialog.resultIsGalleryPicker()){
+                                startImagePicker();
+                            }
+                        });
                     }
                     @Override public void onPermissionDenied(PermissionDeniedResponse response) {
                         showPermissionSnackbar();
@@ -246,40 +239,93 @@ public class NewCardActivity extends Activity {
 
     private void showPermissionSnackbar(){
         Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), R.string.permissionsRationale, Snackbar.LENGTH_LONG);
-        snackbar.setAction("Configuración", new View.OnClickListener() {
-            @Override public void onClick(View v) {
+        snackbar.setAction("Configuración", v -> {
 
-                Intent myAppSettings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                        Uri.parse("package:" + NewCardActivity.this.getPackageName()));
-                myAppSettings.addCategory(Intent.CATEGORY_DEFAULT);
-                myAppSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                NewCardActivity.this.startActivity(myAppSettings);
-            }
+            Intent myAppSettings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.parse("package:" + NewCardActivity.this.getPackageName()));
+            myAppSettings.addCategory(Intent.CATEGORY_DEFAULT);
+            myAppSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            NewCardActivity.this.startActivity(myAppSettings);
         });
         Log.d("Permissions", "Showing snackbar!");
         snackbar.show();
     }
 
     private void startImagePicker(){
+        boolean success = startSamsungPicker();
+        if (success){
+            return;
+        }
+
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        Log.d("Permissions",  "Trying to resolve default ACTION_GET_CONTENT");
         if (intent.resolveActivity(getPackageManager()) != null){
             startActivityForResult(intent, REQUEST_IMAGE);
         }
         else {
-            Log.d("Permissions", "No activity found. Trying with action picker resolver");
+            //TODO: should log this...
+            Toast.makeText(this, R.string.unableResolveImageRequest, Toast.LENGTH_LONG).show();
+            success = startDocumentPicker();
 
+            if (success){
+                return;
+            }
             Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
             getIntent.setType("image/*");
             Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             pickIntent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
             Intent chooserIntent = Intent.createChooser(getIntent, "Selecciona imagen");
-            Log.d("Permissions", "Launching intent with ACTION_PICK, waiting for result...");
             chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
             startActivityForResult(chooserIntent, REQUEST_IMAGE);
+        }
+
+    }
+
+    private boolean startSamsungPicker(){
+        Log.d("Intent", "Trying to launch Samsung file picker...");
+        Intent intent = new Intent("com.sec.android.app.myfiles.PICK_DATA");
+        intent.putExtra("CONTENT_TYPE", "image/*");
+
+        if (getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
+            startActivityForResult(intent, REQUEST_IMAGE);
+            return true;
+        }
+        else{
+            Log.d("Intent",  "No activity found.");
+            return false;
+        }
+
+    }
+
+    private boolean startDocumentPicker(){
+        Log.d("Intent", "Trying to launch brute file picker...");
+        Intent intent = new Intent("android.intent.action.OPEN_DOCUMENT");
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+
+        if (getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
+            startActivityForResult(intent, REQUEST_IMAGE);
+            return true;
+        }
+        else{
+            Log.d("Intent", "No activity found. ");
+            return false;
+        }
+
+    }
+
+    private void startCamera(){
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, FileUtils.getTempImageURI(this));
+            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivityForResult(takePictureIntent, REQUEST_CAMERA);
+        }
+        else {
+            //TODO: should log this...
+            Toast.makeText(this, R.string.unableResolveCameraRequest, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -325,21 +371,17 @@ public class NewCardActivity extends Activity {
         int colorFrom = previousColor;
         if (animate){
             ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
-                @Override
-                public void onAnimationUpdate(ValueAnimator animator) {
-                    int animColor = (Integer)animator.getAnimatedValue();
-                    cardFrame.setBackgroundColor(animColor);
-                    colorBucket.setBackgroundColor(animColor);
-                    cardTextImage.setTextColor(animColor);
-                }
+            colorAnimation.addUpdateListener(animator -> {
+                int animColor = (Integer)animator.getAnimatedValue();
+                cardFrame.setBackgroundColor(animColor);
+                colorBucket.setCardBackgroundColor(animColor);
+                cardTextImage.setTextColor(animColor);
             });
             colorAnimation.setDuration(ANIM_DURATION).start();
         }
         else{
             cardFrame.setBackgroundColor(colorTo);
-            colorBucket.setBackgroundColor(colorTo);
+            colorBucket.setCardBackgroundColor(colorTo);
             cardTextImage.setTextColor(colorTo);
         }
 
@@ -387,21 +429,21 @@ public class NewCardActivity extends Activity {
 
                 case REQUEST_IMAGE:
                     Uri selectedImage = imageReturnedIntent.getData();
-                    Picasso.with(this.getApplicationContext()).load(selectedImage).into(cardImage);
+                    Picasso.get().load(selectedImage).into(cardImage);
                     hideTextForImage();
                     cardImagePath = FileUtils.copyFileTemp(this, selectedImage);
                     Uri cardImageUri = Uri.fromFile(new File(cardImagePath));
 
                     Crop.of(cardImageUri, FileUtils.getTempImageURI(this))
                             .asSquare()
-                            .withMaxSize(300, 300)
+                            .withMaxSize(600, 600)
                             .start(this);
                     break;
 
                 case REQUEST_CAMERA:
                     Uri tempUri = FileUtils.getTempImageURI(this);
                     cardImagePath = FileUtils.copyFileTemp(this, tempUri);
-                    Picasso.with(this.getApplicationContext()).load(tempUri).memoryPolicy(MemoryPolicy.NO_CACHE).into(cardImage);
+                    Picasso.get().load(tempUri).memoryPolicy(MemoryPolicy.NO_CACHE).into(cardImage);
 
                     hideTextForImage();
                     Crop.of(tempUri, tempUri)
@@ -419,7 +461,7 @@ public class NewCardActivity extends Activity {
         textAsImage = true;
         cardTextImage.setVisibility(View.VISIBLE);
         cardTextImage.setAllCaps(true);
-        cardTextImage.setTextColor(picker.getColor());
+        cardTextImage.setTextColor(picker.getOldCenterColor());
         cardTextImage.setText(cardTitleTextView.getText());
         cardImage.setImageDrawable(null);
     }
@@ -435,6 +477,6 @@ public class NewCardActivity extends Activity {
         cardImagePath = FileUtils.copyFileTemp(this, FileUtils.getTempImageURI(this));
         File image = new File(cardImagePath);
         Log.d("Crop", image.exists()?"Exists!":"noooooo");
-        Picasso.with(this.getApplicationContext()).load(image).memoryPolicy(MemoryPolicy.NO_CACHE).error(R.drawable.empty).into(cardImage);
+        Picasso.get().load(image).memoryPolicy(MemoryPolicy.NO_CACHE).error(R.drawable.empty).into(cardImage);
     }
 }

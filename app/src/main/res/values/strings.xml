@@ -41,4 +41,5 @@
     <string name="permissionsRationale">The app needs permissions to access external storage. Please check your app settings</string>
     <string name="unableResolveImageRequest">Gallery request: unable to resolve</string>
     <string name="unableResolveCameraRequest">Camera request: unable to resolve</string>
+    <string name="input_delete">Delete</string>
 </resources>

@@ -2,7 +2,6 @@ package com.jjoseba.pecsmobile.ui.displaymode;
 
 import android.content.Intent;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 
 import com.jjoseba.pecsmobile.R;
@@ -13,17 +12,16 @@ import com.jjoseba.pecsmobile.app.PECSMobile;
 import com.jjoseba.pecsmobile.model.Card;
 import com.jjoseba.pecsmobile.ui.cards.CardTempPECS;
 
-import org.lucasr.twowayview.TwoWayView;
-
 import java.util.ArrayList;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 public class DisplayCardsStrategy implements DisplayModeStrategy {
 
-    protected ArrayList<Card> navCards;
-    protected ArrayList<Card> selectedCards = new ArrayList<>();
-    protected TwoWayView selectedCardsList;
-    protected SelectedCardsAdapter selectedCardsAdapter;
-    protected ImageButton removeCardBtn;
+    private ArrayList<Card> navCards;
+    private ArrayList<Card> selectedCards = new ArrayList<>();
+    private SelectedCardsAdapter selectedCardsAdapter;
+    private ImageButton removeCardBtn;
     private ResetListener listener;
 
     @Override
@@ -35,9 +33,9 @@ public class DisplayCardsStrategy implements DisplayModeStrategy {
     public void initialize(BaseActivity activity, ArrayList<Card> navigationCards) {
         this.navCards = navigationCards;
         selectedCardsAdapter = new SelectedCardsAdapter(activity, selectedCards);
-        selectedCardsList = (TwoWayView) activity.findViewById(R.id.selected_cards_list);
+        removeCardBtn = activity.findViewById(R.id.removeLastCard);
+        RecyclerView selectedCardsList = activity.findViewById(R.id.selected_cards_list);
         selectedCardsList.setAdapter(selectedCardsAdapter);
-        removeCardBtn = (ImageButton) activity.findViewById(R.id.removeLastCard);
     }
 
     @Override
@@ -53,22 +51,16 @@ public class DisplayCardsStrategy implements DisplayModeStrategy {
         listener.resetCards();
         selectedCards.clear();
         selectedCardsAdapter.notifyDataSetChanged();
-
-        selectedCardsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(activity, ShowCardsActivity.class);
-                i.putExtra("result", selectedCards);
-                activity.startActivity(i);
-            }
+        selectedCardsAdapter.setOnClickListener(() -> {
+            Intent i = new Intent(activity, ShowCardsActivity.class);
+            i.putExtra("result", selectedCards);
+            activity.startActivity(i);
         });
-        removeCardBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (selectedCards.size() > 0) {
-                    selectedCards.remove(selectedCards.size() - 1);
-                    selectedCardsAdapter.notifyDataSetChanged();
-                }
+
+        removeCardBtn.setOnClickListener(v -> {
+            if (selectedCards.size() > 0) {
+                selectedCards.remove(selectedCards.size() - 1);
+                selectedCardsAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -93,7 +85,7 @@ public class DisplayCardsStrategy implements DisplayModeStrategy {
 
     @Override
     public void onSelectedCardsChanged() {
-
+        selectedCardsAdapter.notifyDataSetChanged();
     }
 
     @Override

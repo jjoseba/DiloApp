@@ -4,15 +4,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.DisplayMetrics;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
 
 import com.jjoseba.pecsmobile.R;
-import com.jjoseba.pecsmobile.adapter.CardGridAdapter;
+import com.jjoseba.pecsmobile.adapter.CardsAdapter;
 import com.jjoseba.pecsmobile.model.Card;
 
 import java.util.ArrayList;
+
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class ShowCardsActivity extends TTSActivity {
 
@@ -29,25 +29,31 @@ public class ShowCardsActivity extends TTSActivity {
         title = "";
         for (Card card : selectedCards){ title += card.getLabel() + ", ";  }
 
-        GridView cardsList = (GridView) findViewById(R.id.selectedCards);
-        if (selectedCards.size() == 2){
-            cardsList.setNumColumns(2);
+        int gridColumns = getResources().getInteger(R.integer.grid_columns);
+        if (selectedCards.size() < gridColumns){
+            gridColumns = selectedCards.size();
         }
-        else if (selectedCards.size() == 1){
-            cardsList.setNumColumns(1);
+
+
+        RecyclerView gridView = findViewById(R.id.cards_gridview);
+        gridView.setLayoutManager(new GridLayoutManager(this, gridColumns));
+        if (gridColumns == 1){
             DisplayMetrics metrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            cardsList.setPadding(metrics.widthPixels / 4, 0, metrics.widthPixels / 4, 0);
-            cardsList.setColumnWidth(metrics.widthPixels / 2);
+            gridView.setPadding(metrics.widthPixels / 4, 0, metrics.widthPixels / 4, 0);
         }
-        CardGridAdapter adapter = new CardGridAdapter(this, R.layout.card_gridview, selectedCards);
-        cardsList.setAdapter(adapter);
+
+        CardsAdapter adapter = new CardsAdapter(this, selectedCards);
+        gridView.setAdapter(adapter);
+
         final String finalTitle = title;
-        cardsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        adapter.setOnClickListener(new CardsAdapter.CardListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void cardClicked(Card card) {
                 speak(finalTitle);
             }
+            @Override
+            public void cardLongClicked(Card card) { }
         });
 
     }
@@ -55,11 +61,8 @@ public class ShowCardsActivity extends TTSActivity {
     @Override
     public void onResume() {
         super.onResume();
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            public void run() {
-                speak(title, false);
-            }
-        }, 100);
+        new Handler(Looper.getMainLooper()).postDelayed(() ->
+                speak(title, false), 100);
     }
 
 }

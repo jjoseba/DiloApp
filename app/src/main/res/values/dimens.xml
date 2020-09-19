@@ -6,4 +6,8 @@
     <dimen name="cards_small_width">60dp</dimen>
     <dimen name="cards_small_frame">2dp</dimen>
     <dimen name="text_big">30sp</dimen>
+    <dimen name="dialog_btn_spacing">22dp</dimen>
+    <dimen name="dialog_fab_size">80dp</dimen>
+    <dimen name="dialog_cancel_size">120dp</dimen>
+    <dimen name="grid_spacing">5dp</dimen>
 </resources>

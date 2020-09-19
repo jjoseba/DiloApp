@@ -2,36 +2,38 @@ package com.jjoseba.pecsmobile.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
 
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.activity.PrefsActivity;
-import com.jjoseba.pecsmobile.adapter.CardGridAdapter;
+import com.jjoseba.pecsmobile.adapter.CardsAdapter;
 import com.jjoseba.pecsmobile.app.DBHelper;
 import com.jjoseba.pecsmobile.model.Card;
-import com.jjoseba.pecsmobile.ui.cards.ButtonCard;
 import com.jjoseba.pecsmobile.ui.CardsGridListener;
+import com.jjoseba.pecsmobile.ui.cards.ButtonCard;
 import com.jjoseba.pecsmobile.ui.cards.TempButtonCard;
 
 import java.util.ArrayList;
 
-public class CardsPage extends Fragment {
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-    public static String PARENT_CATEGORY = "parentCategory";
+public class CardsPageFragment extends Fragment {
+
+    public static final String PARENT_CATEGORY = "parentCategory";
 
     private Card parentCategory;
     private ArrayList<Card> pecs = new ArrayList<>();
-    private CardGridAdapter cardsAdapter;
+    private CardsAdapter cardsAdapter;
     private CardsGridListener clickListener;
     private int specialButtonsCount = 0;
 
-    public static CardsPage newInstance(Card parentCategory, boolean showAddButton, boolean showTempButton) {
-        CardsPage f = new CardsPage();
+    public static CardsPageFragment newInstance(Card parentCategory, boolean showAddButton, boolean showTempButton) {
+        CardsPageFragment f = new CardsPageFragment();
         Bundle args = new Bundle();
         args.putBoolean(PrefsActivity.SHOW_ADD_CARD, showAddButton);
         args.putBoolean(PrefsActivity.SHOW_TEMPTEXT_CARD, showTempButton);
@@ -64,7 +66,7 @@ public class CardsPage extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         try {
             this.clickListener = (CardsGridListener) activity;
@@ -82,41 +84,44 @@ public class CardsPage extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
-                R.layout.screen_slide, container, false);
+                R.layout.fragment_card_slide, container, false);
 
         rootView.setBackgroundColor(parentCategory.getCardColor());
-
-        GridView gridView = (GridView) rootView.findViewById(R.id.cards_gridview);
-        cardsAdapter = new CardGridAdapter(this.getActivity(), R.layout.card_gridview, pecs);
+        RecyclerView gridView = rootView.findViewById(R.id.cards_gridview);
+        gridView.setHasFixedSize(true);
+        gridView.setLayoutManager(new GridLayoutManager(this.getContext(), getResources().getInteger(R.integer.grid_columns)));
+        cardsAdapter = new CardsAdapter(this.getActivity(), pecs);
         gridView.setAdapter(cardsAdapter);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                if (clickListener != null) {
-                    Card clicked = pecs.get(position);
-                    if (clicked instanceof ButtonCard) {
-                        if (clicked instanceof TempButtonCard)
-                            clickListener.onTempCardButton();
-                        else
-                            clickListener.onAddCardButton(parentCategory);
-                    } else if (!clicked.isDisabled()){
-                        clickListener.onCardSelected(clicked);
-                    }
+        cardsAdapter.setOnClickListener(new CardsAdapter.CardListener() {
+            @Override
+            public void cardClicked(Card clicked) {
+                if (clickListener == null) {
+                    return;
                 }
+                if (clicked instanceof ButtonCard) {
+                    if (clicked instanceof TempButtonCard)
+                        clickListener.onTempCardButton();
+                    else
+                        clickListener.onAddCardButton(parentCategory);
+                } else if (!clicked.isDisabled()){
+                    clickListener.onCardSelected(clicked);
+                }
+            }
+
+            @Override
+            public void cardLongClicked(Card clicked) {
+                if ((clickListener != null) && !(clicked instanceof ButtonCard)) {
+                    clickListener.onCardLongClick(clicked);
+                }
+            }
+        });
+        gridView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 
-        gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                if (clickListener != null) {
-                    Card clicked = pecs.get(position);
-                    if (!(clicked instanceof ButtonCard)) {
-                        clickListener.onCardLongClick(clicked);
-                    }
-                }
-                return true;
-            }
-        });
         return rootView;
     }
 
@@ -140,7 +145,7 @@ public class CardsPage extends Fragment {
     public void notifyCardChanged(Card card, boolean deleted){
 
         if (deleted){
-            cardsAdapter.removeCard(card);
+            pecs.remove(card);
         }
         cardsAdapter.notifyDataSetChanged();
     }

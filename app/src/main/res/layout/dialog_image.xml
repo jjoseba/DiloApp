@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="20dp">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/cardLabel"
+        android:textColor="@color/white"
+        android:gravity="center|fill_horizontal"
+        android:layout_gravity="start"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone" />
+
+    <Button
+        android:layout_width="@dimen/dialog_cancel_size"
+        android:layout_height="@dimen/dialog_cancel_size"
+        android:text="@string/action_cancel"
+        android:id="@+id/cancelButton"
+        android:layout_gravity="bottom"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="false"
+        android:layout_centerHorizontal="true"
+        android:textColor="@drawable/dialog_text"
+        android:background="@drawable/dialog_button"
+        android:padding="15dp"
+        android:textSize="25sp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:id="@+id/dialog_buttons">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/gallery_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dialog_btn_spacing"
+            android:layout_marginEnd="@dimen/dialog_btn_spacing"
+            android:src="@drawable/ic_image"
+            android:tint="@color/white"
+            app:backgroundTint="#4CAF50"
+            app:fabCustomSize="@dimen/dialog_fab_size" />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/camera_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dialog_btn_spacing"
+            android:layout_marginEnd="@dimen/dialog_btn_spacing"
+            android:src="@drawable/ic_photo_camera"
+            android:tint="@color/white"
+            app:backgroundTint="#7B1FA2"
+            app:fabCustomSize="@dimen/dialog_fab_size" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/text_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dialog_btn_spacing"
+            android:layout_marginEnd="@dimen/dialog_btn_spacing"
+            android:src="@drawable/ic_spellcheck"
+            android:tint="@color/white"
+            app:backgroundTint="#2196F3"
+            app:fabCustomSize="@dimen/dialog_fab_size" />
+
+    </LinearLayout>
+
+</RelativeLayout>

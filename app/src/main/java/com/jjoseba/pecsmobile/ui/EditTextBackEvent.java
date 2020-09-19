@@ -5,9 +5,8 @@ package com.jjoseba.pecsmobile.ui;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
-import android.widget.EditText;
 
-public class EditTextBackEvent extends EditText {
+public class EditTextBackEvent extends androidx.appcompat.widget.AppCompatEditText {
 
     public interface EditTextImeBackListener {
         void onImeBack(EditTextBackEvent ctrl, String text);

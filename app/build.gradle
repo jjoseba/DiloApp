@@ -8,37 +8,41 @@ repositories {
 }
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 29
+    buildToolsVersion '29.0.2'
 
     defaultConfig {
         applicationId "com.abaloo.dilo2"
-        minSdkVersion 16
-        targetSdkVersion 28
-        versionCode 5
-        versionName "1.0.4"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 7
+        versionName "1.1.0b"
 
     }
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
+
+    // Configure to use Java8 features like try-with-resources
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.google.android.material:material:1.0.0'
-    implementation 'uk.co.chrisjenx:calligraphy:2.1.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'io.github.inflationx:calligraphy3:3.1.1'
+    implementation 'io.github.inflationx:viewpump:2.0.3'
     implementation 'com.larswerkman:HoloColorPicker:1.5'
-    implementation 'org.lucasr.twowayview:twowayview:0.1.4'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
-    implementation 'com.github.markushi:circlebutton:1.1'
     implementation 'com.soundcloud.android:android-crop:1.0.0@aar'
     implementation 'com.google.firebase:firebase-analytics:17.2.0'
     implementation 'com.karumi:dexter:6.0.0'

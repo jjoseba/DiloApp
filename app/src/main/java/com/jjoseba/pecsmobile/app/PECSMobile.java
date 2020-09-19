@@ -1,12 +1,12 @@
 package com.jjoseba.pecsmobile.app;
 
 import android.app.Application;
-
-
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.util.FileUtils;
 
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import io.github.inflationx.calligraphy3.CalligraphyConfig;
+import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
+import io.github.inflationx.viewpump.ViewPump;
 
 public class PECSMobile extends Application {
 
@@ -22,11 +22,13 @@ public class PECSMobile extends Application {
     public void onCreate() {
         super.onCreate();
 
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("fonts/billy.ttf")
-                        .setFontAttrId(R.attr.fontPath)
-                        .build()
-        );
+        ViewPump.init(ViewPump.builder()
+                .addInterceptor(new CalligraphyInterceptor(
+                        new CalligraphyConfig.Builder()
+                                .setDefaultFontPath("fonts/billy.ttf")
+                                .setFontAttrId(R.attr.fontPath)
+                                .build()))
+                .build());
 
         //We set the StoragePath
         FileUtils.initialize(getApplicationContext());

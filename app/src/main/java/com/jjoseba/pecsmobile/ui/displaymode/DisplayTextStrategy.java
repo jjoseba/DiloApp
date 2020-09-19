@@ -1,6 +1,7 @@
 package com.jjoseba.pecsmobile.ui.displaymode;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -16,10 +17,10 @@ import java.util.ArrayList;
 
 public class DisplayTextStrategy implements DisplayModeStrategy {
 
-    protected ArrayList<Card> navCards;
+    private ArrayList<Card> navCards;
     private TextView selectedCardsText;
-    protected ArrayList<Card> selectedCards = new ArrayList<>();
-    protected ImageButton removeCardBtn;
+    private ArrayList<Card> selectedCards = new ArrayList<>();
+    private ImageButton removeCardBtn;
     private ResetListener listener;
 
     @Override
@@ -30,8 +31,8 @@ public class DisplayTextStrategy implements DisplayModeStrategy {
     @Override
     public void initialize(BaseActivity activity, ArrayList<Card> navigationCards) {
         this.navCards = navigationCards;
-        selectedCardsText = (TextView) activity.findViewById(R.id.selected_cards_text);
-        removeCardBtn = (ImageButton) activity.findViewById(R.id.removeLastCard);
+        selectedCardsText = activity.findViewById(R.id.selected_cards_text);
+        removeCardBtn = activity.findViewById(R.id.removeLastCard);
     }
 
     @Override
@@ -48,24 +49,18 @@ public class DisplayTextStrategy implements DisplayModeStrategy {
         selectedCards.clear();
         selectedCardsText.setText("");
 
-        selectedCardsText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String text = selectedCardsText.getText().toString();
-                if (text.trim()!=""){
-                    Intent i = new Intent(activity, ShowTextActivity.class);
-                    i.putExtra("text", text);
-                    activity.startActivity(i);
-                }
+        selectedCardsText.setOnClickListener(v -> {
+            String text = selectedCardsText.getText().toString();
+            if (!TextUtils.isEmpty(text)){
+                Intent i = new Intent(activity, ShowTextActivity.class);
+                i.putExtra("text", text);
+                activity.startActivity(i);
             }
         });
-        removeCardBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (selectedCards.size() > 0) {
-                    selectedCards.remove(selectedCards.size() - 1);
-                    updateTextDisplay();
-                }
+        removeCardBtn.setOnClickListener(v -> {
+            if (selectedCards.size() > 0) {
+                selectedCards.remove(selectedCards.size() - 1);
+                updateTextDisplay();
             }
         });
     }
@@ -100,12 +95,11 @@ public class DisplayTextStrategy implements DisplayModeStrategy {
         this.listener = listener;
     }
 
-    private String updateTextDisplay(){
+    private void updateTextDisplay(){
         String message = "";
         for (Card card : selectedCards){
             message += card.getLabel()==null ? "" : card.getLabel() + " ";
         }
         selectedCardsText.setText(message);
-        return message;
     }
 }

@@ -3,14 +3,14 @@ package com.jjoseba.pecsmobile.model;
 import android.content.Context;
 import android.graphics.Color;
 
-import com.jjoseba.pecsmobile.adapter.CardGridAdapter;
+import com.jjoseba.pecsmobile.adapter.CardsAdapter;
 import com.jjoseba.pecsmobile.util.FileUtils;
 
 import java.io.Serializable;
 
 public abstract class Card implements Serializable{
 
-    public static int DEFAULT_COLOR = 0xFF555555;
+    public static final int DEFAULT_COLOR = 0xFF555555;
 
     private String label;
     private String imagePath;
@@ -62,6 +62,6 @@ public abstract class Card implements Serializable{
     public int getParentID() { return parentID; }
     public void setParentID(int parentID) { this.parentID = parentID; }
 
-    public abstract void inflateCard(CardGridAdapter.CardViewHolder viewHolder, Context ctx);
+    public abstract void updateHolder(CardsAdapter.CardViewHolder viewHolder, Context ctx);
 
 }

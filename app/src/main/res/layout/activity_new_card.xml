@@ -1,16 +1,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:baselineAligned="false"
-              android:background="@color/background">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:background="@color/background">
 
     <RelativeLayout
         android:orientation="horizontal"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/secondary_bar"
+        android:background="@color/colorPrimary"
         android:weightSum="2"
         android:padding="3dp"
         android:visibility="visible">
@@ -24,7 +25,7 @@
             android:layout_alignParentTop="true"
             android:background="@color/transparent"
             android:drawableLeft="@drawable/ic_action_back"
-            android:drawablePadding="5dp"
+            android:drawablePadding="8dp"
             android:elegantTextHeight="false"
             android:paddingLeft="5dp"
             android:paddingRight="20dp"
@@ -53,39 +54,34 @@
     </RelativeLayout>
 
     <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:visibility="visible">
 
-        <TableLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:measureWithLargestChild="false"
+            android:orientation="horizontal"
             android:baselineAligned="false">
 
-            <TableRow
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <FrameLayout
-                    android:layout_width="fill_parent"
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="280dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_span="3"
-                    android:layout_weight="1"
-                    android:background="@drawable/card">
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="10dp"
+                    app:cardElevation="4dp"
+                    app:cardUseCompatPadding="true">
 
                     <FrameLayout
                         android:id="@+id/card_frame"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:background="@color/default_card"
                         android:padding="15sp">
 
-                        <ImageView
+                        <com.jjoseba.pecsmobile.ui.SquareImageView
                             android:id="@+id/imageView2"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -110,20 +106,17 @@
 
                         <com.jjoseba.pecsmobile.ui.SquareImageView
                             android:id="@+id/card_image"
-
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:scaleType="fitXY"></com.jjoseba.pecsmobile.ui.SquareImageView>
+                            android:scaleType="fitXY" />
                     </FrameLayout>
-                </FrameLayout>
+                </com.google.android.material.card.MaterialCardView>
 
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="30dp"
-                    android:layout_weight="1"
-                    android:layout_span="1"
                     android:layout_gravity="center_vertical">
 
                     <EditText
@@ -153,25 +146,27 @@
                             android:layout_weight="1"
                             android:gravity="center_vertical|left"
                             android:text="@string/color_label"
-                            android:textSize="25sp" />
+                            android:textSize="32sp" />
 
-                        <FrameLayout
+                        <androidx.cardview.widget.CardView
                             android:id="@+id/colorBucket"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp">
+                            android:layout_marginRight="9dp"
+                            app:cardBackgroundColor="@color/default_card"
+                            app:cardCornerRadius="8dp">
 
-                        </FrameLayout>
+                        </androidx.cardview.widget.CardView>
 
-                        <ImageButton
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
                             android:id="@+id/pickColorButton"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:background="@color/colorPrimaryDark"
-                            android:padding="7dp"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/ic_action_edit" />
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_action_edit"
+                            android:tint="@color/white"
+                            app:backgroundTint="@color/colorPrimary"
+                            app:fabCustomSize="50dp" />
 
                     </LinearLayout>
 
@@ -183,24 +178,25 @@
                         android:textSize="28sp"
                         android:hint="@string/placeholder_label"
                         android:textStyle="normal"
+                        android:layout_marginTop="8dp"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp" />
 
                     <Switch
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:text="@string/label_disabled"
                         android:id="@+id/sw_disabled"
                         android:textSize="28sp" />
 
                 </LinearLayout>
-            </TableRow>
-        </TableLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#222"
+            android:background="#555"
             android:orientation="horizontal"
             android:visibility="gone"
             android:id="@+id/pickerContainer">
@@ -237,7 +233,11 @@
                     android:id="@+id/select_color_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/dialog_btn_spacing"
+                    android:paddingEnd="@dimen/dialog_btn_spacing"
                     android:text="@string/change_color"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/colorPrimary"
                     android:textSize="28sp" />
             </LinearLayout>
 

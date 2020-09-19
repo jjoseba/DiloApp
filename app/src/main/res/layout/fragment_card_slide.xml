@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/whitetransp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cards_gridview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawSelectorOnTop="false"
+            tools:context=".CourseIndexActivity"
+            android:cacheColorHint="#00000000"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            android:numColumns="@integer/grid_columns"
+            android:padding="@dimen/grid_spacing"
+            android:listSelector="@drawable/grid_selector"
+            android:layout_margin="0dp"
+            tools:listitem="@layout/griditem_card"
+            android:clipToPadding="false"
+            />
+    </FrameLayout>
+
+</LinearLayout>

@@ -4,9 +4,8 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.widget.TextView;
 
-public class AutoFitTextView extends TextView {
+public class AutoFitTextView extends androidx.appcompat.widget.AppCompatTextView {
 
     private static final int SMALLEST_SIZE = 3;
     private static final float THRESHOLD = 1f;
