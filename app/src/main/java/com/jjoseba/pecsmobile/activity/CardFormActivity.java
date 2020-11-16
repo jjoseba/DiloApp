@@ -20,14 +20,12 @@ import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.jjoseba.pecsmobile.R;
 import com.jjoseba.pecsmobile.app.DBHelper;
@@ -52,6 +50,9 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 
 import androidx.cardview.widget.CardView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 
@@ -65,21 +66,26 @@ public class CardFormActivity extends BaseActivity {
 
     public static final String NEW_CARD_RESULT = "new_card";
     public static final String EXTRA_PARENT_CARD = "parent_card";
+    public static final String EXTRA_NEW_CARD = "is_new";
+    public static final String EXTRA_CARD = "card_edit";
 
-    private ColorPicker picker;
-    private View colorPickerContainer;
-    private View cardFrame;
-    private CardView colorBucket;
-    private ImageView cardImage;
+    @BindView(R.id.picker) ColorPicker picker;
+    @BindView(R.id.pickerContainer) View colorPickerContainer;
+    @BindView(R.id.card_frame) View cardFrame;
+    @BindView(R.id.colorBucket) CardView colorBucket;
+    @BindView(R.id.card_image) ImageView cardImage;
+
+
+    @BindView(R.id.et_title) EditText cardTitleTextView;
+    @BindView(R.id.card_imageText) TextView cardTextImage;
+    @BindView(R.id.sw_category) Switch switchCategory;
+    @BindView(R.id.sw_disabled) Switch switchDisabled;
+
     private int previousColor = Card.DEFAULT_COLOR;
-
-    private EditText cardTitleTextView;
-    private TextView cardTextImage;
-    private Switch switchCategory;
-    private Switch switchDisabled;
-
     private boolean disableOkButton = false;
-    private Card parentCard;
+
+    private boolean isNewCard = true;
+    private int parentCardId;
 
     private boolean textAsImage = false;
 
@@ -99,15 +105,26 @@ public class CardFormActivity extends BaseActivity {
         setContentView(R.layout.activity_form_card);
         ButterKnife.bind(this);
 
-        cardFrame = findViewById(R.id.card_frame);
-        colorBucket = findViewById(R.id.colorBucket);
-        cardTitleTextView = findViewById(R.id.et_title);
+        //Cancelamos la propagación del pulsado cuando colorPickerContainer es visible
+        colorPickerContainer.setOnTouchListener((view, motionEvent) -> (colorPickerContainer.getVisibility() == View.VISIBLE));
+
+        Bundle b = getIntent().getExtras();
+        Card parentCard = (Card) b.getSerializable(EXTRA_PARENT_CARD);
+        Card card = (Card) b.getSerializable((EXTRA_CARD));
+        isNewCard = b.getBoolean(EXTRA_NEW_CARD);
+
+        parentCardId = parentCard.getCardId();
+
+        initializeViews(card, parentCard.getCardColor());
+    }
+
+    private void initializeViews(Card card, int parentColor){
         cardTitleTextView.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {  }
             public void afterTextChanged(Editable s) { }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length()>0){
+                if (s.length() > 0){
                     String text = s.toString();
                     cardTextImage.setText(text.toUpperCase());
                     if(!text.equals(text.toUpperCase()))
@@ -117,82 +134,59 @@ public class CardFormActivity extends BaseActivity {
                         cardTitleTextView.setSelection(text.length());
                     }
                 }
-
             }
         });
-        cardTextImage = findViewById(R.id.card_imageText);
-        switchCategory = findViewById(R.id.sw_category);
-        switchDisabled = findViewById(R.id.sw_disabled);
-        Button saveButton = findViewById(R.id.saveButton);
-        saveButton.setOnClickListener(v -> {
-            if (disableOkButton) {
-                //the colorPicker is visible, so we select the current color
-                selectColor();
-            } else {
-                if (validateForm()) {
-                    CardPECS newCard = new CardPECS();
-                    newCard.setCardColor(String.format("#%06X", (0xFFFFFF & previousColor)));
-                    newCard.animateOnAppear = true;
-                    newCard.setLabel(cardTitleTextView.getText().toString());
-                    newCard.setAsCategory(switchCategory.isChecked());
-                    newCard.setDisabled(switchDisabled.isChecked());
-                    if (textAsImage){
-                        cardTextImage.setTextColor(previousColor);
-                        newCard.setImageFilename(ImageUtils.saveViewImage(cardTextImage));
-                        cardTextImage.setTextColor(0x000000);
-                    }
-                    else if (cardImagePath != null){
-                        newCard.setImageFilename(FileUtils.copyFileToInternal(cardImagePath));
-                    }
-
-                    DBHelper db = DBHelper.getInstance(getApplicationContext());
-                    db.addCard(parentCard.getCardId(), newCard);
-
-                    Intent returnIntent = new Intent();
-                    returnIntent.putExtra(NEW_CARD_RESULT, newCard);
-                    setResult(Activity.RESULT_OK,returnIntent);
-                    finish();
-
-                }
-
-            }
-        });
-
-        cardImage = findViewById(R.id.card_image);
-        cardImage.setOnClickListener(v -> changeCardImage());
-
-        Button cancelButton = findViewById(R.id.cancelButton);
-        cancelButton.setOnClickListener(v -> onBackPressed());
-
-        colorPickerContainer = findViewById(R.id.pickerContainer);
-        //Cancelamos la propagación del pulsado cuando colorPickerContainer es visible
-        colorPickerContainer.setOnTouchListener((view, motionEvent) -> (colorPickerContainer.getVisibility() == View.VISIBLE));
-        picker = colorPickerContainer.findViewById(R.id.picker);
 
         SaturationBar saturationBar = colorPickerContainer.findViewById(R.id.saturationbar);
         ValueBar valueBar = colorPickerContainer.findViewById(R.id.valuebar);
         picker.addSaturationBar(saturationBar);
         picker.addValueBar(valueBar);
 
-        Button selectColorBtn = colorPickerContainer.findViewById(R.id.select_color_btn);
-        selectColorBtn.setOnClickListener(v -> selectColor());
+        changeColor(parentColor, false);
+        picker.setOldCenterColor(parentColor);
+        picker.setColor(parentColor);
 
-        FloatingActionButton pickColor = findViewById(R.id.pickColorButton);
-        pickColor.setOnClickListener(v -> showColorPicker());
-
-        Bundle b = getIntent().getExtras();
-        parentCard = (Card) b.getSerializable(EXTRA_PARENT_CARD);
-        changeColor(parentCard.getCardColor(), false);
-        picker.setOldCenterColor(parentCard.getCardColor());
-        picker.setColor(parentCard.getCardColor());
-
-        if (parentCard.getCardColor() == Card.DEFAULT_COLOR){
+        if (parentColor == Card.DEFAULT_COLOR){
             saturationBar.setSaturation(0.75f);
             valueBar.setValue(0.85f);
         }
-
     }
 
+
+    @OnClick(R.id.saveButton)
+    void saveCard(){
+        if (disableOkButton) {
+            //the colorPicker is visible, so we select the current color
+            selectColor();
+        } else {
+            if (validateForm()) {
+                CardPECS newCard = new CardPECS();
+                newCard.setCardColor(String.format("#%06X", (0xFFFFFF & previousColor)));
+                newCard.animateOnAppear = true;
+                newCard.setLabel(cardTitleTextView.getText().toString());
+                newCard.setAsCategory(switchCategory.isChecked());
+                newCard.setDisabled(switchDisabled.isChecked());
+                if (textAsImage){
+                    cardTextImage.setTextColor(previousColor);
+                    newCard.setImageFilename(ImageUtils.saveViewImage(cardTextImage));
+                    cardTextImage.setTextColor(0x000000);
+                }
+                else if (cardImagePath != null){
+                    newCard.setImageFilename(FileUtils.copyFileToInternal(cardImagePath));
+                }
+
+                DBHelper db = DBHelper.getInstance(getApplicationContext());
+                db.addCard(parentCardId, newCard);
+
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra(NEW_CARD_RESULT, newCard);
+                setResult(Activity.RESULT_OK,returnIntent);
+                finish();
+            }
+        }
+    }
+
+    @OnClick(R.id.cancelButton)
     @Override
     public void onBackPressed(){
         if (isColorPickerVisible()){
@@ -206,13 +200,14 @@ public class CardFormActivity extends BaseActivity {
 
     }
 
-    private void changeCardImage() {
+    @OnClick(R.id.card_image)
+    void changeCardImage() {
 
         Dexter.withActivity(this)
                 .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .withListener(new PermissionListener(){
                     @Override public void onPermissionGranted(PermissionGrantedResponse response) {
-                        dialog = new ImageDialog(NewCardActivity.this);
+                        dialog = new ImageDialog(CardFormActivity.this);
                         dialog.show();
                         dialog.setOnDismissListener(d -> {
                             if (dialog== null){
@@ -243,10 +238,10 @@ public class CardFormActivity extends BaseActivity {
         snackbar.setAction("Configuración", v -> {
 
             Intent myAppSettings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                    Uri.parse("package:" + NewCardActivity.this.getPackageName()));
+                    Uri.parse("package:" + CardFormActivity.this.getPackageName()));
             myAppSettings.addCategory(Intent.CATEGORY_DEFAULT);
             myAppSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            NewCardActivity.this.startActivity(myAppSettings);
+            CardFormActivity.this.startActivity(myAppSettings);
         });
         Log.d("Permissions", "Showing snackbar!");
         snackbar.show();
@@ -346,13 +341,15 @@ public class CardFormActivity extends BaseActivity {
 
     }
 
-    private void selectColor(){
+    @OnClick(R.id.select_color_btn)
+    void selectColor(){
         int selectedColor = picker.getColor();
         picker.setOldCenterColor(selectedColor);
         hideColorPicker();
         changeColor(selectedColor, true);
     }
 
+    @OnClick(R.id.pickColorButton)
     public void showColorPicker(){
         toggleColorPicker(true);
         disableOkButton = true;

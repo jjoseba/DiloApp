@@ -55,7 +55,7 @@
             android:label="@string/title_activity_show_text"
             android:theme="@style/FullscreenTheme">
         </activity>
-        <activity android:name=".activity.NewCardActivity"
+        <activity android:name=".activity.CardFormActivity"
             android:theme="@style/FullscreenTheme"
             android:screenOrientation="landscape"
             />

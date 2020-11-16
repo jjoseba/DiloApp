@@ -13,15 +13,19 @@ import java.util.ArrayList;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class ShowCardsActivity extends TTSActivity {
 
     private String title;
+    @BindView(R.id.cards_gridview) RecyclerView gridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_cards);
+        ButterKnife.bind(this);
 
         Bundle extras = getIntent().getExtras();
         ArrayList<Card> selectedCards = (ArrayList<Card>) extras.getSerializable("result");
@@ -34,8 +38,6 @@ public class ShowCardsActivity extends TTSActivity {
             gridColumns = selectedCards.size();
         }
 
-
-        RecyclerView gridView = findViewById(R.id.cards_gridview);
         gridView.setLayoutManager(new GridLayoutManager(this, gridColumns));
         if (gridColumns == 1){
             DisplayMetrics metrics = new DisplayMetrics();

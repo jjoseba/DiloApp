@@ -126,11 +126,11 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
 
     @Override
     public void onAddCardButton(Card clicked){
-        Intent i = new Intent(this, NewCardActivity.class);
-        i.putExtra(NewCardActivity.EXTRA_PARENT_CARD, clicked);
+        Intent i = new Intent(this, CardFormActivity.class);
+        i.putExtra(CardFormActivity.EXTRA_PARENT_CARD, clicked);
         Log.d("NewCard", clicked==null?"null":(""+clicked.getParentID()));
 
-        startActivityForResult(i, NewCardActivity.REQUEST);
+        startActivityForResult(i, CardFormActivity.REQUEST);
     }
 
     @Override
@@ -256,8 +256,8 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
         displayStrategy.onActivityResult(this, requestCode, resultCode);
 
         if(resultCode == Activity.RESULT_OK){
-            if (requestCode == NewCardActivity.REQUEST){
-                Card newCard = (Card) intent.getSerializableExtra(NewCardActivity.NEW_CARD_RESULT);
+            if (requestCode == CardFormActivity.REQUEST){
+                Card newCard = (Card) intent.getSerializableExtra(CardFormActivity.NEW_CARD_RESULT);
                 onNewCard(newCard);
             }
         }

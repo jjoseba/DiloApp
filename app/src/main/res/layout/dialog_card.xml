@@ -85,8 +85,7 @@
             app:fabCustomSize="@dimen/dialog_fab_size"
             android:tint="@color/white"
             app:backgroundTint="#2196F3"
-            android:layout_margin="16dp"
-            android:visibility="gone"/>
+            android:layout_margin="16dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/disable_button"
