@@ -55,7 +55,7 @@ import androidx.cardview.widget.CardView;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 
-public class NewCardActivity extends BaseActivity {
+public class CardFormActivity extends BaseActivity {
 
     private static final float EXTRA_TRANSLATION = 300f;
     private static final long ANIM_DURATION = 800;
@@ -96,7 +96,8 @@ public class NewCardActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-        setContentView(R.layout.activity_new_card);
+        setContentView(R.layout.activity_form_card);
+        ButterKnife.bind(this);
 
         cardFrame = findViewById(R.id.card_frame);
         colorBucket = findViewById(R.id.colorBucket);
