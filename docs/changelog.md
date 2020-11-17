@@ -2,6 +2,12 @@
 CHANGELOG
 =======================
 
+### v1.2.0 (8): Noviembre 2020
+
+* Funcionalidad para editar tarjetas ya creadas (configurable desde ajustes)
+* Uso de Butterknife para inyección de vistas
+* Dependencias actualizadas
+
 ### v1.1.0b (7): Septiembre 2020
 
 * Actualizada librería Picasso a su última versión
