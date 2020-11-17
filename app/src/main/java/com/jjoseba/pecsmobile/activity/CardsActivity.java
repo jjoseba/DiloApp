@@ -128,6 +128,7 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
     public void onAddCardButton(Card clicked){
         Intent i = new Intent(this, CardFormActivity.class);
         i.putExtra(CardFormActivity.EXTRA_PARENT_CARD, clicked);
+        i.putExtra(CardFormActivity.EXTRA_NEW_CARD, true);
         Log.d("NewCard", clicked==null?"null":(""+clicked.getParentID()));
 
         startActivityForResult(i, CardFormActivity.REQUEST);
@@ -145,12 +146,17 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
     public void onCardLongClick(final Card cardPressed) {
         final EditCardDialog dialog = new EditCardDialog(this, cardPressed);
         dialog.show();
-
         dialog.setOnDismissListener(d -> {
             if (dialog.hasDataChanged()){
                 Card currentCard = navigationCards.get(mLastPage);
                 CardsPageFragment currentPage = cardPages.get(currentCard);
                 currentPage.notifyCardChanged(cardPressed, dialog.isCardDeleted());
+            }
+            else if (dialog.shouldEditCard()){
+                Intent i = new Intent(this, CardFormActivity.class);
+                i.putExtra(CardFormActivity.EXTRA_NEW_CARD, false);
+                i.putExtra(CardFormActivity.EXTRA_CARD, cardPressed);
+                startActivityForResult(i, CardFormActivity.REQUEST);
             }
         });
     }
@@ -255,10 +261,19 @@ public class CardsActivity extends BaseActivity implements TextToSpeech.OnInitLi
         super.onActivityResult(requestCode, resultCode, intent);
         displayStrategy.onActivityResult(this, requestCode, resultCode);
 
-        if(resultCode == Activity.RESULT_OK){
-            if (requestCode == CardFormActivity.REQUEST){
-                Card newCard = (Card) intent.getSerializableExtra(CardFormActivity.NEW_CARD_RESULT);
-                onNewCard(newCard);
+        if (requestCode == CardFormActivity.REQUEST){
+            switch (resultCode){
+                case CardFormActivity.RESULT_NEW: {
+                    Card newCard = (Card) intent.getSerializableExtra(CardFormActivity.CARD_RESULT);
+                    onNewCard(newCard);
+                    break;
+                }
+                case CardFormActivity.RESULT_UPDATED: {
+                    Card currentCard = navigationCards.get(mLastPage);
+                    CardsPageFragment currentPage = cardPages.get(currentCard);
+                    Card cardChanged = (Card) intent.getSerializableExtra(CardFormActivity.CARD_RESULT);
+                    currentPage.notifyCardChanged(cardChanged, false);
+                }
             }
         }
 

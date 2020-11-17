@@ -64,7 +64,10 @@ public class CardFormActivity extends BaseActivity {
     public static final int REQUEST_CAMERA = 2;
     public static final int REQUEST = 3;
 
-    public static final String NEW_CARD_RESULT = "new_card";
+    public static final int RESULT_UPDATED = 33;
+    public static final int RESULT_NEW = 44;
+
+    public static final String CARD_RESULT = "new_card";
     public static final String EXTRA_PARENT_CARD = "parent_card";
     public static final String EXTRA_NEW_CARD = "is_new";
     public static final String EXTRA_CARD = "card_edit";
@@ -84,6 +87,7 @@ public class CardFormActivity extends BaseActivity {
     private int previousColor = Card.DEFAULT_COLOR;
     private boolean disableOkButton = false;
 
+    private Card currentCard;
     private boolean isNewCard = true;
     private int parentCardId;
 
@@ -109,16 +113,21 @@ public class CardFormActivity extends BaseActivity {
         colorPickerContainer.setOnTouchListener((view, motionEvent) -> (colorPickerContainer.getVisibility() == View.VISIBLE));
 
         Bundle b = getIntent().getExtras();
-        Card parentCard = (Card) b.getSerializable(EXTRA_PARENT_CARD);
-        Card card = (Card) b.getSerializable((EXTRA_CARD));
-        isNewCard = b.getBoolean(EXTRA_NEW_CARD);
+        currentCard = (Card) b.getSerializable((EXTRA_CARD));
+        isNewCard = b.getBoolean(EXTRA_NEW_CARD, false);
 
-        parentCardId = parentCard.getCardId();
-
-        initializeViews(card, parentCard.getCardColor());
+        if (isNewCard){
+            Card parentCard = (Card) b.getSerializable(EXTRA_PARENT_CARD);
+            parentCardId = parentCard.getCardId();
+            initializeViews(null, parentCard.getCardColor());
+        }
+        else{
+            parentCardId = currentCard.getParentID();
+            initializeViews(currentCard, currentCard.getCardColor());
+        }
     }
 
-    private void initializeViews(Card card, int parentColor){
+    private void initializeViews(Card card, int cardColor){
         cardTitleTextView.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {  }
             public void afterTextChanged(Editable s) { }
@@ -137,16 +146,31 @@ public class CardFormActivity extends BaseActivity {
             }
         });
 
+        if (card != null){
+            File imageFile = new File(card.getImagePath());
+            Picasso.get().load(imageFile).placeholder(R.drawable.empty).error(R.drawable.empty).into(cardImage);
+            cardTitleTextView.setText(card.getLabel());
+            switchDisabled.setChecked(card.isDisabled());
+
+            if (card.isCategory()){
+                switchCategory.setChecked(card.isCategory());
+                if (DBHelper.getInstance(this).getCards(card.getCardId()).size() > 0){
+                    // If card is a non-empty category, we disable the category value change
+                    switchCategory.setEnabled(false);
+                }
+            }
+        }
+
         SaturationBar saturationBar = colorPickerContainer.findViewById(R.id.saturationbar);
         ValueBar valueBar = colorPickerContainer.findViewById(R.id.valuebar);
         picker.addSaturationBar(saturationBar);
         picker.addValueBar(valueBar);
 
-        changeColor(parentColor, false);
-        picker.setOldCenterColor(parentColor);
-        picker.setColor(parentColor);
+        changeColor(cardColor, false);
+        picker.setOldCenterColor(cardColor);
+        picker.setColor(cardColor);
 
-        if (parentColor == Card.DEFAULT_COLOR){
+        if (cardColor == Card.DEFAULT_COLOR){
             saturationBar.setSaturation(0.75f);
             valueBar.setValue(0.85f);
         }
@@ -160,27 +184,41 @@ public class CardFormActivity extends BaseActivity {
             selectColor();
         } else {
             if (validateForm()) {
-                CardPECS newCard = new CardPECS();
-                newCard.setCardColor(String.format("#%06X", (0xFFFFFF & previousColor)));
-                newCard.animateOnAppear = true;
-                newCard.setLabel(cardTitleTextView.getText().toString());
-                newCard.setAsCategory(switchCategory.isChecked());
-                newCard.setDisabled(switchDisabled.isChecked());
+                CardPECS newCardValues = new CardPECS();
+                newCardValues.setCardColor(String.format("#%06X", (0xFFFFFF & previousColor)));
+                newCardValues.setLabel(cardTitleTextView.getText().toString());
+                newCardValues.setAsCategory(switchCategory.isChecked());
+                newCardValues.setDisabled(switchDisabled.isChecked());
+                newCardValues.setParentID(parentCardId);
+
                 if (textAsImage){
                     cardTextImage.setTextColor(previousColor);
-                    newCard.setImageFilename(ImageUtils.saveViewImage(cardTextImage));
+                    newCardValues.setImageFilename(ImageUtils.saveViewImage(cardTextImage));
                     cardTextImage.setTextColor(0x000000);
                 }
                 else if (cardImagePath != null){
-                    newCard.setImageFilename(FileUtils.copyFileToInternal(cardImagePath));
+                    newCardValues.setImageFilename(FileUtils.copyFileToInternal(cardImagePath));
                 }
 
-                DBHelper db = DBHelper.getInstance(getApplicationContext());
-                db.addCard(parentCardId, newCard);
-
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra(NEW_CARD_RESULT, newCard);
-                setResult(Activity.RESULT_OK,returnIntent);
+                DBHelper db = DBHelper.getInstance(this);
+                if (isNewCard){
+                    newCardValues.animateOnAppear = true;
+                    db.addCard(parentCardId, newCardValues);
+                    setResult(RESULT_NEW, returnIntent);
+                }
+                else{
+                    newCardValues.setCardId(currentCard.getCardId());
+                    if (newCardValues.getImageFilename() != null){
+                        FileUtils.deleteImage(currentCard.getImageFilename());
+                    }
+                    else{
+                        newCardValues.setImageFilename(currentCard.getImageFilename());
+                    }
+                    db.updateCard(newCardValues);
+                    setResult(RESULT_UPDATED, returnIntent);
+                }
+                returnIntent.putExtra(CARD_RESULT, newCardValues);
                 finish();
             }
         }

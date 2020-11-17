@@ -98,6 +98,7 @@ public class FileUtils {
     }
 
     public static boolean deleteImage(String imageFilename) {
+        if (imageFilename == null) return false;
         File imageFile = new File(getImagesPath() + imageFilename);
         return imageFile.exists() && imageFile.delete();
     }

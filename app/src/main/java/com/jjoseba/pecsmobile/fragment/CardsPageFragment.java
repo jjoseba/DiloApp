@@ -16,6 +16,7 @@ import com.jjoseba.pecsmobile.ui.cards.ButtonCard;
 import com.jjoseba.pecsmobile.ui.cards.TempButtonCard;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -27,7 +28,7 @@ public class CardsPageFragment extends Fragment {
     public static final String PARENT_CATEGORY = "parentCategory";
 
     private Card parentCategory;
-    private ArrayList<Card> pecs = new ArrayList<>();
+    private List<Card> pecs = new ArrayList<>();
     private CardsAdapter cardsAdapter;
     private CardsGridListener clickListener;
     private int specialButtonsCount = 0;
@@ -115,12 +116,6 @@ public class CardsPageFragment extends Fragment {
                 }
             }
         });
-        gridView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
         return rootView;
     }
@@ -142,10 +137,19 @@ public class CardsPageFragment extends Fragment {
         return pecsList;
     }
 
-    public void notifyCardChanged(Card card, boolean deleted){
+    public void notifyCardChanged(Card changed, boolean deleted){
 
         if (deleted){
-            pecs.remove(card);
+            pecs.remove(changed);
+        }
+        else{
+            //Substitute the previous card for the new one
+            for (int i=0; i<pecs.size(); i++){
+                if (pecs.get(i).getCardId() == changed.getCardId()){
+                    pecs.set(i, changed);
+                    break;
+                }
+            }
         }
         cardsAdapter.notifyDataSetChanged();
     }

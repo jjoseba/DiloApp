@@ -1,5 +1,6 @@
 package com.jjoseba.pecsmobile.ui.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -28,6 +29,11 @@ public class FABAnimatedDialog extends Dialog {
     FABAnimatedDialog(@NonNull Context context) {
         super(context);
         this.ctx = context;
+
+        if (context instanceof Activity) {
+            setOwnerActivity((Activity) context);
+        }
+
     }
 
     @Override

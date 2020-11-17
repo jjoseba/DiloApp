@@ -15,28 +15,29 @@ import com.jjoseba.pecsmobile.model.Card;
 import com.jjoseba.pecsmobile.ui.cards.ButtonCard;
 import com.jjoseba.pecsmobile.util.ReverseInterpolator;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-public class CardsAdapter  extends RecyclerView.Adapter<CardsAdapter.CardViewHolder> {
+public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardViewHolder> {
 
     private static final int CARD_TYPE_PECS = 0;
     private static final int CARD_TYPE_BUTTON = 1;
 
-    private ArrayList<Card> cards;
     private CardListener listener;
-    private Context ctx;
+    private final List<Card> cards;
+    private final Context ctx;
+
 
     public interface CardListener {
         void cardClicked(Card card);
         void cardLongClicked(Card card);
     }
 
-    public CardsAdapter(Context context, ArrayList<Card> cards){
+    public CardsAdapter(Context context, List<Card> cards){
         this.cards = cards;
         this.ctx = context;
     }
@@ -77,7 +78,7 @@ public class CardsAdapter  extends RecyclerView.Adapter<CardsAdapter.CardViewHol
     }
 
     @Override
-    public void onBindViewHolder(final CardViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(@NonNull final CardViewHolder viewHolder, final int position) {
         Card card = cards.get(position);
         card.updateHolder(viewHolder, ctx);
 
