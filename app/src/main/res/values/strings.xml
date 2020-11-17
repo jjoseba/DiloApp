@@ -4,6 +4,7 @@
     <string name="title_activity_new_card">New card</string>
     <string name="action_settings">Settings</string>
     <string name="new_card_title">New card</string>
+    <string name="edit_card_title">Edit card</string>
     <string name="placeholder_label">Name (label)</string>
     <string name="label_category">Is category?</string>
     <string name="label_image">image</string>
@@ -42,4 +43,6 @@
     <string name="unableResolveImageRequest">Gallery request: unable to resolve</string>
     <string name="unableResolveCameraRequest">Camera request: unable to resolve</string>
     <string name="input_delete">Delete</string>
+    <string name="prefEditCard">Edit cards</string>
+    <string name="prefEditCardSummary">Enable editing cards from their context menu</string>
 </resources>

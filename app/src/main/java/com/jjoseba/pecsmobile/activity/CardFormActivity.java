@@ -20,6 +20,7 @@ import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -77,7 +78,7 @@ public class CardFormActivity extends BaseActivity {
     @BindView(R.id.card_frame) View cardFrame;
     @BindView(R.id.colorBucket) CardView colorBucket;
     @BindView(R.id.card_image) ImageView cardImage;
-
+    @BindView(R.id.cancelButton) Button titleButton;
 
     @BindView(R.id.et_title) EditText cardTitleTextView;
     @BindView(R.id.card_imageText) TextView cardTextImage;
@@ -122,6 +123,7 @@ public class CardFormActivity extends BaseActivity {
             initializeViews(null, parentCard.getCardColor());
         }
         else{
+            titleButton.setText(R.string.edit_card_title);
             parentCardId = currentCard.getParentID();
             initializeViews(currentCard, currentCard.getCardColor());
         }
@@ -235,7 +237,6 @@ public class CardFormActivity extends BaseActivity {
             setResult(Activity.RESULT_CANCELED, returnIntent);
             finish();
         }
-
     }
 
     @OnClick(R.id.card_image)

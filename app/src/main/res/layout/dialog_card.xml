@@ -81,7 +81,7 @@
             android:id="@+id/edit_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_edit"
+            android:src="@drawable/ic_edit"
             app:fabCustomSize="@dimen/dialog_fab_size"
             android:tint="@color/white"
             app:backgroundTint="#2196F3"

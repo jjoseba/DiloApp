@@ -82,18 +82,27 @@ public class EditCardDialog extends FABAnimatedDialog{
             cardChanged = false;
             EditCardDialog.this.dismiss();
         });
-        animatableButtons = new ArrayList<>(Arrays.asList(editBtn, deleteBtn, disableBtn));
-
+        animatableButtons = new ArrayList<>();
         if (card.isDisabled()){
             disableBtn.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_lock_open));
         }
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+        if (!prefs.getBoolean(PrefsActivity.CLOSE_EDIT_CARD, true)){
+            editBtn.hide();
+        }
+        else{
+            animatableButtons.add(editBtn);
+        }
         if (!prefs.getBoolean(PrefsActivity.SHOW_DISABLE_CARD, true)){
             disableBtn.hide();
         }
-        super.show();
+        else{
+            animatableButtons.add(disableBtn);
+        }
+        animatableButtons.add(deleteBtn);
 
+        super.show();
 
     }
 

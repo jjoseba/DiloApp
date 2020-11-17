@@ -4,6 +4,7 @@
     <string name="title_activity_new_card">Nueva tarjeta</string>
     <string name="action_settings">Ajustes</string>
     <string name="new_card_title">Nueva tarjeta</string>
+    <string name="edit_card_title">Editar tarjeta</string>
     <string name="placeholder_label">Nombre (etiqueta)</string>
     <string name="label_category">¿Es categoria?</string>
     <string name="label_image">imagen</string>
@@ -41,4 +42,8 @@
     <string name="permissionsRationale">La app necesita permisos para acceder al almacenamiento del dispositivo. Comprueba la configuración</string>
     <string name="unableResolveImageRequest">Request galería: no se pudo resolver</string>
     <string name="unableResolveCameraRequest">Request cámara: no se pudo resolver</string>
+
+    <string name="input_delete">Eliminar</string>
+    <string name="prefEditCard">Editar tarjetas</string>
+    <string name="prefEditCardSummary">Permitir editar una tarjeta desde su menú contextual</string>
 </resources>

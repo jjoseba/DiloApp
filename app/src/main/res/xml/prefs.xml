@@ -54,6 +54,13 @@
             android:title="@string/prefDisableCard" />
 
         <CheckBoxPreference
+            android:icon="@drawable/prefs_edit"
+            android:defaultValue="true"
+            android:key="prefEditCard"
+            android:summary="@string/prefEditCardSummary"
+            android:title="@string/prefEditCard" />
+
+        <CheckBoxPreference
             android:icon="@drawable/prefs_doubletap"
             android:defaultValue="true"
             android:key="prefCloseDoubleTap"
